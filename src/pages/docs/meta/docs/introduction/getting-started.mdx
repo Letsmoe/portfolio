@@ -1,0 +1,55 @@
+---
+layout: ~/layouts/DocsLayout.astro
+title: Getting Started
+description: Get set up quickly and without any hassle
+section: Introduction
+---
+
+import {Code} from "astro/components";
+
+Welcome to Meta, a compiler writing language written in TypeScript and Gyro.
+Meta-II was designed in [1964 by Val Schorre](https://dl.acm.org/doi/10.1145/800257.808896). The version we call Meta today was inspired by its idea but greatly overhauled to better fit the needs of today's developers and engineers.
+The syntax is significantly easier to understand and offers some creature comforts such as [inline calculations](./inline-calculations), [variables](./variables), [constants](./constants) and much more!
+Just compare the syntax of the two side by side. 
+
+
+On the left you can see the Meta-II syntax from 1964 and on the right the Meta syntax from today.
+
+<div class="flex flex-row gap-4">
+	<Code code=".SYNTAX AEXP
+
+AEXP = AS $AS .,
+AS = .ID .OUT('address ' *) ':=' EX1 .OUT('store') ';' .,
+EX1 = EX2 $('+' EX2 .OUT('add') /
+            '-' EX2 .OUT('sub') ) .,
+EX2 = EX3 $('*' EX3 .OUT('mpy') /
+            '/' EX3 .OUT('div') ) .,
+EX3 = EX4 $('^' EX3 .OUT('exp')) .,
+EX4 = '+' EX5 / '-' EX5 .OUT('minus') / EX5 .,
+EX5 = .ID  .OUT('load ' *) /
+      .NUMBER .OUT('literal ' *) /
+      '(' EX1 ')' .,
+
+.END
+" lang="js" />
+	<Code code={`.SYNTAX AEXP
+
+AEXP = $(AS)
+AS = .ID ->("address " *) ":=" EX1 ->("store") ";";
+EX1 = EX2 $("+" EX2 ->("add") 
+		| "-" EX2 ->("sub") );
+EX2 = EX3 $("*" EX3 ->("mpy")
+		| "|" EX3 ->("div") );
+EX3 = EX4 $("^" EX3 ->("exp"));
+EX4 = "+" EX5 
+		| "-" EX5 ->("minus")
+		| EX5;
+EX5 = .ID  ->("load " *) 
+		| .NUMBER ->("literal " *)
+		| "(" EX1 ")";
+
+.END
+`} lang="js" />
+</div>
+
+Don't worry if you don't understand either one of these examples. You will by the end of this documentation.

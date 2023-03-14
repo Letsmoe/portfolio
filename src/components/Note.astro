@@ -1,0 +1,11 @@
+---
+import { Icon } from "astro-icon";
+const { message } = Astro.props;
+---
+
+<div
+	class="px-6 py-4 border-l-4 border-l-blue-400 bg-blue-100 font-medium my-4 align-center flex gap-4"
+>
+	<span class="material-symbols-outlined">info</span>
+	<slot />
+</div>

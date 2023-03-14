@@ -1,0 +1,29 @@
+---
+layout: ~/layouts/DocsLayout.astro
+title: Installation
+section: Introduction
+---
+
+import Note from "~/components/Note.astro"
+
+Installing Meta is very straightforward, just follow these instructions and you'll be set up in no time!
+
+<Note>
+	Meta requires NodeJS and npm / pnpm / Yarn to be preinstalled. If you haven't done that already follow the instructions over at https://nodejs.org/en/download/
+</Note>
+
+To install Meta with npm run this command:
+
+```sh
+npm install -g @metalang/core @metalang/cli @metalang/debug-cli
+```
+
+This will install all necessary components you need to start writing compilers! Let's get started, shall we?
+
+You can use the command line interface we just installed to set up a new
+project, this will run you through the process of setting everything up.
+
+```sh
+meta init -t=default
+```
+

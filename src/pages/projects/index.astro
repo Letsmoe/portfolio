@@ -1,0 +1,56 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Card from "../../components/Card.svelte";
+---
+
+<Layout title="Projects - Letsmoe">
+	<main>
+		<h1>Projects</h1>
+		<p>
+			Over the years, i have worked on quite a few projects, here is a
+			curated list of my most favorite ones.
+		</p>
+		<p>
+			On <a href="https://github.com/Letsmoe">GitHub</a> you can check out
+			all my projects.
+		</p>
+		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+			<Card
+				link="/projects/deepend"
+				name="Deepend"
+				slug="Multi-platform deep learning framework."
+				image="/images/logos/deepend.svg"
+			/>
+			<Card
+				link="/projects/gyro"
+				name="Gyro"
+				slug="A statically typed, compiled programming language."
+				image="/images/logos/gyro.svg"
+			/>
+			<Card
+				link="/projects/stack"
+				name="Stack"
+				slug="A package manager for Gyro, written in Gyro."
+				image="/images/logos/stack.svg"
+			/>
+			<Card
+				link="/projects/meta"
+				name="Meta"
+				slug="A META-II inspired compiler generator."
+				image="/images/logos/meta.svg"
+			/>
+			<Card
+				link="/projects/hydra"
+				name="Hydra"
+				slug="A monorepo manager designed with ease of use in mind."
+				image="/images/logos/hydra.svg"
+			/>
+			<Card
+				link="/projects/flake"
+				name="Flake"
+				slug="A JavaScript testing library with GUI."
+				image="/images/logos/flake.svg"
+			/>
+		</div>
+	</main>
+</Layout>

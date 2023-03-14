@@ -1,0 +1,63 @@
+---
+import Button from "~/components/Button.svelte";
+import Layout from "~/layouts/Layout.astro";
+
+const stories = await Astro.glob("../../content/blog/**/*.{mdx,md}");
+
+function getClosestElements(array: any[], target: number): [any,any] {
+	let closestHigher = {frontmatter: {order: Number.POSITIVE_INFINITY }}; // Initialize with highest possible value
+	let closestLower = {frontmatter: {order: Number.NEGATIVE_INFINITY }}; // Initialize with lowest possible value
+
+	for (let i = 0; i < array.length; i++) {
+		let currentOrder = array[i].frontmatter.order;
+		if (currentOrder > target && currentOrder < closestHigher.frontmatter.order) {
+			closestHigher = array[i]; // Found a closer higher element
+		} else if (currentOrder < target && currentOrder > closestLower.frontmatter.order) {
+			closestLower = array[i]; // Found a closer lower element
+		}
+	}
+
+	return [closestLower, closestHigher];
+}
+
+
+export async function getStaticPaths() {
+	const stories = await Astro.glob("../../content/blog/**/*.{mdx,md}");
+	return stories.map((story) => ({
+		params: {
+			slug: story.frontmatter.slug,
+		},
+		props: {
+			frontmatter: story.frontmatter,
+			Content: story.Content,
+		},
+	}));
+}
+
+const { Content, frontmatter } = Astro.props;
+
+const [last, next] = getClosestElements(stories, frontmatter.order);
+---
+
+<Layout title={frontmatter.title}>
+	<main>
+		<div class="flex flex-row justify-between mb-8">
+			<h1>{frontmatter.title}</h1>
+			<Button content="Home" target="/blog" type={"default"}></Button>
+		</div>
+		<Content />
+		<div class="flex flex-row justify-between mb-8">
+			{last && <Button content="last" target={`/blog/${last.frontmatter.slug}`} type={"default"}></Button>}
+			{next && <Button content="next" target={`/blog/${next.frontmatter.slug}`}></Button>}
+		</div>
+	</main>
+</Layout>
+
+<style is:global>
+	img {
+		max-height: 400px;
+		width: 100%;
+		object-fit: cover;
+		margin: 16px 0;
+	}
+</style>
