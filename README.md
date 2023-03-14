@@ -31,15 +31,15 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Letsmoe - moritz.utcke@gmx.de
 
-[contributors-shield]: https://img.shields.io/github/contributors/letsmoe/website.svg?style=for-the-badge
-[contributors-url]: https://github.com/letsmoe/website/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/letsmoe/website.svg?style=for-the-badge
-[forks-url]: https://github.com/letsmoe/website/network/members
-[stars-shield]: https://img.shields.io/github/stars/letsmoe/website.svg?style=for-the-badge
-[stars-url]: https://github.com/letsmoe/website/stargazers
-[issues-shield]: https://img.shields.io/github/issues/letsmoe/website.svg?style=for-the-badge
-[issues-url]: https://github.com/letsmoe/website/issues
-[license-shield]: https://img.shields.io/github/license/letsmoe/website.svg?style=for-the-badge
-[license-url]: https://github.com/letsmoe/website/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/letsmoe/portfolio.svg?style=for-the-badge
+[contributors-url]: https://github.com/letsmoe/portfolio/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/letsmoe/portfolio.svg?style=for-the-badge
+[forks-url]: https://github.com/letsmoe/portfolio/network/members
+[stars-shield]: https://img.shields.io/github/stars/letsmoe/portfolio.svg?style=for-the-badge
+[stars-url]: https://github.com/letsmoe/portfolio/stargazers
+[issues-shield]: https://img.shields.io/github/issues/letsmoe/portfolio.svg?style=for-the-badge
+[issues-url]: https://github.com/letsmoe/portfolio/issues
+[license-shield]: https://img.shields.io/github/license/letsmoe/portfolio.svg?style=for-the-badge
+[license-url]: https://github.com/letsmoe/portfolio/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/moritz-utcke-5677a3184
