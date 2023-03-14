@@ -1,54 +1,45 @@
-# Astro Starter Kit: Basics
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-```
-npm create astro@latest -- --template basics
-```
+- [About](#about)
+	- [Built With](#built-with)
+- [License](#license)
+- [Contact](#contact)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
+## About
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+This is my portfolio site, it's a place for me to share my passions, information about me and the projects i've worked on. You can check it out on https://letsmoe.com
 
-![basics](https://user-images.githubusercontent.com/4677417/186188965-73453154-fdec-4d6b-9c34-cb35c248ae5b.png)
+If you want to know more about me and what i do you've come to the right place! My GitHub account is packed full of interesting projects that might spark interest with you as well.
+
+In addition to regular contributions on GitHub i post blog entries about programming and Travelling, i'm currently riding a bicycle around the world and i'm regularly posting stories about that!
 
 
-## 🚀 Project Structure
+### Built With
 
-Inside of your Astro project, you'll see the following folders and files:
+[![Built with Astro](https://astro.badg.es/v1/built-with-astro.svg)](https://astro.build)
+![Svelte](https://img.shields.io/badge/svelte-%23f1413d.svg?style=for-the-badge&logo=svelte&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-```
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## License
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Contact
 
-## 🧞 Commands
+Letsmoe - moritz.utcke@gmx.de
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `npm install`          | Installs dependencies                            |
-| `npm run dev`          | Starts local dev server at `localhost:3000`      |
-| `npm run build`        | Build your production site to `./dist/`          |
-| `npm run preview`      | Preview your build locally, before deploying     |
-| `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+[contributors-shield]: https://img.shields.io/github/contributors/letsmoe/website.svg?style=for-the-badge
+[contributors-url]: https://github.com/letsmoe/website/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/letsmoe/website.svg?style=for-the-badge
+[forks-url]: https://github.com/letsmoe/website/network/members
+[stars-shield]: https://img.shields.io/github/stars/letsmoe/website.svg?style=for-the-badge
+[stars-url]: https://github.com/letsmoe/website/stargazers
+[issues-shield]: https://img.shields.io/github/issues/letsmoe/website.svg?style=for-the-badge
+[issues-url]: https://github.com/letsmoe/website/issues
+[license-shield]: https://img.shields.io/github/license/letsmoe/website.svg?style=for-the-badge
+[license-url]: https://github.com/letsmoe/website/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/moritz-utcke-5677a3184
