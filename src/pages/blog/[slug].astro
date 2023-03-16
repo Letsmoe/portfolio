@@ -40,7 +40,7 @@ const [last, next] = getClosestElements(stories, frontmatter.order);
 ---
 
 <Layout title={frontmatter.title}>
-	<main>
+	<main class="max-w-[1200px] w-full mx-auto">
 		<div class="flex flex-row justify-between mb-8">
 			<h1>{frontmatter.title}</h1>
 			<Button content="Home" target="/blog" type={"default"}></Button>
@@ -55,9 +55,6 @@ const [last, next] = getClosestElements(stories, frontmatter.order);
 
 <style is:global>
 	img {
-		max-height: 400px;
-		width: 100%;
-		object-fit: cover;
-		margin: 16px 0;
+		@apply max-h-[600px] object-cover mx-auto border-4 rounded-lg;
 	}
 </style>

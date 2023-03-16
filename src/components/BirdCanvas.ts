@@ -141,7 +141,7 @@ function animate(canvas: HTMLCanvasElement) {
 		canvas.height = window.innerHeight - 80;
 	});
 
-	canvas.addEventListener("click", (e) => {
+	canvas.addEventListener("mousemove", (e) => {
 		const mouseX = e.clientX - canvas.getBoundingClientRect().left;
 		const mouseY = e.clientY - canvas.getBoundingClientRect().top;
 		birds.forEach((bird) => {
