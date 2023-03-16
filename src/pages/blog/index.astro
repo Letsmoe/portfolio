@@ -13,11 +13,11 @@ const categories = [
 
 <Layout title="Blog - Letsmoe">
 	<main class="max-w-[1200px] w-full mx-auto">
-		<div class="mb-4 flex justify-between">
+		<div class="mb-4 flex justify-between flex-col gap-2 sm:flex-row">
 			<StoryFilter categories={categories} client:load />
 			<Search searchList={searchList} client:load></Search>
 		</div>
-		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 justify-items-center">
 			{stories.sort(
 				(a, b) => b.frontmatter.order - a.frontmatter.order
 			).map((story) => <Story data={story} />)}
