@@ -47,8 +47,8 @@ const [last, next] = getClosestElements(stories, frontmatter.order);
 		</div>
 		<Content />
 		<div class="flex flex-row justify-between mb-8">
-			{last && <Button content="last" target={`/blog/${last.frontmatter.slug}`} type={"default"}></Button>}
-			{next && <Button content="next" target={`/blog/${next.frontmatter.slug}`}></Button>}
+			{last.frontmatter.slug && <Button content="last" target={`/blog/${last.frontmatter.slug}`} type={"default"}></Button>}
+			{next.frontmatter.slug && <Button content="next" target={`/blog/${next.frontmatter.slug}`}></Button>}
 		</div>
 	</main>
 </Layout>

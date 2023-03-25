@@ -10,7 +10,7 @@ order: 10
 - Von Ingolstadt aus ging es weiter in Richtung München, wo wir einen Freund besuchen, fehlende Ausrüstung nachkaufen, und unsere Wäsche einmal richtig waschen wollten.
 - An Tag 10 wurde es noch einmal richtig heiß (nicht dass es das letzte Mal gewesen sein sollte...), selbst die Sonnenblumen hatten keinen Bock mehr, und erst in Pörnbach heiterte sich das Gemüt etwas, da man sich wenigstens über den Namen lustig machen konnte.
 
-![Traurige Sonnenblumen](/images/blog/Tag_10/sonneblumen.jpg)
+![Traurige Sonnenblumen](/images/blog/Tag_10/sonnenblumen.jpg)
 
 - Vorbei ging es an kleinen Dörfern und Seen, die nur so dazu einluden hereinzuspringen, wir fuhren aber weiter denn wir hatten ein Tagesziel: München erreichen und ein richtig saftiges Hähnchen in einem Biergarten!
 
