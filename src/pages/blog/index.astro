@@ -17,6 +17,10 @@ const categories = [
 			<StoryFilter categories={categories} client:load />
 			<Search searchList={searchList} client:load></Search>
 		</div>
+		<h1>Follow Me on my Journey</h1>
+		<iframe class="mb-8 w-full rounded-lg" height="480" src="https://www.polarsteps.com/Letsmoe/5393255-reise-nach-nepal/embed"></iframe>
+		<a href="/blog/gallery">Gallery</a>
+		<h1>Blog Entries</h1>
 		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 justify-items-center">
 			{stories.sort(
 				(a, b) => b.frontmatter.order - a.frontmatter.order

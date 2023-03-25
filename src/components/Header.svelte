@@ -15,6 +15,7 @@
 			<a href="/supporters">Supporters</a>
 			<a href="/about">About</a>
 			<a href="/blog">Blog</a>
+			<a href="/blog/gallery">Gallery</a>
 		</div>
 		<div
 			class="hamburger {isOpen ? 'open' : 'closed'}"

@@ -1,0 +1,32 @@
+---
+import GalleryView from "~/components/GalleryView.svelte";
+import Layout from "~/layouts/Layout.astro";
+import Config from "../../../public/images/gallery/config.json";
+import * as fs from "fs"
+import * as path from "path"
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const sections = [];
+
+for (const title in Config) {
+	const { folder, text } = Config[title];
+
+	let dir = path.join(__dirname, "../../../public/images/gallery/", folder);
+	const images = fs.readdirSync(dir);
+
+	sections.push({
+		text,images,title,folder
+	})
+}
+---
+
+<Layout title="Gallery">
+	<main class="max-w-[1200px] w-full mx-auto">
+		<h1>Gallery</h1>
+		<p>Alle Erinnerungen auf einer Seite, zusammengefasst, geordnet und so schön wie am Tag an dem sie gemacht wurden.</p>
+		<GalleryView sections={sections} client:load></GalleryView>
+	</main>
+</Layout>
