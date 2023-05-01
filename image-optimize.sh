@@ -1,8 +1,10 @@
 #!/bin/bash
 
-rm -r ./src/images/gallery/;
-mkdir ./src/images/gallery/;
-cp -r ./images/gallery/* ./src/images/gallery;
+rename 's/\.JPG$/.jpg/' ./*.JPG
+
+rm -r ./src/assets/gallery/;
+mkdir ./src/assets/gallery/;
+cp -r ./images/gallery/* ./src/assets/gallery;
 
 rm -r ./public/images/blog/;
 mkdir ./public/images/blog/;
@@ -17,7 +19,7 @@ for image in ./public/images/blog/**/*.{jpg,JPG}; do
 	fi
 done;
 
-for image in ./src/images/gallery/**/*.{jpg,JPG}; do
+for image in ./src/assets/gallery/**/*.{jpg,JPG}; do
 	echo "Processing $image";
 	if [ -f $image ]
 	then

@@ -4,12 +4,18 @@
 	export let sections: {
 		title: string;
 		folder: string;
-		images: string[];
+		images: {
+			default: {
+				src: string
+			}
+		}[];
 		text: string;
 	}[];
 
 	let hideImageViewer: boolean = true;
-	let displayed = {text: "", folder: "", image: "", title: ""};
+	let displayed = {text: "", folder: "", image: {
+		default: {src: ""}
+	}, title: ""};
 
 	function showImage({ title, folder, image, text }) {
 		displayed = { title, folder, image, text };
@@ -25,7 +31,7 @@
 		<div class="relative inline-block group cursor-pointer" on:click={() => showImage({title, folder, image, text})} on:keydown={() => showImage({title, folder, image, text})}>
 			<img
 				alt={text}
-				src="/images/gallery/{folder}/{image}"
+				src={image.default.src}
 				class="relative transition-all hover:brightness-50 focus:brightness-50 inline-block"
 			/>
 			<p class="absolute left-0 bottom-0 px-2 text-white flex flex-col invisible group-hover:visible group-focus:visible pointer-events-none">
@@ -49,7 +55,7 @@
 			<h1>{displayed.title}</h1>
 			<p>{displayed.text}</p>
 		</div>
-		<img src="/images/gallery/{displayed.folder}/{displayed.image}" class="max-h-[75vh] w-auto">
+		<img src={displayed.image.default.src} class="max-h-[75vh] w-auto">
 	</div>
 </div>
 
