@@ -1,18 +1,30 @@
 ---
+import { CollectionEntry, getCollection } from "astro:content";
 import Button from "~/components/Button.svelte";
 import Layout from "~/layouts/Layout.astro";
+import * as path from "path"
 
-const stories = await Astro.glob("../../content/blog/**/*.{mdx,md}");
+const currentStories: CollectionEntry<"blog">[] = await getCollection("blog", (entry) => {
+	return entry.slug === path.basename(Astro.url.pathname);
+});
 
-function getClosestElements(array: any[], target: number): [any,any] {
-	let closestHigher = {frontmatter: {order: Number.POSITIVE_INFINITY }}; // Initialize with highest possible value
-	let closestLower = {frontmatter: {order: Number.NEGATIVE_INFINITY }}; // Initialize with lowest possible value
+if (currentStories.length == 0) {
+	return Astro.redirect("/blog");
+} 
+
+const currentStory = currentStories[0];
+
+const stories = await getCollection("blog");
+
+function getClosestElements(array: CollectionEntry<"blog">[], target: number): [CollectionEntry<"blog">, CollectionEntry<"blog">] {
+	let closestHigher: CollectionEntry<"blog"> = {data: {order: Number.POSITIVE_INFINITY }} as unknown as CollectionEntry<"blog">; // Initialize with highest possible value
+	let closestLower: CollectionEntry<"blog"> = {data: {order: Number.NEGATIVE_INFINITY }} as unknown as CollectionEntry<"blog">; // Initialize with lowest possible value
 
 	for (let i = 0; i < array.length; i++) {
-		let currentOrder = array[i].frontmatter.order;
-		if (currentOrder > target && currentOrder < closestHigher.frontmatter.order) {
+		let currentOrder = array[i].data.order;
+		if (currentOrder > target && currentOrder < closestHigher.data.order) {
 			closestHigher = array[i]; // Found a closer higher element
-		} else if (currentOrder < target && currentOrder > closestLower.frontmatter.order) {
+		} else if (currentOrder < target && currentOrder > closestLower.data.order) {
 			closestLower = array[i]; // Found a closer lower element
 		}
 	}
@@ -20,35 +32,23 @@ function getClosestElements(array: any[], target: number): [any,any] {
 	return [closestLower, closestHigher];
 }
 
+const { data, render } = currentStory;
 
-export async function getStaticPaths() {
-	const stories = await Astro.glob("../../content/blog/**/*.{mdx,md}");
-	return stories.map((story) => ({
-		params: {
-			slug: story.frontmatter.slug,
-		},
-		props: {
-			frontmatter: story.frontmatter,
-			Content: story.Content,
-		},
-	}));
-}
+const { Content } = await render();
 
-const { Content, frontmatter } = Astro.props;
-
-const [last, next] = getClosestElements(stories, frontmatter.order);
+const [last, next] = getClosestElements(stories, data.order);
 ---
 
-<Layout title={frontmatter.title}>
+<Layout title={data.title}>
 	<main class="max-w-[1200px] w-full mx-auto">
 		<div class="flex flex-row justify-between mb-8">
-			<h1>{frontmatter.title}</h1>
+			<h1>{data.title}</h1>
 			<Button content="Home" target="/blog" type={"default"}></Button>
 		</div>
-		<Content />
+		<Content></Content>
 		<div class="flex flex-row justify-between mb-8">
-			{last.frontmatter.slug && <Button content="last" target={`/blog/${last.frontmatter.slug}`} type={"default"}></Button>}
-			{next.frontmatter.slug && <Button content="next" target={`/blog/${next.frontmatter.slug}`}></Button>}
+			{last.slug && <Button content="last" target={`/blog/${last.slug}`} type={"default"}></Button>}
+			{next.slug && <Button content="next" target={`/blog/${next.slug}`}></Button>}
 		</div>
 	</main>
 </Layout>
