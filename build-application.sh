@@ -26,4 +26,4 @@ docker build --no-cache -t $APP_NAME .
 rm -f ~/apps/$APP_NAME/.env;
 touch ~/apps/$APP_NAME/.env && echo "PRIVATE_KEY=$(cat /etc/letsencrypt/live/letsmoe.com/privkey.pem | base64 | tr -d '\n')" >> ~/apps/$APP_NAME/.env && echo "CERTIFICATE=$(cat /etc/letsencrypt/live/letsmoe.com/fullchain.pem | base64 | tr -d '\n')" >> ~/apps/$APP_NAME/.env
 # Danach starten wir unsere App wieder.
-docker run -d --name $APP_NAME --network $NETWORK -p "80:80" -p "443:443" --env-file ~/apps/$APP_NAME/.env $APP_NAME;
+docker run -d --name $APP_NAME -p "80:80" -p "443:443" --env-file ~/apps/$APP_NAME/.env $APP_NAME;
