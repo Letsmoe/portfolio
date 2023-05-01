@@ -24,8 +24,6 @@ pnpm-debug.log*
 .DS_Store
 
 # images
-public/images/**/*
-
 images/**/*.jpg
 images/**/*.png
 images/**/*.JPG
