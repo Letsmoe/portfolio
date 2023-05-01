@@ -1,20 +1,21 @@
 {
-	"name": "",
+	"name": "@letsmoe/portfolio",
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "bash ./image-optimize.sh && astro build",
+		"build:production": "bash ./image-optimize.sh && astro build && node server.js",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
 	"dependencies": {
 		"@astrojs/image": "^0.16.1",
 		"@astrojs/mdx": "^0.17.2",
+		"@astrojs/node": "^5.1.1",
 		"@astrojs/svelte": "^2.0.2",
 		"@astrojs/tailwind": "^3.0.1",
-		"astro": "^2.1.3",
+		"astro": "^2.3.2",
 		"fuse.js": "^6.6.2",
 		"shiki": "^0.14.1",
 		"svelte": "^3.55.1",
