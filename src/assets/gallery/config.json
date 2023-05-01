@@ -1,34 +1,34 @@
 {
 	"Korinth": {
-		"folder": "./Korinth",
+		"folder": "Korinth",
 		"text": ""
 	},
 	"Meteora": {
-		"folder": "./Meteora",
+		"folder": "Meteora",
 		"text": ""
 	},
 	"Kappadokkien": {
-		"folder": "./Kappadokkien",
+		"folder": "Kappadokkien",
 		"text": ""
 	},
 	"Papa": {
-		"folder": "./Papa",
+		"folder": "Papa",
 		"text": "❤️"
 	},
 	"Athen": {
-		"folder": "./Athen",
+		"folder": "Athen",
 		"text": ""
 	},
 	"Pamukkale": {
-		"folder": "./Pamukkale",
+		"folder": "Pamukkale",
 		"text": ""
 	},
 	"Olymp": {
-		"folder": "./Olymp",
+		"folder": "Olymp",
 		"text": ""
 	},
 	"Delphi": {
-		"folder": "./Delphi",
+		"folder": "Delphi",
 		"text": ""
 	}
 }
