@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build:production": "bash ./image-optimize.sh && astro build && node server.js",
+		"build:production": "astro build && node server.js",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
