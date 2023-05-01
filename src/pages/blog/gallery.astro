@@ -1,7 +1,7 @@
 ---
 import GalleryView from "~/components/GalleryView.svelte";
 import Layout from "~/layouts/Layout.astro";
-import Config from "../../../public/images/gallery/config.json";
+import Config from "~/images/gallery/config.json";
 import * as fs from "fs"
 import * as path from "path"
 import { dirname } from 'path';
@@ -14,7 +14,7 @@ const sections = [];
 for (const title in Config) {
 	const { folder, text } = Config[title];
 
-	let dir = path.join(__dirname, "../../../public/images/gallery/", folder);
+	let dir = path.join(__dirname, "../../images/gallery/", folder);
 	const images = fs.readdirSync(dir);
 
 	sections.push({
