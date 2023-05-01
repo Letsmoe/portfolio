@@ -1,35 +1,26 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "~/layouts/Layout.astro";
+import * as path from "path";
 
-export async function getStaticPaths() {
-	const posts = await Astro.glob("../../content/projects/*.mdx");
+const matchingProjects = await getCollection("projects", (entry) => {
+	return entry.slug === path.basename(Astro.url.pathname);
+});
 
-	return posts.map((post) => ({
-		params: {
-			project: post.frontmatter.slug,
-		},
-		props: {
-			post,
-			date: new Date(),
-		},
-	}));
+if (matchingProjects.length == 0) {
+	return Astro.redirect("/projects");
 }
 
-const {
-	post: {
-		Content,
-		frontmatter: { title },
-	},
-	date,
-} = Astro.props;
+const project = matchingProjects[0];
 
-const formattedDate = new Date(date).toLocaleDateString("en-US");
+const formattedDate = new Date().toLocaleDateString("en-US");
+
+const { Content } = await project.render();
 ---
 
-<Layout title={title}>
+<Layout title={project.data.title}>
 	<main class="max-w-[1200px] w-full mx-auto">
 		<div class="row justify-between center">
-			<h4>Published {formattedDate}</h4>
 			<a href="/projects">go back</a>
 		</div>
 		<Content />
