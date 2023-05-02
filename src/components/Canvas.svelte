@@ -11,8 +11,6 @@
 			let color = new Color(i * 20);
 			colors.push(hslToHex(color.hsl))
 		}
-		console.log(colors);
-		
 
 		new BoidsCanvas(canvas, {
 			background: "#fafafa",
@@ -25,11 +23,4 @@
 	})
 </script>
 
-<canvas bind:this={canvas}></canvas>
-
-<style lang="scss">
-	canvas {
-		width: 100%;
-		height: 100%;
-	}
-</style>
+<canvas class="w-full h-full" bind:this={canvas}></canvas>

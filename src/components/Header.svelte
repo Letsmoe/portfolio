@@ -12,7 +12,6 @@
 		<div class="header-links {isOpen ? 'open' : 'closed'}">
 			<a href="/projects">Projects</a>
 			<a href="/donate">Donate</a>
-			<a href="/supporters">Supporters</a>
 			<a href="/about">About</a>
 			<a href="/blog">Blog</a>
 			<a href="/blog/gallery">Gallery</a>
@@ -20,6 +19,7 @@
 		<div
 			class="hamburger {isOpen ? 'open' : 'closed'}"
 			on:click={toggleMenu}
+			on:keydown={toggleMenu}
 		>
 			<span />
 			<span />
