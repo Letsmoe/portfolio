@@ -8,9 +8,9 @@ import Layout from "../layouts/Layout.astro";
 	<Canvas client:load />
 	<main>
 		<div class="absolute left-[50%] top-[80px] translate-x-[-50%] flex flex-col items-center justify-center w-full h-[calc(100%-80px)] backdrop-blur-sm">
-			<img src="/images/letsmoe.jpeg" alt="Me" class="border-8" />
+			<img src="/images/letsmoe.jpeg" alt="Me" class="border-8 w-[250px] h-[250px] rounded-full object-cover" />
 			<h1>Moritz Utcke</h1>
-			<p class="text-center">"Throw your bag over the fence. Then you have to go and get it."</p>
+			<p class="text-center text-xl">"Throw your bag over the fence. Then you have to go and get it."</p>
 			<div class="flex gap-4">
 				<Button content="Projects" icon="terminal" target="/projects" />
 				<Button
@@ -22,28 +22,3 @@ import Layout from "../layouts/Layout.astro";
 		</div>
 	</main>
 </Layout>
-
-<style>
-	p {
-		font-size: 24px;
-	}
-
-	img {
-		width: 250px;
-		height: 250px;
-		object-fit: cover;
-		border-radius: 50%;
-	}
-
-	main {
-		width: 0;
-		height: 0;
-		padding: 0;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
