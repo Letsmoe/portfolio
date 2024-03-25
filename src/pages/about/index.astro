@@ -1,39 +1,16 @@
 ---
-import Layout from "~/layouts/Layout.astro";
+import Layout from "#layouts/Layout.astro";
+import marked from "marked";
+
+const gitHubProfileDescription = await fetch("https://raw.githubusercontent.com/Letsmoe/Letsmoe/main/README.md")
+
+const markdown = await gitHubProfileDescription.text()
+const content = await marked.parse(markdown)
 ---
 
-<Layout title="About - Letsmoe">
-	<main class="max-w-[1200px] w-full mx-auto">
-		<h1>About Letsmoe</h1>
-		<p>
-			I'm a self-taught software engineer. In 2022 i finished school and
-			went on a cycling tour through Asia, Australia and the Americas with
-			the goal being to circumnavigate the world.
-		</p>
-		<p>
-			On my laptop i write blogs and open-source projects i publish on <a
-				href="https://github.com/Letsmoe">GitHub</a>
-		</p>
-
-		<h2>More</h2>
-		<ul>
-			<li>
-				<a href="/blog/"
-					>Programming Blog</a>
-			</li>
-			<li>
-				<a href="/blog/"
-					>Travel Blog</a>
-			</li>
-			<li>
-				<a href="https://github.com/Letsmoe/amazing"
-					>The Amazing list</a>
-			</li>
-		</ul>
-		<h2>Links</h2>
-		<ul>
-			<li><a href="https://github.com/Letsmoe">GitHub</a></li>
-			<li><a href="https://instagram.com/moritz_utcke">Instagram</a></li>
-		</ul>
+<Layout title="Moritz Utcke - About">
+	<main class="max-w-screen-xl mt-16 py-16 w-full mx-auto">
+		<h1>About Me</h1>
+		<article set:html={content}></article>
 	</main>
 </Layout>

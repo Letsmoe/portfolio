@@ -12,7 +12,7 @@
 		}
 	}
 </script>
-	<select on:input={filterCategories}>
+	<select class="select select-bordered" on:input={filterCategories}>
 		<option value="*" selected>All</option>
 		{#each categories as category}
 		<option value={category}>{category}</option>

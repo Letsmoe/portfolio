@@ -150,6 +150,35 @@ function animate(canvas: HTMLCanvasElement) {
 		});
 	});
 
+	let addBirdInterval: NodeJS.Timeout;
+
+	canvas.addEventListener("mousedown", (e) => {
+		// Add birds when the mouse is held down (10/s) as long as there are less than 2000 birds.
+		console.log(e)
+		addBirdInterval = setInterval(() => {
+			if (birds.length < 2000) {
+				const vx = Math.random() * 2;
+				const vy = Math.random() * -2;
+				const size = 20 + Math.random() * 20;
+				birds.push(
+					new Bird(
+						e.clientX - canvas.getBoundingClientRect().left,
+						e.clientY - canvas.getBoundingClientRect().top,
+						vx,
+						vy,
+						size,
+						canvas,
+						ctx
+					)
+				);
+			}
+		}, 1000 / 10);
+	})
+
+	canvas.addEventListener("mouseup", () => {
+		clearInterval(addBirdInterval);
+	});
+
 	function draw() {
 		if (birds.length < numBirds) {
 			for (let i = 0; i < numBirds; i++) {

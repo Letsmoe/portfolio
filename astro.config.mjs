@@ -17,7 +17,12 @@ export default defineConfig({
   adapter: node({
     mode: "middleware"
   }),
-  integrations: [compress({
+  integrations: [mdx({
+    syntaxHighlight: 'shiki',
+    shikiConfig: {
+      theme: "dracula"
+    }
+  }), compress({
     img: {
       jpeg: false
     },
@@ -32,12 +37,7 @@ export default defineConfig({
       removeAttributeQuotes: true
     },
     path: ["./dist/"]
-  }), svelte(), mdx({
-    syntaxHighlight: 'shiki',
-    shikiConfig: {
-      theme: "dracula"
-    }
-  }), tailwind(), image({
+  }), svelte(), tailwind(), image({
     cacheDir: "./.cache/image",
     serviceEntryPoint: "@astrojs/image/sharp"
   })]

@@ -38,4 +38,4 @@
 	}
 </script>
 
-<input type="text" on:input={search} placeholder="Search..." />
+<input type="text" class="input input-bordered" on:input={search} placeholder="Search..." />

@@ -20,62 +20,17 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<Header client:load></Header>
-		<slot />
+		<main class="prose prose-xl max-w-[100vw]">
+			<slot />
+		</main>
 	</body>
 </html>
-<style is:global>
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	
-	main article code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
 
-	main h1 {
-		@apply text-2xl font-bold mb-2 mt-4 lg:text-3xl;
-	}
-
-	main h2 {
-		@apply text-xl font-bold lg:text-2xl;
-	}
-
-	main p {
-		@apply text-lg mb-4 text-gray-800 lg:text-xl;
-	}
-
-	main ul li {
-		@apply text-lg text-gray-800 lg:text-xl;
-	}
-
-	main a[href]:not(.button) {
-		@apply border-b-2 pb-0.5 border-b-violet-600 relative text-lg lg:text-xl;
-	}
-
-	main a[href]:not(.button)::before {
-		content: "";
-		@apply bg-violet-300 opacity-20 w-0 absolute top-0 left-0 h-full transition-[background-color,0.4s,ease];
-	}
-
-	main a[href]:not(.button):hover::before {
-		@apply w-full;
-	}
-
+<style>
 	main {
-		@apply px-6 py-8;
-	}
-	
-	main ul {
-		@apply flex flex-col gap-1 mb-4 mt-2 list-disc ml-6;
-	}
-
-	main input, main textarea, main select {
-		@apply rounded-lg px-2 py-1 border-2 bg-white outline-none hover:bg-slate-50 transition-colors text-lg;
-	}
-
-	main blockquote {
-		@apply border-l-4 pl-6 ml-4 my-4;
+		scroll-snap-points-y: repeat(100vh);
+		scroll-snap-type: y mandatory;
+		scroll-snap-type: mandatory;
+		overflow: auto;
 	}
 </style>

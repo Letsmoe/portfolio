@@ -2,6 +2,7 @@
 	import { BoidsCanvas } from "./Boids";
 	import { onMount } from "svelte";
 	import { Color, hslToHex } from "./ColorGenerator";
+	import { Boid } from "./Boids/Boid";
 
 	let canvas: HTMLCanvasElement;
 	onMount(() => {
@@ -12,7 +13,7 @@
 			colors.push(hslToHex(color.hsl))
 		}
 
-		new BoidsCanvas(canvas, {
+		const boidsCanvas = new BoidsCanvas(canvas, {
 			background: "#fafafa",
 			density: 10000,
 			speed: 2,

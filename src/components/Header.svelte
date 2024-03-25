@@ -6,15 +6,13 @@
 	}
 </script>
 
-<header class="py-5 px-20 border-b-2 h-full">
+<header class="py-5 px-20 border-b-2 h-[80px] w-screen bg-base-200 border-b-base-200 fixed z-10 top-0">
 	<div class="flex flex-row mx-auto items-center justify-between max-w-[1200px] w-full">
 		<a href="/" class="header-logo">🌈</a>
-		<div class="header-links {isOpen ? 'open' : 'closed'}">
-			<a href="/projects">Projects</a>
-			<a href="/donate">Donate</a>
+		<div class="header-links bg-base-200 {isOpen ? 'open' : 'closed'}">
 			<a href="/about">About</a>
 			<a href="/blog">Blog</a>
-			<a href="/blog/gallery">Gallery</a>
+			<a href="/gallery">Gallery</a>
 		</div>
 		<div
 			class="hamburger {isOpen ? 'open' : 'closed'}"
@@ -36,16 +34,11 @@
 	}
 
 	a {
-		color: #56585d;
-		font-size: 20px;
-		line-height: 20px;
-		text-decoration: none;
-		font-weight: 600;
-		transition: color 0.4s ease;
+		@apply text-base-content text-xl font-bold transition-colors;
 	}
 
 	a:hover {
-		color: #333;
+		@apply underline;
 	}
 
 	.header-logo {
@@ -107,7 +100,6 @@
 			position: absolute;
 			flex-direction: column;
 			top: 80px;
-			background-color: #fafafa;
 			width: 100%;
 			left: 0;
 			padding: 20px 40px;

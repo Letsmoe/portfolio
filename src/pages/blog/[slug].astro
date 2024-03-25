@@ -1,8 +1,9 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
-import Button from "~/components/Button.svelte";
-import Layout from "~/layouts/Layout.astro";
+import Button from "#components/Button.svelte";
+import Layout from "#layouts/Layout.astro";
 import * as path from "path"
+import { ArrowLeft, ArrowRight } from "radix-svelte-icons";
 
 const currentStories: CollectionEntry<"blog">[] = await getCollection("blog", (entry) => {
 	return entry.slug === path.basename(Astro.url.pathname);
@@ -40,15 +41,15 @@ const [last, next] = getClosestElements(stories, data.order);
 ---
 
 <Layout title={data.title}>
-	<main class="max-w-[1200px] w-full mx-auto">
+	<main class="max-w-screen-xl w-full mx-auto px-4 mt-16 py-16">
 		<div class="flex flex-row justify-between mb-8">
 			<h1>{data.title}</h1>
-			<Button content="Home" target="/blog" type={"default"}></Button>
+			<a href="/blog" class="btn btn-primary">Home</a>
 		</div>
 		<Content></Content>
 		<div class="flex flex-row justify-between mb-8">
-			{last.slug && <Button content="last" target={`/blog/${last.slug}`} type={"default"}></Button>}
-			{next.slug && <Button content="next" target={`/blog/${next.slug}`}></Button>}
+			{last.slug && <a href={`/blog/${last.slug}`} class="btn btn-ghost"><ArrowLeft size={24}></ArrowLeft></a>}
+			{next.slug && <a href={`/blog/${next.slug}`} class="btn btn-ghost"><ArrowRight size={24}></ArrowRight></a>}
 		</div>
 	</main>
 </Layout>
