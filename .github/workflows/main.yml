@@ -24,5 +24,7 @@ jobs:
           git clean -f -d
           git pull origin main
           git status
-          pnpm install
-          bash build-application.sh
+          PATH="/root/.bun/bin:/${PATH}"
+          echo "PATH: $PATH"
+          echo "SHELL: $SHELL"
+          bash build.sh
