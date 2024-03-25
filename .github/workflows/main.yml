@@ -1,8 +1,10 @@
-name: Node.js CD
+name: CI
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  push:
+    branches: [main]
 
 jobs:
   build:
@@ -17,10 +19,12 @@ jobs:
         password: ${{ secrets.SERVER_PASSWORD }}
         port: 22
         script: |
-          cd ~/apps/portfolio/
+          cd ~/letsmoe.com
           git reset --hard HEAD
           git clean -f -d
           git pull origin main
           git status
-          pnpm install
-          bash build-application.sh
+          PATH="/root/.bun/bin:/${PATH}"
+          echo "PATH: $PATH"
+          echo "SHELL: $SHELL"
+          bash build.sh

@@ -1,25 +1,29 @@
-import express from "express";
-import { handler as ssrHandler } from "./dist/server/entry.mjs";
-import * as http from "http";
-import * as https from "https";
-
-const privateKey = atob(process.env.PRIVATE_KEY);
-const certificate = atob(process.env.CERTIFICATE);
-
-const credentials = {
-	key: privateKey,
-	cert: certificate,
-};
+import express from 'express';
+import https from 'https';
+import { handler as ssrHandler } from './dist/server/entry.mjs';
+import * as fs from "fs"
 
 const app = express();
-app.use(express.static("dist/client/"));
+
+
+const base = '/';
+app.use(base, express.static('dist/client/'));
 app.use(ssrHandler);
 
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
+app.listen(80, function() {
+	console.log('Server started on http://localhost:80');
+});
 
-httpServer.listen(80);
-httpsServer.listen(443);
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/letsmoe.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/letsmoe.com/cert.pem', 'utf8');
 
-console.log("Server listening on port 80");
-console.log("Server listening on port 443");
+if (privateKey && certificate) {
+	https.createServer({
+		key: privateKey,
+		cert: certificate
+	}, app).listen(443, function() {
+		console.log('Server started on https://localhost:443');
+	});
+} else {
+	console.error('No SSL certificate found');
+}
