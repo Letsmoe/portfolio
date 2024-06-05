@@ -4,7 +4,7 @@ image: /images/blog/Tag_13/alpen-ausblick.jpg
 slug: tag-13
 description: Tschüss München und Servus Alpenvorland! Ein erster Blick wird uns nicht vorenthalten!
 category: Traveling
-order: 13
+date: 2024-06-05
 ---
 
 - Endlich war es wieder so weit, es ging weiter in Richtung Alpen und schon am gleichen Tag konnten wir einen Blick auf die wunderschöne Bergfront richten, die uns bevorstand.

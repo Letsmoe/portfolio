@@ -4,7 +4,7 @@ image: /images/blog/Tag_21/kroatien.jpg
 slug: tag-21
 description: Tschüss Slovenien! Und hallo Kroatien! Ab jetzt geht es immer am Meer entlang.
 category: Traveling
-order: 21
+date: 2024-06-05
 ---
 
 So schnell wie Slovenien gekommen war ging es auch schon wieder. Nur wenige Stunden nachdem wir den Grenzübergang nach Slovenien überquerten verließen wir es auch schon wieder und kamen zur ersten Grenze an der tatsächlich unser Reisepass verlangt wurde (da Kroatien noch nicht im Schengen Raum ist wird hier noch alles manuell gemacht).

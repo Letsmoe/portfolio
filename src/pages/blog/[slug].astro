@@ -1,9 +1,9 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
-import Button from "#components/Button.svelte";
 import Layout from "#layouts/Layout.astro";
 import * as path from "path"
 import { ArrowLeft, ArrowRight } from "radix-svelte-icons";
+import moment, { type Moment } from "moment";
 
 const currentStories: CollectionEntry<"blog">[] = await getCollection("blog", (entry) => {
 	return entry.slug === path.basename(Astro.url.pathname);
@@ -17,15 +17,15 @@ const currentStory = currentStories[0];
 
 const stories = await getCollection("blog");
 
-function getClosestElements(array: CollectionEntry<"blog">[], target: number): [CollectionEntry<"blog">, CollectionEntry<"blog">] {
-	let closestHigher: CollectionEntry<"blog"> = {data: {order: Number.POSITIVE_INFINITY }} as unknown as CollectionEntry<"blog">; // Initialize with highest possible value
-	let closestLower: CollectionEntry<"blog"> = {data: {order: Number.NEGATIVE_INFINITY }} as unknown as CollectionEntry<"blog">; // Initialize with lowest possible value
+function getClosestElements(array: CollectionEntry<"blog">[], target: Moment): [CollectionEntry<"blog">, CollectionEntry<"blog">] {
+	let closestHigher: CollectionEntry<"blog"> = {data: {date: moment.max() }} as unknown as CollectionEntry<"blog">; // Initialize with highest possible value
+	let closestLower: CollectionEntry<"blog"> = {data: {date: moment.min() }} as unknown as CollectionEntry<"blog">; // Initialize with lowest possible value
 
 	for (let i = 0; i < array.length; i++) {
-		let currentOrder = array[i].data.order;
-		if (currentOrder > target && currentOrder < closestHigher.data.order) {
+		let currentDate = moment(array[i].data.date);
+		if (currentDate.isAfter(target) && currentDate < closestHigher.data.date) {
 			closestHigher = array[i]; // Found a closer higher element
-		} else if (currentOrder < target && currentOrder > closestLower.data.order) {
+		} else if (currentDate.isBefore(target) && currentDate > closestLower.data.date) {
 			closestLower = array[i]; // Found a closer lower element
 		}
 	}
@@ -37,7 +37,7 @@ const { data, render } = currentStory;
 
 const { Content } = await render();
 
-const [last, next] = getClosestElements(stories, data.order);
+const [last, next] = getClosestElements(stories, data.date);
 ---
 
 <Layout title={data.title}>
@@ -56,6 +56,40 @@ const [last, next] = getClosestElements(stories, data.order);
 
 <style is:global>
 	img {
-		@apply max-h-[600px] object-cover mx-auto border-4 rounded-lg;
+		@apply max-h-[600px] object-cover mx-auto rounded-lg;
+	}
+
+	p:has(img + img) > img {
+		@apply w-full h-full;
+	}
+
+	/**
+	 * Display images in a grid when there's more than one	
+	*/
+	p:has(img + img) {
+		@apply grid grid-cols-2 gap-4;
+	}
+
+	p:has(img + img) > img {
+		@apply border-0 !m-0;
+	}
+
+	p:has(img + img + img) {
+		@apply grid grid-cols-2 gap-4;
+	}
+	p:has(img + img + img) > img + img + img {
+		@apply col-span-2 w-full;
+	}
+
+	p:has(img + img + img + img) {
+		@apply grid grid-cols-2 gap-4;
+	}
+
+	p:has(img + img + img + img) > img {
+		@apply !m-0 border-0;
+	}
+
+	p:has(img + img + img + img + img + img) {
+		@apply grid grid-cols-3 gap-4;
 	}
 </style>

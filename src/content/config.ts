@@ -8,7 +8,7 @@ export const collections = {
 			image: z.string(),
 			description: z.string(),
 			category: z.string(),
-			order: z.number()
+			date: z.date()
 		})
 	})
 };

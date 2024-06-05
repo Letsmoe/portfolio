@@ -4,7 +4,7 @@ image: /images/blog/Tag_2/bei_den_wölfen.jpg
 slug: tag-2
 description: Der Letzte Kaffee, ein lockerer Tacho und Übernachtung bei den Wölfen!
 category: Traveling
-order: 2
+date: 2024-06-05
 ---
 
 - An diesem Tag macht sich Papa das letzte mal Kaffee, ihm ist es dann doch viel zu aufwendig...

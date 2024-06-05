@@ -4,7 +4,7 @@ image: /images/blog/Tag_7/bamberg.jpg
 slug: tag-7
 description: Sachsen-Coburg Gotha ein Eis zum Mittag und Partystimmung auf dem Zeltplatz.
 category: Traveling
-order: 7
+date: 2024-06-05
 ---
 
 - An Tag 7 treibt uns unser Weg nach Coburg und Bamberg, zwei wirklich schöne, wenn auch große, Kulturstätten deutscher Geschichte.

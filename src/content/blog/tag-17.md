@@ -4,7 +4,7 @@ image: /images/blog/Tag_17/santo-stefano-di-cadore.jpg
 slug: tag-17
 description: Italien! Vieles kommt uns bekannt vor. Sind wir hier nicht schon einmal gewesen?
 category: Traveling
-order: 17
+date: 2024-06-05
 ---
 
 - Unser Weg führt uns durch kleine Dörfer und entlang riesiger Bergfronten.

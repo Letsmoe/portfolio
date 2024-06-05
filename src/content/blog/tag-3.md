@@ -4,7 +4,7 @@ image: /images/blog/Tag_3/harz.jpg
 slug: tag-3
 description: Weitsicht im Harz, eine unbequeme Isomatte und ein viel zu kleiner Topf!
 category: Traveling
-order: 3
+date: 2024-06-05
 ---
 
 ![Camping](/images/blog/Tag_3/camping.jpg)

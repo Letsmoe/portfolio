@@ -4,7 +4,7 @@ image: /images/blog/Tag_6/ilmenau.jpg
 slug: tag-6
 description: Hohe Bordsteine und hügelige Radwege. 'Hier hat Zukunft Tradition!'.
 category: Traveling
-order: 6
+date: 2024-06-05
 ---
 
 - Bei gewohnter Hitze geht es weiter, später als gewöhnlich verlassen wir das Hotel und fahren über Meilen an Kopfsteinpflaster nach Ilmenau.

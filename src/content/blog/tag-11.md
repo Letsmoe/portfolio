@@ -4,7 +4,7 @@ image: /images/blog/Tag_11/eisbach.jpg
 slug: tag-11
 description: Der Eisbach Globetrotter und Entspannung pur!
 category: Traveling
-order: 11
+date: 2024-06-05
 ---
 
 - Angekommen in München sind wir auch schon gleich zu Globetrotter gefahren, da ich dringend ein neues Kopfkissen brauchte, das Alte, was wir auch nur mitgenommen hatten, weil wir das richtige nicht mehr finden konnten, und dieses sich jetzt entschieden hatte, komplett den Geist aufzugeben.

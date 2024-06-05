@@ -4,7 +4,7 @@ image: /images/blog/tag_23/bucht.jpg
 slug: tage-23-und-24
 description: Weiter geht es! Wir verlassen Rijeka und machen uns auf den Weg, immer entlang der Küste.
 category: Traveling
-order: 23
+date: 2024-06-05
 ---
 
 Unser Weg aus Rijeka heraus gestaltet sich etwas mühsam, da es auf den großen Straßen ständig bergauf und bergab geht. Wir sind froh, als wir endlich auf weniger befahrene Straßen gelangen. Obwohl wir stets der Küstenstraße folgen, nimmt der Verkehr in den Ballungszentren merklich zu.

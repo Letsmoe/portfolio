@@ -4,7 +4,7 @@ image: /images/blog/Tag_5/hotelzimmer.jpg
 slug: tag-5
 description: Die erste Unterkunft leere Akkus und unfreundliche Bedienungen.
 category: Traveling
-order: 5
+date: 2024-06-05
 ---
 
 - Unsere Akkus sind leer, in Erfurt fragen wir in einem Café, ob sie die Handys freundlicherweise aufladen könnten, allerdings verlangt die Bedienung dafür Geld und wir fahren leicht aufgebracht weiter. Beim nächsten Café haben wir mehr Glück, allerdings reicht die Leistung unserer Ladegeräte gerade mal für ein paar schlappe Prozente bevor wir ein halbe Stunde weiter fahren.

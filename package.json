@@ -20,6 +20,7 @@
     "express": "^4.18.2",
     "fuse.js": "^6.6.2",
     "marked": "^12.0.1",
+    "moment": "^2.30.1",
     "radix-svelte-icons": "^1.0.0",
     "shiki": "^0.14.1",
     "svelte": "^3.55.1",

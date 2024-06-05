@@ -4,7 +4,7 @@ image: /images/blog/Tag_94/balikesir.jpg
 slug: tag-94
 description: Tag 94 auf dem Weg von Susurluk nach Balikesir in der Türkei. Immer entlang der Bundesstraße führt mich mein Weg heute was es in Balikesir der nächsten Millionenstadt wohl zu sehen geben wird?
 category: Traveling
-order: 93
+date: 2024-06-05
 ---
 
 Auf dem Weg von Susurluk nach Balikesir gab es nicht viel zu sehen. Immer gerade aus ging mein Weg entlang der E881, einer zwei- gelegentlich auch dreispurigen Straße quer durch die türkische "Steppe", wenn man sie denn so nennen will. Unterwegs begegnete ich ein paar wilden Hunden die mich nur verwirrt anguckten und sich vermutlich auch fragten: "Was macht der Typ da? Warum fährt man freiwillig hier lang?".

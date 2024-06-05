@@ -4,7 +4,7 @@ image: /images/blog/Tag_4/feld.jpg
 slug: tag-4
 description: Ameisenbisse Schotterstraßen und schlafen in einer Sauna!
 category: Traveling
-order: 4
+date: 2024-06-05
 ---
 
 - Wir verlassen den Harz, unser weg führt uns über die hügelige Landschaft mitteldeutschlands an einen Badesee in Alperstedt.

@@ -4,7 +4,7 @@ image: /images/blog/Tag_15/innsbruck_rathaus.jpeg
 slug: tag-15
 description: Ausspannen in Österreich und das goldene Dacherle ganz ohne Sichtschutz!
 category: Traveling
-order: 15
+date: 2024-06-05
 ---
 
 - Ausspannen in der Jugendherberge Innsbruck. Sogar Spannbettlaken, was ein Luxus!

@@ -4,7 +4,7 @@ image: /images/blog/Tag_22/rijeka.jpg
 slug: tag-22
 description: In Kroatien angekommen geht es auch schon in eine der größten Städte, Rijeka!
 category: Traveling
-order: 22
+date: 2024-06-05
 ---
 
 Von unser leicht schäbigen Unterkunft gestern geht es nun nach Rijeka! Eine große und vor allem teure Stadt, wir bekommen für über 70€ zwei Betten in einem Hostel in einer Gegend der Stadt, die beinahe schon Tod aussieht.

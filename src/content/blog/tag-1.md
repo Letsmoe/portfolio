@@ -4,7 +4,7 @@ image: /images/blog/Tag_1/unser_zelt.jpg
 category: Traveling
 slug: tag-1
 description: Der erste Tag der Tour
-order: 1
+date: 2024-06-05
 ---
 
 ![Bild von Mama und Papa (neue Kamera)](/images/blog/Tag_1/mama_und_papa.jpg)

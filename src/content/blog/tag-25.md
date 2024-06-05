@@ -4,7 +4,7 @@ image: /images/blog/Tag_25/weg-nach-zadarska.jpg
 slug: tag-25
 description: Die Partymeile Kroatiens, eine Wüste direkt am Meer und eine Sauna zum schlafen. Was kann es schöneres geben?
 category: Traveling
-order: 24
+date: 2024-06-05
 ---
 
 Nach einer Erholungspause im Camp Ujĉa ging es am nächsten Tag weiter in Richtung Zadar. Mit der Fähre setzten wir über auf die Halbinsel vor Kroatien und fuhren durch eine Landschaft die man nur als Wüste beschreiben kann. 

@@ -4,7 +4,7 @@ image: /images/blog/Tag_10/münchen.jpg
 slug: tag-10
 description: München die erste Zwischenstation auf unserem Weg! Und dann auch noch zur Zeit der Wiesn!
 category: Traveling
-order: 10
+date: 2024-06-05
 ---
 
 - Von Ingolstadt aus ging es weiter in Richtung München, wo wir einen Freund besuchen, fehlende Ausrüstung nachkaufen, und unsere Wäsche einmal richtig waschen wollten.

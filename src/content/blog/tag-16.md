@@ -4,7 +4,7 @@ image: /images/blog/Tag_16/brennerpass.jpeg
 slug: tag-16
 description: Wir verlassen Österreich und betreten italienischen Grund! Rollen lassen auf der alten Eisenbahnstrecke des Brenners!
 category: Traveling
-order: 16
+date: 2024-06-05
 ---
 
 - Und so schnell wie Österreich gekommen ist, geht es auch schon wieder...

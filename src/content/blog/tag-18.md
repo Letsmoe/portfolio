@@ -4,7 +4,7 @@ image: /images/blog/Tag_18/granvilla.jpg
 slug: tag-18
 description: Heute mal Regen! Weit hinunter geht es ins Tal, auf dem Weg ins erste unbekannte Land, Kroatien!
 category: Traveling
-order: 18
+date: 2024-06-05
 ---
 
 - Heute ist Regen angesagt, allerdings haben wir extremes Glück und sind immer wieder zu den schlimmsten Schauern in einem Ort wo wir uns unterstellen können. Es geht beinahe den ganzen Tag bergab bis wir Buja erreichen.

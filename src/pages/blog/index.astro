@@ -22,7 +22,7 @@ const categories = [
 		<h2>Blog Entries</h2>
 		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 justify-items-center">
 			{stories.sort(
-				(a, b) => b.frontmatter.order - a.frontmatter.order
+				(a, b) => b.frontmatter.date - a.frontmatter.order
 			).map((story) => <Story data={story} />)}
 		</div>
 	</main>

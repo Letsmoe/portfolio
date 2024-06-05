@@ -4,7 +4,7 @@ image: /images/blog/Tag_8/badestrand.jpg
 slug: tag-8
 description: Schotterpisten Wasserwege und eine Übernachtung auf einem Wohnmobilstellplatz! Wir sind ebenso Mobil wie die anderen Gefährte dort!
 category: Traveling
-order: 8
+date: 2024-06-05
 ---
 
 - An Tag 8 stand uns eine etwas längere Tour bevor, stets ging es auf Schotterwegen am Wasser lang, sowohl Schuhe als auch das gesamte Fahrrad waren bereits nach ein Paar Minuten komplett mit Staub bedeckt und es wurde immer heißer.

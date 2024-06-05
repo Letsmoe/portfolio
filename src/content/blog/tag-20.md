@@ -4,7 +4,7 @@ image: /images/blog/Tag_20/trieste-1.jpg
 slug: tag-20
 description: Angekommen in Trieste! Langsam wird es spannend!
 category: Traveling
-order: 20
+date: 2024-06-05
 ---
 
 - Wir machen uns auf den Weg nach Trieste! Die erste aufregende große Stadt auf unser Tour!
