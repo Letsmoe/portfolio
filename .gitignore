@@ -22,11 +22,3 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
-
-# images
-images/**/*.jpg
-images/**/*.png
-images/**/*.JPG
-images/**/*.jpeg
-# Don't ignore the image config.
-!images/gallery/config.json
