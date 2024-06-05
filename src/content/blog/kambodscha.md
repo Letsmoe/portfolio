@@ -1,6 +1,6 @@
 ---
 title: Kambodscha - Günstig ist was anderes...
-image: /images/blog/Tag_1/unser_zelt.jpg
+image: /images/blog/Kambodscha/woman.JPG
 category: Traveling
 slug: kambodscha
 description: Mit Yonas und Coco geht es von Laos nach Kambodscha! Uns erwarten viele 7/11, schlechte Milkshakes und ein Weltkulterbe.
