@@ -1,25 +1,14 @@
 ---
-import {Image} from "@astrojs/image/components";
-
 const { data } = Astro.props;
 ---
 
 <a
-	class="group rounded-lg story shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-base-200 before:hidden overflow-hidden max-w-[600px] no-underline"
+	class="group rounded-lg story shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-base-200 before:hidden overflow-hidden max-w-[600px] no-underline w-full"
 	data-category={data.frontmatter.category}
 	data-slug={data.frontmatter.slug}
 	href={"/blog/" + data.frontmatter.slug}
 >
-	<div class="group-hover:scale-105 transition-transform w-full h-auto max-h-[350px] object-cover rounded-tl-lg rounded-tr-lg">
-		<Image
-			alt=""
-			width={600}
-			height={350}
-			fit="cover"
-			class="my-0"
-			src={data.frontmatter.image}
-		/>
-	</div>
+	<img src={data.frontmatter.image} alt={data.frontmatter.title} class="group-hover:scale-105 transition-transform w-full h-auto max-h-[350px] object-cover rounded-tl-lg rounded-tr-lg m-0">
 	<div class="p-4">
 		<span
 			class="rounded-lg bg-base-200 text-base-content font-medium px-2 py-1 mb-4 block w-min text-xs"
