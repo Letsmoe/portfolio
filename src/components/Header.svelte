@@ -12,6 +12,7 @@
 		<div class="header-links bg-base-200 {isOpen ? 'open' : 'closed'}">
 			<a href="/about">About</a>
 			<a href="/blog">Blog</a>
+			<a href="/#projects">Projects</a>
 			<a href="/gallery">Gallery</a>
 		</div>
 		<div
