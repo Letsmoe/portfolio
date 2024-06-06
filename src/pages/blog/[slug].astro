@@ -3,7 +3,7 @@ import { CollectionEntry, getCollection } from "astro:content";
 import Layout from "#layouts/Layout.astro";
 import * as path from "path"
 import { ArrowLeft, ArrowRight } from "radix-svelte-icons";
-import moment, { type Moment } from "moment";
+import moment from "moment";
 
 const currentStories: CollectionEntry<"blog">[] = await getCollection("blog", (entry) => {
 	return entry.slug === path.basename(Astro.url.pathname);
@@ -17,15 +17,15 @@ const currentStory = currentStories[0];
 
 const stories = await getCollection("blog");
 
-function getClosestElements(array: CollectionEntry<"blog">[], target: Moment): [CollectionEntry<"blog">, CollectionEntry<"blog">] {
+function getClosestElements(array: CollectionEntry<"blog">[], target: Date): [CollectionEntry<"blog">, CollectionEntry<"blog">] {
 	let closestHigher: CollectionEntry<"blog"> = {data: {date: moment.max() }} as unknown as CollectionEntry<"blog">; // Initialize with highest possible value
 	let closestLower: CollectionEntry<"blog"> = {data: {date: moment.min() }} as unknown as CollectionEntry<"blog">; // Initialize with lowest possible value
 
 	for (let i = 0; i < array.length; i++) {
 		let currentDate = moment(array[i].data.date);
-		if (currentDate.isAfter(target) && currentDate < closestHigher.data.date) {
+		if (currentDate.isAfter(target) && currentDate.isBefore(closestHigher.data.date)) {
 			closestHigher = array[i]; // Found a closer higher element
-		} else if (currentDate.isBefore(target) && currentDate > closestLower.data.date) {
+		} else if (currentDate.isBefore(target) && currentDate.isAfter(closestLower.data.date)) {
 			closestLower = array[i]; // Found a closer lower element
 		}
 	}
@@ -43,13 +43,25 @@ const [last, next] = getClosestElements(stories, data.date);
 <Layout title={data.title}>
 	<main class="max-w-screen-xl w-full mx-auto px-4 mt-16 py-16">
 		<div class="flex flex-row justify-between mb-8">
-			<h1>{data.title}</h1>
+			<h1 class="neon">{data.title}</h1>
 			<a href="/blog" class="btn btn-primary">Home</a>
 		</div>
 		<Content></Content>
 		<div class="flex flex-row justify-between mb-8">
 			{last.slug && <a href={`/blog/${last.slug}`} class="btn btn-ghost"><ArrowLeft size={24}></ArrowLeft></a>}
 			{next.slug && <a href={`/blog/${next.slug}`} class="btn btn-ghost"><ArrowRight size={24}></ArrowRight></a>}
+		</div>
+		<hr>
+		<div class="flex flex-row items-center gap-8">
+			<img
+				src="/images/kyrgizstan.webp"
+				class="rounded-full m-0 w-[168px]"
+				alt="Me"
+			/>
+			<div class="flex flex-col">
+				<h1 class="m-0">Moritz Utcke</h1>
+				<p class="my-4">Nach der Schule habe ich mich entschieden mit dem Fahrrad auf Weltreise zu gehen. Vier wochen nach meinem Abi hab ich mein Zeug gepackt und mich aufs Rad geschwungen. Zwei Jahre später bin ich immer noch hier und fahre mit meinem Kompagnon Joe durch den Dschungel von Laos, die Berge Nepals oder die Kasachische Steppe.</p>
+			</div>
 		</div>
 	</main>
 </Layout>

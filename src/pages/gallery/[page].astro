@@ -45,7 +45,7 @@ for (const title in Config) {
 
 <Layout title="Gallery">
 	<main class="max-w-screen-xl !mt-[80px] py-16 w-full mx-auto">
-		<h1>Gallery</h1>
+		<h1 class="neon">Gallery</h1>
 		<GalleryView sections={sections} client:load />
 		<div class="flex justify-center mt-8">
 			<GalleryPagination imageCount={allImages.length} imagesPerPage={25} page={page}></GalleryPagination>

@@ -1,109 +1,71 @@
 ---
+import ProjectCard from "#components/ProjectCard.svelte";
 import Layout from "../layouts/Layout.astro";
-import { ArrowDown, GithubLogo, ExternalLink } from "radix-svelte-icons"
+import { ArrowDown } from "radix-svelte-icons";
 ---
 
 <Layout title="Letsmoe">
 	<div class="section h-[100vh] top-[80px] absolute bg-base-100 text-center">
-		<div class="flex flex-col gap-4 items-center justify-between fixed left-[50%] h-[calc(100vh-80px)] translate-x-[-50%] py-16 w-full px-4">
-			<img src="/images/kyrgizstan.webp" class="rounded-full my-0 w-2/3 max-w-[482px]" alt="Me">
-			<a href="" class="no-underline "><h1 class="neon !text-8xl my-0">Moritz Utcke</h1></a>
-			<ArrowDown size={48} class="animate-bounce"></ArrowDown>
+		<div
+			class="flex flex-col gap-4 items-center justify-between fixed left-[50%] h-[calc(100vh-80px)] translate-x-[-50%] py-16 w-full px-4"
+		>
+			<img
+				src="/images/kyrgizstan.webp"
+				class="rounded-full my-0 w-2/3 max-w-[482px]"
+				alt="Me"
+			/>
+			<a href="" class="no-underline"
+				><h1 class="neon !text-8xl my-0">Moritz Utcke</h1></a
+			>
+			<ArrowDown size={48} class="animate-bounce" />
 		</div>
 	</div>
-	<div class="section absolute top-[100vh] bg-base-200 w-full h-auto min-h-[100vh] px-4">
+	<div
+		class="section absolute top-[100vh] bg-base-200 w-full h-auto min-h-[100vh] px-4"
+	>
 		<div class="max-w-screen-xl mx-auto py-16">
-			<h1>Projects</h1>
+			<h1 class="neon">Projects</h1>
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-				<div class="card w-full bg-base-100 shadow-xl">
-					<div class="card-body">
-						<div class="flex flex-row gap-4">
-							<img src="/icons/meta.svg" width="64" class="!my-0">
-							<h2 class="card-title !my-0">META</h2>
-						</div>
-						<p>META is a compiler writing toolchain optimized for speed and reliability. It is easy to pick up and extremely flexible.</p>
-						<div class="card-actions justify-end gap-4">
-							<a href="https://github.com/the-meta-lang" target="_blank" class="btn btn-outline btn-lg"><GithubLogo size={32}></GithubLogo> View on GitHub</a>
-							<a href="https://meta-lang.com" target="_blank" class="btn btn-secondary btn-lg"><ExternalLink size={32}></ExternalLink> Website</a>
-						</div>
-					</div>
-				</div>
-				<div class="card w-full bg-base-100 shadow-xl">
-					<div class="card-body">
-						<div class="flex flex-row gap-4">
-							<img src="/icons/meta.svg" width="64" class="!my-0">
-							<h2 class="card-title !my-0">Gyro</h2>
-						</div>
-						<p>A multi-language, statically typed, syntax extensible programming language built for speed and customizability.</p>
-						<div class="card-actions justify-end gap-4">
-							<a href="https://github.com/gyro-lang" target="_blank" class="btn btn-outline btn-lg"><GithubLogo size={32}></GithubLogo> View on GitHub</a>
-							<a href="https://gyro-lang.com" target="_blank" class="btn btn-secondary btn-lg"><ExternalLink size={32}></ExternalLink> Website</a>
-						</div>
-					</div>
-				</div>
+				<ProjectCard
+					icon="/icons/meta.svg"
+					title="META"
+					description="META is a compiler writing toolchain optimized for speed and reliability. It is easy to pick up and extremely flexible."
+					github="https://github.com/the-meta-lang"
+					website="https://meta-lang.com"
+				/>
+				<ProjectCard
+					icon="/icons/gyro.svg"
+					title="Gyro"
+					description="A multi-language, statically typed, syntax extensible programming language built for speed and customizability."
+					github="https://github.com/gyro-lang"
+					website="https://gyro-lang.com"
+				/>
 			</div>
 		</div>
 		<div class="max-w-screen-xl mx-auto py-16">
-			<h1>About Me</h1>
-			<p>I'm a self-taught software engineer from Germany who loves traveling. I'm cycling around the world through over 60 countries at the moment.</p>
-			<p>I occasionally dip my toes into stuff that i didn't know yet. I know a decent amount of programming languages both object-oriented and functional as well as a good amount of x86 Assembly (i don't know how that happened either) 😆</p>
-			<p>I've done a few projects, mostly web-focused or compilers/languages and have most definetely spent too much time in front of this rectangular screen...</p>
+			<h1 class="neon">About Me</h1>
+			<p>
+				I'm a self-taught software engineer from Germany who loves
+				traveling. I'm cycling around the world through over 60
+				countries at the moment.
+			</p>
+			<p>
+				I occasionally dip my toes into stuff that i didn't know yet. I
+				know a decent amount of programming languages both
+				object-oriented and functional as well as a good amount of x86
+				Assembly (i don't know how that happened either) 😆
+			</p>
+			<p>
+				I've done a few projects, mostly web-focused or
+				compilers/languages and have most definetely spent too much time
+				in front of this rectangular screen...
+			</p>
 		</div>
 	</div>
 </Layout>
 
 <style>
-
 	.section {
 		scroll-snap-align: start;
 	}
-	.neon {
-		color: #fff;
-		text-shadow: 1px 1px 1px #919191, 1px 1px 1px #919191,
-			1px 3px 1px #919191, 1px 4px 1px #919191, 1px 2px 1px #919191,
-			1px 3px 1px #919191, 1px 7px 1px #919191, 1px 4px 1px #919191,
-			1px 4px 1px #919191, 1px 10px 1px #919191, 0 0 3px #fff,
-			1px 9px 3px rgba(16, 16, 16, 0.4),
-			1px 11px 5px rgba(16, 16, 16, 0.2),
-			1px 12px 17px rgba(16, 16, 16, 0.2),
-			1px 15px 30px rgba(16, 16, 16, 0.4);
-		opacity: 0.75;
-	}
-
-	.neon:hover {
-		animation: glitch .375s infinite;
-	}
-
-
-@keyframes glitch {
-  0% {
-    text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff,
-      0.025em 0.04em 0 #fffc00;
-  }
-  15% {
-    text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff,
-      0.025em 0.04em 0 #fffc00;
-  }
-  16% {
-    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.035em 0 #fc00ff,
-      -0.05em -0.05em 0 #fffc00;
-  }
-  49% {
-    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.035em 0 #fc00ff,
-      -0.05em -0.05em 0 #fffc00;
-  }
-  50% {
-    text-shadow: 0.05em 0.035em 0 #00fffc, 0.03em 0 0 #fc00ff,
-      0 -0.04em 0 #fffc00;
-  }
-  99% {
-    text-shadow: 0.05em 0.035em 0 #00fffc, 0.03em 0 0 #fc00ff,
-      0 -0.04em 0 #fffc00;
-  }
-  100% {
-    text-shadow: -0.05em 0 0 #00fffc, -0.025em -0.04em 0 #fc00ff,
-      -0.04em -0.025em 0 #fffc00;
-  }
-}
-
 </style>
