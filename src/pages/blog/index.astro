@@ -3,6 +3,7 @@ import Layout from "#layouts/Layout.astro";
 import Story from "#components/Story.astro";
 import StoryFilter from "#components/StoryFilter.svelte";
 import Search from "#components/Search.svelte";
+import moment from "moment";
 const stories = await Astro.glob("../../content/blog/**/*.{mdx,md}");
 const searchList = Object.values(stories).map(x => ({frontmatter: x.frontmatter, url: x.url}))
 
@@ -22,7 +23,7 @@ const categories = [
 		<h2>Blog Entries</h2>
 		<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 justify-items-center">
 			{stories.sort(
-				(a, b) => b.frontmatter.date - a.frontmatter.order
+				(a, b) => moment(b.frontmatter.date).diff(a.frontmatter.date, "milliseconds")
 			).map((story) => <Story data={story} />)}
 		</div>
 	</main>

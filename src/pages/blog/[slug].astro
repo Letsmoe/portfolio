@@ -67,12 +67,20 @@ const [last, next] = getClosestElements(stories, data.date);
 </Layout>
 
 <style is:global>
-	img {
+	img, video {
 		@apply max-h-[600px] object-cover mx-auto rounded-lg;
 	}
 
 	p:has(img + img) > img {
 		@apply w-full h-full;
+	}
+
+	p:has(video) > video {
+		@apply w-full h-full;
+	}
+
+	p:has(img ~ video) {
+		@apply grid grid-cols-2 gap-4;
 	}
 
 	/**

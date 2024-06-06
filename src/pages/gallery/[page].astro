@@ -14,7 +14,7 @@ if (!page || isNaN(page) || page < 1) {
 // Every page has 25 images.
 const sections = [];
 
-const allImages = await Astro.glob("/src/assets/gallery/**/*.jpg");
+const allImages = await Astro.glob("../../assets/gallery/**/*.jpg");
 
 
 // Skip the images that are not in the current page.
