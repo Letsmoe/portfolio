@@ -4,6 +4,8 @@ import Layout from "#layouts/Layout.astro";
 import * as path from "path"
 import { ArrowLeft, ArrowRight } from "radix-svelte-icons";
 import moment from "moment";
+import BlogProgressBar from "#components/BlogProgressBar.svelte";
+import AudioPlayer from "#components/AudioPlayer.svelte";
 
 const currentStories: CollectionEntry<"blog">[] = await getCollection("blog", (entry) => {
 	return entry.slug === path.basename(Astro.url.pathname);
@@ -38,27 +40,34 @@ const { data, render } = currentStory;
 const { Content } = await render();
 
 const [last, next] = getClosestElements(stories, data.date);
+
+// Check if this article has an audio version
+
 ---
 
 <Layout title={data.title}>
+	<BlogProgressBar client:load></BlogProgressBar>
 	<main class="max-w-screen-xl w-full mx-auto px-4 mt-16 py-16">
-		<div class="flex flex-row justify-between mb-8">
-			<h1 class="neon">{data.title}</h1>
-			<a href="/blog" class="btn btn-primary">Home</a>
+		<div class="flex flex-col mb-4">
+			<h1 class="neon my-0 mb-2">{data.title}</h1>
+			<p class="text-gray-500 text-base">{moment(data.date).format("DD.MM.YYYY")} - {Math.round(currentStory.body.split(" ").length / 240)} min. read</p>
 		</div>
-		<Content></Content>
+		<AudioPlayer slug={currentStory.slug} client:load></AudioPlayer>
+		<article>
+			<Content></Content>
+		</article>
 		<div class="flex flex-row justify-between mb-8">
 			{last.slug && <a href={`/blog/${last.slug}`} class="btn btn-ghost"><ArrowLeft size={24}></ArrowLeft></a>}
 			{next.slug && <a href={`/blog/${next.slug}`} class="btn btn-ghost"><ArrowRight size={24}></ArrowRight></a>}
 		</div>
 		<hr>
-		<div class="flex flex-row items-center gap-8">
+		<div class="flex flex-col md:flex-row items-center gap-8">
 			<img
 				src="/images/kyrgizstan.webp"
 				class="rounded-full m-0 w-[168px]"
 				alt="Me"
 			/>
-			<div class="flex flex-col">
+			<div class="flex flex-col text-center md:text-start">
 				<h1 class="m-0">Moritz Utcke</h1>
 				<p class="my-4">Nach der Schule habe ich mich entschieden mit dem Fahrrad auf Weltreise zu gehen. Vier wochen nach meinem Abi hab ich mein Zeug gepackt und mich aufs Rad geschwungen. Zwei Jahre später bin ich immer noch hier und fahre mit meinem Kompagnon Joe durch den Dschungel von Laos, die Berge Nepals oder die Kasachische Steppe.</p>
 			</div>
@@ -75,12 +84,12 @@ const [last, next] = getClosestElements(stories, data.date);
 		@apply w-full h-full;
 	}
 
-	p:has(video) > video {
+	p > video {
 		@apply w-full h-full;
 	}
 
 	p:has(img ~ video) {
-		@apply grid grid-cols-2 gap-4;
+		@apply grid grid-cols-1 md:grid-cols-2 gap-4;
 	}
 
 	/**

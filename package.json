@@ -24,7 +24,8 @@
     "radix-svelte-icons": "^1.0.0",
     "shiki": "^0.14.1",
     "svelte": "^3.55.1",
-    "tailwindcss": "^3.2.7"
+    "tailwindcss": "^3.2.7",
+    "wavesurfer.js": "^7.7.15"
   },
   "devDependencies": {
     "astro-compress": "^2.2.17",
