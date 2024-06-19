@@ -50,7 +50,7 @@ const [last, next] = getClosestElements(stories, data.date);
 	<main class="max-w-screen-xl w-full mx-auto px-4 mt-16 py-16">
 		<div class="flex flex-col mb-4">
 			<h1 class="neon my-0 mb-2">{data.title}</h1>
-			<p class="text-gray-500 text-base">{moment(data.date).format("DD.MM.YYYY")} - {Math.round(currentStory.body.split(" ").length / 240)} min. read</p>
+			<p class="text-gray-500 text-base">{moment(data.date).format("DD.MM.YYYY")} - {Math.ceil(currentStory.body.split(" ").length / 240)} min. read</p>
 		</div>
 		<AudioPlayer slug={currentStory.slug} client:load></AudioPlayer>
 		<article>
