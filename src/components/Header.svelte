@@ -1,19 +1,53 @@
 <script lang="ts">
+	import { Moon, Sun } from "radix-svelte-icons";
+	import { onMount } from "svelte";
+
 	let isOpen = false;
 
 	function toggleMenu() {
 		isOpen = !isOpen;
 	}
+
+	function toggleTheme() {
+		if (theme === "dark") {
+			theme = "light";
+			document.documentElement.dataset.theme = "bumblebee";
+			localStorage.setItem("theme", "light");
+		} else {
+			theme = "dark";
+			document.documentElement.dataset.theme = "forest";
+			localStorage.setItem("theme", "dark");
+		}
+	}
+
+	onMount(() => {
+		if (localStorage.getItem("theme") === "dark") {
+			document.documentElement.dataset.theme = "forest"
+			theme = "dark";
+		} else {
+			document.documentElement.dataset.theme = "bumblebee";
+			theme = "light";
+		}
+	})
+
+	let theme = "dark";
 </script>
 
 <header class="py-5 px-20 border-b-2 h-[80px] w-screen bg-base-200 border-b-base-200 fixed z-10 top-0">
 	<div class="flex flex-row mx-auto items-center justify-between max-w-[1200px] w-full">
 		<a href="/" class="header-logo">🌈</a>
-		<div class="header-links bg-base-200 {isOpen ? 'open' : 'closed'}">
+		<div class="header-links bg-base-200 {isOpen ? 'open' : 'closed'} items-center	">
 			<a href="/about">About</a>
 			<a href="/blog">Blog</a>
 			<a href="/#projects">Projects</a>
 			<a href="/gallery">Gallery</a>
+			<button class="btn btn-ghost" on:click={toggleTheme}>
+				{#if theme == "dark"}
+				<Sun size={24}></Sun>
+				{:else}
+				<Moon size={24}></Moon>
+				{/if}
+			</button>
 		</div>
 		<div
 			class="hamburger {isOpen ? 'open' : 'closed'}"
@@ -82,7 +116,7 @@
 			margin-bottom: 5px;
 			position: relative;
 
-			background: #333;
+			background: #eee;
 			border-radius: 3px;
 
 			z-index: 1;
