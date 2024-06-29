@@ -23,4 +23,5 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-./audio/
+audio/de_DE-thorsten-high.onnx
+audio/de_DE-thorsten-high.onnx.json
