@@ -7,8 +7,8 @@ import moment from "moment";
 const stories = await Astro.glob("../../content/blog/**/*.{mdx,md}");
 const searchList = Object.values(stories).map(x => ({frontmatter: x.frontmatter, url: x.url}))
 
-const categories = [
-	...new Set(stories.map((x) => x.frontmatter.category).filter((x) => x)),
+const tags = [
+	...new Set(stories.map((x) => x.frontmatter.tags).flat().filter((x) => x)),
 ];
 ---
 
@@ -17,7 +17,7 @@ const categories = [
 		<h1 class="neon">Follow Me on my Journey</h1>
 		<iframe class="mb-8 w-full rounded-lg" height="480" src="https://www.polarsteps.com/Letsmoe/5393255-reise-nach-nepal/embed"></iframe>
 		<div class="mb-4 flex justify-between flex-col gap-2 sm:flex-row">
-			<StoryFilter categories={categories} client:load />
+			<StoryFilter tags={tags} client:load />
 			<Search searchList={searchList} client:load></Search>
 		</div>
 		<h2>Blog Entries</h2>

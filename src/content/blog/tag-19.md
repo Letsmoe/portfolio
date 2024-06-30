@@ -3,7 +3,8 @@ title: Tag 19
 image: /images/blog/Tag_19/monfalcone.jpg
 slug: tag-19
 description: Bald sind wir in Trieste! Heute bleiben wir in Monfalcone, die Stadt mit dem höchsten Ausländeranteil in ganz Italien!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

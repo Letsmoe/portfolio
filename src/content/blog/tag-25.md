@@ -3,7 +3,8 @@ title: Tag 25
 image: /images/blog/Tag_25/weg-nach-zadarska.jpg
 slug: tag-25
 description: Die Partymeile Kroatiens, eine Wüste direkt am Meer und eine Sauna zum schlafen. Was kann es schöneres geben?
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

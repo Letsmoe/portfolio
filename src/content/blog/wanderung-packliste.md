@@ -3,7 +3,8 @@ title: Wanderung Packliste
 image: /images/blog/Wanderung/gepäck.jpeg
 description: Die erste richtige Wanderung steht an. Was habe ich dabei was packe ich ein?
 slug: wanderung-packliste
-category: Hiking
+tags: 
+    - Hiking
 date: 2024-06-05
 ---
 

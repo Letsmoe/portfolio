@@ -3,7 +3,8 @@ title: Tag 2
 image: /images/blog/Tag_2/bei_den_wölfen.jpg
 slug: tag-2
 description: Der Letzte Kaffee, ein lockerer Tacho und Übernachtung bei den Wölfen!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

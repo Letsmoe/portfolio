@@ -3,7 +3,8 @@ title: Tag 4
 image: /images/blog/Tag_4/feld.jpg
 slug: tag-4
 description: Ameisenbisse Schotterstraßen und schlafen in einer Sauna!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

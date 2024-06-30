@@ -3,7 +3,8 @@ title: Tag 3
 image: /images/blog/Tag_3/harz.jpg
 slug: tag-3
 description: Weitsicht im Harz, eine unbequeme Isomatte und ein viel zu kleiner Topf!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

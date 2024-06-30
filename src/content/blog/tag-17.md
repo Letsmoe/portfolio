@@ -3,7 +3,8 @@ title: Tag 17
 image: /images/blog/Tag_17/santo-stefano-di-cadore.jpg
 slug: tag-17
 description: Italien! Vieles kommt uns bekannt vor. Sind wir hier nicht schon einmal gewesen?
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

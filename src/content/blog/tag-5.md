@@ -3,7 +3,8 @@ title: Tag 5
 image: /images/blog/Tag_5/hotelzimmer.jpg
 slug: tag-5
 description: Die erste Unterkunft leere Akkus und unfreundliche Bedienungen.
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

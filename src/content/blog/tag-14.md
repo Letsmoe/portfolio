@@ -3,7 +3,8 @@ title: Tag 14
 image: /images/blog/Tag_14/grenze.jpg
 slug: tag-14
 description: Unser erstes Land ist geschafft! Vorbei an Sylvensteinspeicher und Achensee geht es nun in die weite Ferne Österreichs!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

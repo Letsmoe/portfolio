@@ -1,7 +1,8 @@
 ---
 title: Thailand - Viele 7/11 und dennoch kein Slurpee...
 image: /images/blog/Thailand/koh_tao.JPG
-category: Traveling
+tags: 
+    - Traveling
 slug: thailand
 description: Thailand ist das Land der 7-Eleven, vielen Stränden und einigen Bergen. Coco und ich machen uns auf den Weg und stauben dabei noch zwei Tauchzertifikate ab.
 date: 2024-06-19

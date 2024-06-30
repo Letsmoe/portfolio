@@ -3,7 +3,8 @@ title: Tag 10
 image: /images/blog/Tag_10/münchen.jpg
 slug: tag-10
 description: München die erste Zwischenstation auf unserem Weg! Und dann auch noch zur Zeit der Wiesn!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

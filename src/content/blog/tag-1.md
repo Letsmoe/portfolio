@@ -1,7 +1,8 @@
 ---
 title: Tag 1
 image: /images/blog/Tag_1/unser_zelt.jpg
-category: Traveling
+tags: 
+    - Traveling
 slug: tag-1
 description: Der erste Tag der Tour
 date: 2024-06-05

@@ -3,7 +3,8 @@ title: Tage 23 und 24
 image: /images/blog/tag_23/bucht.jpg
 slug: tage-23-und-24
 description: Weiter geht es! Wir verlassen Rijeka und machen uns auf den Weg, immer entlang der Küste.
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

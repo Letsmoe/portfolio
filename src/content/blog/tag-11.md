@@ -3,7 +3,8 @@ title: Tag 11
 image: /images/blog/Tag_11/eisbach.jpg
 slug: tag-11
 description: Der Eisbach Globetrotter und Entspannung pur!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

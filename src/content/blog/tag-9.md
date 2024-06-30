@@ -3,7 +3,8 @@ title: Tag 9
 image: /images/blog/Tag_9/moritz-zerstörung.jpg
 slug: tag-9
 description: Die europäische Wasserscheide erste Nacht in einer Jugendherberge und das Tor zur Hölle!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

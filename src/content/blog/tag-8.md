@@ -3,7 +3,8 @@ title: Tag 8
 image: /images/blog/Tag_8/badestrand.jpg
 slug: tag-8
 description: Schotterpisten Wasserwege und eine Übernachtung auf einem Wohnmobilstellplatz! Wir sind ebenso Mobil wie die anderen Gefährte dort!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

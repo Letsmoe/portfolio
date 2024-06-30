@@ -1,7 +1,8 @@
 ---
 title: Laos - Im Dschungel verlaufen...
 image: /images/blog/Laos/wasserfall_dschungel.JPG
-category: Traveling
+tags: 
+    - Traveling
 slug: laos
 description: Ab in den Dschungel! Und zack verlaufen wir uns... 😅 Dann zu den 4000 Islands, aber wo sind die denn nur?
 date: 2024-06-06

@@ -3,7 +3,8 @@ title: Tag 18
 image: /images/blog/Tag_18/granvilla.jpg
 slug: tag-18
 description: Heute mal Regen! Weit hinunter geht es ins Tal, auf dem Weg ins erste unbekannte Land, Kroatien!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

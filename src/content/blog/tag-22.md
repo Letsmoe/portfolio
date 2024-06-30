@@ -3,7 +3,8 @@ title: Tag 22
 image: /images/blog/Tag_22/rijeka.jpg
 slug: tag-22
 description: In Kroatien angekommen geht es auch schon in eine der größten Städte, Rijeka!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

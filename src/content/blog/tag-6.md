@@ -3,7 +3,8 @@ title: Tag 6
 image: /images/blog/Tag_6/ilmenau.jpg
 slug: tag-6
 description: Hohe Bordsteine und hügelige Radwege. 'Hier hat Zukunft Tradition!'.
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

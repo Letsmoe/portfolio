@@ -3,7 +3,8 @@ title: Tag 15
 image: /images/blog/Tag_15/innsbruck_rathaus.jpeg
 slug: tag-15
 description: Ausspannen in Österreich und das goldene Dacherle ganz ohne Sichtschutz!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

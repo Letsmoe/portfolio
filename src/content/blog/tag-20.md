@@ -3,7 +3,8 @@ title: Tag 20
 image: /images/blog/Tag_20/trieste-1.jpg
 slug: tag-20
 description: Angekommen in Trieste! Langsam wird es spannend!
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

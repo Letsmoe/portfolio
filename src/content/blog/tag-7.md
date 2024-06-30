@@ -3,7 +3,8 @@ title: Tag 7
 image: /images/blog/Tag_7/bamberg.jpg
 slug: tag-7
 description: Sachsen-Coburg Gotha ein Eis zum Mittag und Partystimmung auf dem Zeltplatz.
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

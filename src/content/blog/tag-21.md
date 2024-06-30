@@ -3,7 +3,8 @@ title: Tag 21
 image: /images/blog/Tag_21/kroatien.jpg
 slug: tag-21
 description: Tschüss Slovenien! Und hallo Kroatien! Ab jetzt geht es immer am Meer entlang.
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 

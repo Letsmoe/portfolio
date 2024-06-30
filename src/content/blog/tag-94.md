@@ -3,7 +3,8 @@ title: Tag 94
 image: /images/blog/Tag_94/balikesir.jpg
 slug: tag-94
 description: Tag 94 auf dem Weg von Susurluk nach Balikesir in der Türkei. Immer entlang der Bundesstraße führt mich mein Weg heute was es in Balikesir der nächsten Millionenstadt wohl zu sehen geben wird?
-category: Traveling
+tags: 
+    - Traveling
 date: 2024-06-05
 ---
 
