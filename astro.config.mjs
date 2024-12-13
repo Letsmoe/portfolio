@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import svelte from "@astrojs/svelte";
-import image from '@astrojs/image';
 
 import mdx from "@astrojs/mdx";
 
@@ -17,28 +16,30 @@ export default defineConfig({
   adapter: node({
     mode: "middleware"
   }),
+	experimental: {
+		assets: true
+	},
   integrations: [mdx({
     syntaxHighlight: 'shiki',
     shikiConfig: {
       theme: "dracula"
     }
-  }), compress({
-    img: {
-      jpeg: false
-    },
-    css: {
-      comments: false
-    },
-    html: {
-      minifyCSS: true,
-      minifyJS: true,
-      removeComments: true,
-      removeEmptyAttributes: true,
-      removeAttributeQuotes: true
-    },
-    path: ["./dist/"]
-  }), svelte(), tailwind(), image({
-    cacheDir: "./.cache/image",
-    serviceEntryPoint: "@astrojs/image/sharp"
-  })]
+  }), 
+	// compress({
+  //   img: {
+  //     jpeg: false
+  //   },
+  //   css: {
+  //     comments: false
+  //   },
+  //   html: {
+  //     minifyCSS: true,
+  //     minifyJS: true,
+  //     removeComments: true,
+  //     removeEmptyAttributes: true,
+  //     removeAttributeQuotes: true
+  //   },
+  //   path: ["./dist/"]
+  // }),
+	 svelte(), tailwind()]
 });

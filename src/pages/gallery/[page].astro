@@ -3,6 +3,9 @@ import GalleryView from "#components/GalleryView.svelte";
 import Layout from "#layouts/Layout.astro";
 import Config from "#assets/gallery/config.json";
 import GalleryPagination from "#components/GalleryPagination.svelte";
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro";
+import Masonry from "#components/Masonry.svelte";
 
 const page = parseInt(Astro.params.page);
 
@@ -14,18 +17,18 @@ if (!page || isNaN(page) || page < 1) {
 // Every page has 25 images.
 const sections = [];
 
-const allImages = await Astro.glob("../../assets/gallery/**/*.jpg");
+const allImages = Object.entries(import.meta.glob<{ default: ImageMetadata }>("/src/assets/gallery/**/*.jpg"))
 
 
 // Skip the images that are not in the current page.
-const images = allImages.slice((page - 1) * 25, page * 25);
+const images =allImages.slice((page - 1) * 25, page * 25);
 
 let imageCount = 0;
 for (const title in Config) {
 	const { folder, text } = Config[title];
 
-	const img = images.filter((image) => {
-		return image.default.src.indexOf(folder) > -1;
+	const img = images.filter(([src, image]) => {
+		return src.indexOf(folder) > -1;
 	});
 
 	if (img.length === 0) {
@@ -46,7 +49,21 @@ for (const title in Config) {
 <Layout title="Gallery">
 	<main class="max-w-screen-xl !mt-[80px] py-16 w-full mx-auto">
 		<h1 class="neon">Gallery</h1>
-		<GalleryView sections={sections} client:load />
+		<div class="w-full">
+			<Masonry stretchFirst={true} gridGap={'16px'} colWidth={'minmax(Min(20em, 100%), 1fr)'} items={[...sections.map(x => x.images)].flat(Infinity)}>
+				{sections.map(({title, folder, images, text}) => {
+					return images.map(([src, image]) => {
+						return <div class="relative inline-block group cursor-pointer">
+						<Image src={image()} alt={text} class="relative transition-all hover:brightness-50 focus:brightness-50 max-h-[70vh] w-full object-cover inline-block !my-0"></Image>
+						<p class="absolute left-0 bottom-0 px-2 text-base-content flex flex-col invisible group-hover:visible group-focus:visible pointer-events-none !my-0">
+							<span class="m-0 font-bold text-white">{title}</span>
+							<span class="m-0">{text}</span>
+						</p>
+					</div>
+					})
+				})}
+			</Masonry>
+		</div>
 		<div class="flex justify-center mt-8">
 			<GalleryPagination imageCount={allImages.length} imagesPerPage={25} page={page}></GalleryPagination>
 		</div>

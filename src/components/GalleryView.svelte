@@ -1,15 +1,13 @@
 <script lang="ts">
 	import Cross1 from "radix-svelte-icons/src/lib/icons/Cross1.svelte";
-import Masonry from "./Masonry.svelte";
+	import Masonry from "./Masonry.svelte";
+	import { ImageMetadata } from "astro";
+	import { Image} from "astro:assets"
 
 	export let sections: {
 		title: string;
 		folder: string;
-		images: {
-			default: {
-				src: string
-			}
-		}[];
+		images: [string, ImageMetadata][];
 		text: string;
 	}[];
 
@@ -22,21 +20,21 @@ import Masonry from "./Masonry.svelte";
 		displayed = { title, folder, image, text };
 		hideImageViewer = false;
 	}
-	
 </script>
 
 <div class="w-full">
 	<Masonry stretchFirst={true} gridGap={'16px'} colWidth={'minmax(Min(20em, 100%), 1fr)'} items={[...sections.map(x => x.images)].flat(Infinity)}>
 {#each sections as { title, folder, images, text }}
-	{#each images as image}
+	{#each images as [src, image]}
 		<div class="relative inline-block group cursor-pointer" on:click={() => showImage({title, folder, image, text})} on:keydown={() => showImage({title, folder, image, text})}>
+			<Image src={image()} alt={text}></Image>
 			<img
 				alt={text}
-				src={image.default.src}
+				src={src}
 				class="relative transition-all hover:brightness-50 focus:brightness-50 max-h-[70vh] w-full object-cover inline-block !my-0"
 			/>
 			<p class="absolute left-0 bottom-0 px-2 text-base-content flex flex-col invisible group-hover:visible group-focus:visible pointer-events-none !my-0">
-				<span class="m-0 font-bold">{title}</span>
+				<span class="m-0 font-bold text-white">{title}</span>
 				<span class="m-0">{text}</span>
 			</p>
 		</div>
