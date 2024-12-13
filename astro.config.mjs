@@ -25,21 +25,21 @@ export default defineConfig({
       theme: "dracula"
     }
   }), 
-	// compress({
-  //   img: {
-  //     jpeg: false
-  //   },
-  //   css: {
-  //     comments: false
-  //   },
-  //   html: {
-  //     minifyCSS: true,
-  //     minifyJS: true,
-  //     removeComments: true,
-  //     removeEmptyAttributes: true,
-  //     removeAttributeQuotes: true
-  //   },
-  //   path: ["./dist/"]
-  // }),
+	compress({
+    img: {
+      jpeg: false
+    },
+    css: {
+      comments: false
+    },
+    html: {
+      minifyCSS: true,
+      minifyJS: true,
+      removeComments: true,
+      removeEmptyAttributes: true,
+      removeAttributeQuotes: true
+    },
+    path: ["./dist/"]
+  }),
 	 svelte(), tailwind()]
 });
