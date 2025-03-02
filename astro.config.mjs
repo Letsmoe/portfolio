@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 import svelte from "@astrojs/svelte";
 
 import mdx from "@astrojs/mdx";
@@ -12,34 +12,37 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server',
-  adapter: node({
-    mode: "middleware"
-  }),
+	output: "server",
+	adapter: node({
+		mode: "middleware",
+	}),
 	experimental: {
-		assets: true
+		assets: true,
 	},
-  integrations: [mdx({
-    syntaxHighlight: 'shiki',
-    shikiConfig: {
-      theme: "dracula"
-    }
-  }), 
-	compress({
-    img: {
-      jpeg: false
-    },
-    css: {
-      comments: false
-    },
-    html: {
-      minifyCSS: true,
-      minifyJS: true,
-      removeComments: true,
-      removeEmptyAttributes: true,
-      removeAttributeQuotes: true
-    },
-    path: ["./dist/"]
-  }),
-	 svelte(), tailwind()]
+	integrations: [
+		mdx({
+			syntaxHighlight: "shiki",
+			shikiConfig: {
+				theme: "dracula",
+			},
+		}),
+		compress({
+			img: {
+				jpeg: false,
+			},
+			css: {
+				comments: false,
+			},
+			html: {
+				minifyCSS: true,
+				minifyJS: true,
+				removeComments: true,
+				removeEmptyAttributes: true,
+				removeAttributeQuotes: true,
+			},
+			path: ["./dist/"],
+		}),
+		svelte(),
+		tailwind(),
+	],
 });

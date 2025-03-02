@@ -11,8 +11,8 @@
 <div class="card w-full bg-base-100 shadow-xl">
 	<div class="card-body">
 		<div class="flex flex-row gap-4">
-			<img src={icon} width="64" class="!my-0" alt={title}>
-			<h2 class="card-title !my-0">{title}</h2>
+			<img src={icon} width="48" class="!my-0" alt={title}>
+			<h2 class="card-title !my-0 text-3xl">{title}</h2>
 		</div>
 		<p>{description}</p>
 		<div class="card-actions justify-end gap-4">

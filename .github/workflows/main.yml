@@ -27,4 +27,4 @@ jobs:
           PATH="/root/.bun/bin:/${PATH}"
           echo "PATH: $PATH"
           echo "SHELL: $SHELL"
-          bash build.sh
+          make prod

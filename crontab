@@ -1,1 +1,0 @@
-@reboot sh -c 'cd ~/letsmoe.com && pm2 start server.mjs'

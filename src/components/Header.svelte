@@ -33,16 +33,10 @@
 	let theme = "dark";
 </script>
 
-<header class="py-5 px-20 border-b-2 h-[80px] w-screen bg-base-200 border-b-base-200 fixed z-10 top-0">
-	<div class="flex flex-row mx-auto items-center justify-between max-w-[1200px] w-full">
-		<a href="/" class="w-12">
-			{#if theme === "dark"}
-			<img src="/logo.svg" alt="" class="w-full h-full m-0 p-0">
-			{:else}
-			<img src="/favicon.svg" alt="" class="w-full h-full m-0 p-0">
-			{/if}
-		</a>
-		<div class="header-links bg-base-200 {isOpen ? 'open' : 'closed'} items-center	">
+<header class="py-5 px-20 border-b-2 h-[80px] w-screen bg-base-200 border-b-base-200 items-center flex fixed z-10 top-0">
+	<div class="flex flex-row mx-auto items-center justify-end max-w-[1200px] w-full">
+		<div class="header-links bg-base-200 {isOpen ? 'open' : 'closed'} items-center">
+			<a href="/">Me</a>
 			<a href="/about">About</a>
 			<a href="/blog">Blog</a>
 			<a href="/#projects">Projects</a>
@@ -110,13 +104,13 @@
 		}
 
 		& span {
+			@apply bg-base-content;
 			display: block;
 			width: 28px;
 			height: 4px;
 			margin-bottom: 5px;
 			position: relative;
 
-			background: #eee;
 			border-radius: 3px;
 
 			z-index: 1;
