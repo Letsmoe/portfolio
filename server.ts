@@ -10,7 +10,7 @@ const base = '/';
 app.use(base, express.static('dist/client/'));
 app.use(ssrHandler);
 
-app.listen(80, function() {
+app.listen(8080, function() {
 	console.log('Server started on http://localhost:80');
 });
 
@@ -21,7 +21,7 @@ if (privateKey && certificate) {
 	https.createServer({
 		key: privateKey,
 		cert: certificate
-	}, app).listen(443, function() {
+	}, app).listen(4430, function() {
 		console.log('Server started on https://localhost:443');
 	});
 } else {

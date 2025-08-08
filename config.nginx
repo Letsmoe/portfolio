@@ -1,0 +1,33 @@
+server {
+    listen 80;
+    server_name letsmoe.com www.letsmoe.com;
+
+    # Redirect all HTTP requests to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name letsmoe.com www.letsmoe.com;
+
+    # SSL certs handled by Nginx (can reuse Let's Encrypt ones)
+    ssl_certificate /etc/letsencrypt/live/letsmoe.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/letsmoe.com/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+
+    # Proxy to your Express HTTPS server
+    location / {
+        proxy_pass https://127.0.0.1:4430;
+        proxy_http_version 1.1;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+
+        # If your Express SSL cert is self-signed, you might need:
+        proxy_ssl_verify off;
+    }
+}
