@@ -6,9 +6,9 @@
 		progressBar.style.width = scrolled + "%";
 	}
 
-	let progressBar: HTMLDivElement;
+	let progressBar: HTMLDivElement = $state();
 </script>
 
-<svelte:window on:scroll={onWindowScroll}></svelte:window>
+<svelte:window onscroll={onWindowScroll}></svelte:window>
 
-<div class="fixed top-[80px] h-1 w-0 bg-violet-500" bind:this={progressBar}></div>
+<div class="fixed top-0 z-40 h-1 w-0 bg-accent" bind:this={progressBar}></div>

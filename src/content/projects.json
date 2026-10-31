@@ -1,0 +1,177 @@
+{
+	"projects": [
+		{
+			"slug": "neoworks",
+			"name": "NeoWorks",
+			"tagline": "Your photos, calendar and contacts, kept to yourself.",
+			"description": "NeoWorks is my company. It stores and syncs personal data that is encrypted on your device before it ever leaves it. Photos, calendars and contacts run on it, and other apps can build on the same storage through the SDK.",
+			"icon": "/icons/neoworks.svg",
+			"stack": [
+				"Go",
+				"C++",
+				"WebAssembly",
+				"SvelteKit",
+				"Kotlin"
+			],
+			"features": [
+				"End-to-end encrypted storage and sync: data is encrypted on your device",
+				"Photos, calendar and contacts apps on the web and on Android",
+				"An SDK and OAuth so third-party apps can store data on NeoWorks",
+				"One shared crypto core in C++, compiled to WebAssembly for the browser",
+				"Start free with 1 GB"
+			],
+			"links": {
+				"website": "https://neoworks.dev"
+			},
+			"downloads": []
+		},
+		{
+			"slug": "gyro",
+			"name": "Gyro",
+			"tagline": "A systems language that refuses the program when it is wrong.",
+			"description": "A systems language with manual memory and explicit effects, built so that a machine can generate code in it and be caught when it is wrong. Gyro compiles to the METALS IR, a shared intermediate representation that several languages lower into, and from there to native Linux x86-64 binaries.",
+			"icon": "/icons/gyro.svg",
+			"code": "<span class=\"k\">import</span> { println, <span class=\"t\">Array</span> } <span class=\"k\">from</span> <span class=\"s\">\"stdlib\"</span>\n<span class=\"k\">import</span> { heap } <span class=\"k\">from</span> <span class=\"s\">\"mem\"</span>\n\n<span class=\"k\">export struct</span> <span class=\"t\">Stack</span> {\n    <span class=\"k\">export</span> capacity: <span class=\"t\">i32</span>\n    items: <span class=\"t\">Array</span>&lt;<span class=\"t\">i32</span>&gt;\n}\n\n<span class=\"c\">// A slice borrows, so the row names where the view came from.</span>\n<span class=\"c\">// Without `&amp;self` this does not compile.</span>\n<span class=\"k\">export fn</span> <span class=\"t\">Stack</span>::<span class=\"f\">view</span>(<span class=\"k\">self</span>): <span class=\"t\">i32</span>[] <span class=\"e\">!{ &amp;self }</span> {\n    <span class=\"k\">return</span> <span class=\"k\">self</span>.items.<span class=\"f\">slice</span>()\n}\n\n<span class=\"k\">fn</span> <span class=\"f\">main</span>() {\n    <span class=\"k\">var</span> stack = <span class=\"t\">Stack</span>::<span class=\"f\">new</span>(<span class=\"n\">16</span>)\n    <span class=\"k\">defer</span> stack.<span class=\"f\">free</span>()\n\n    stack.<span class=\"f\">push</span>(<span class=\"n\">2</span>)\n    stack.<span class=\"f\">push</span>(<span class=\"n\">40</span>)\n    <span class=\"f\">println</span>(<span class=\"s\">\"total: #{total(stack.view())}\"</span>)\n}",
+			"stack": [
+				"Go",
+				"x86-64",
+				"Tree-sitter"
+			],
+			"features": [
+				"No zero values, no implicit conversions, overflow that panics instead of wrapping",
+				"Effect rows like !{ io } and borrow provenance written into signatures",
+				"Manual memory over explicit allocators, with defer and leak warnings",
+				"Exhaustive matches, traits, generics, channels and async / await",
+				"Imports C headers and .c files directly through the METALS IR",
+				"Compiles to native Linux x86-64 binaries"
+			],
+			"links": {
+				"github": "https://github.com/neoworks-dev/gyro"
+			},
+			"repository": {
+				"slug": "neoworks-dev/gyro",
+				"branch": "main"
+			},
+			"downloads": [
+				{
+					"label": "Source code",
+					"platform": "source",
+					"href": "https://github.com/neoworks-dev/gyro/archive/refs/heads/main.zip"
+				}
+			]
+		},
+		{
+			"slug": "otter",
+			"name": "Otter",
+			"tagline": "Find something to watch. Press play. That's it.",
+			"description": "Movies and series from all over the web in one cozy place. Search any film or show, Otter finds where it streams and lets you watch right away. It runs on your home server or NAS and on your Android phone, so your library, watchlist and progress are always with you.",
+			"icon": "/icons/otter.svg",
+			"cover": "/images/projects/otter.webp",
+			"stack": [
+				"Go",
+				"SQLite",
+				"GraphQL",
+				"SvelteKit",
+				"Kotlin",
+				"Jetpack Compose"
+			],
+			"features": [
+				"Search every movie and series, with posters, trailers, cast and ratings",
+				"Checks many streaming sites at once and lists every source it finds",
+				"Recommendations that learn from what you watch, rate and save",
+				"Watch history, progress and a watchlist for every profile",
+				"Offline downloads, casting to the TV and Watch Together rooms on Android",
+				"New streaming sites plug in as small JavaScript plugins"
+			],
+			"links": {
+				"github": "https://github.com/Letsmoe/otter"
+			},
+			"repository": {
+				"slug": "Letsmoe/otter",
+				"branch": "main"
+			},
+			"downloads": [
+				{
+					"label": "Home server (Docker)",
+					"platform": "docker",
+					"href": "https://github.com/Letsmoe/otter#getting-started"
+				},
+				{
+					"label": "Source code",
+					"platform": "source",
+					"href": "https://github.com/Letsmoe/otter/archive/refs/heads/main.zip"
+				}
+			]
+		},
+		{
+			"slug": "drift",
+			"name": "Drift",
+			"tagline": "YouTube Music, minus the YouTube.",
+			"description": "A YouTube Music player for desktop and Android without a server in between: every app talks to YouTube Music directly through one shared Go core. Anonymous by default, and your Spotify or YouTube Music library comes along with one import.",
+			"icon": "/icons/drift.webp",
+			"cover": "/images/projects/drift.webp",
+			"stack": [
+				"Go",
+				"Electron",
+				"Svelte",
+				"Kotlin"
+			],
+			"features": [
+				"Plays all of YouTube Music, no account needed",
+				"Imports your library from Spotify or YouTube Music",
+				"Synced lyrics, offline downloads and podcasts",
+				"Recommendations and a magic shuffle that run on your device, no ML and no account",
+				"Listen Together rooms with friends over WebRTC"
+			],
+			"links": {
+				"github": "https://github.com/Letsmoe/drift"
+			},
+			"repository": {
+				"slug": "Letsmoe/drift",
+				"branch": "main"
+			},
+			"downloads": [
+				{
+					"label": "Source code",
+					"platform": "source",
+					"href": "https://github.com/Letsmoe/drift/archive/refs/heads/main.zip"
+				}
+			]
+		},
+		{
+			"slug": "latent",
+			"name": "Latent",
+			"tagline": "A raw photo editor, because Lightroom doesn't run on Linux.",
+			"description": "I shoot a lot of photos and edit them on Linux, so I'm building my own editor. A C++ engine renders on the GPU, every edit is a step on a stack, and instead of pushing sliders you can also just tell an agent what to change. Still early.",
+			"icon": "/icons/latent.svg",
+			"stack": [
+				"C++",
+				"CUDA",
+				"Electron",
+				"Svelte",
+				"Python"
+			],
+			"features": [
+				"Raw development on the GPU, every edit a step you can undo",
+				"Masks that pick out a person or the sky on their own",
+				"A library with folders, collections, ratings and flags",
+				"Agents edit through MCP, and a Python console uses the same API",
+				"Open source, Linux only for now"
+			],
+			"links": {
+				"github": "https://github.com/neoworks-dev/latent"
+			},
+			"repository": {
+				"slug": "neoworks-dev/latent",
+				"branch": "main"
+			},
+			"downloads": [
+				{
+					"label": "Source code",
+					"platform": "source",
+					"href": "https://github.com/neoworks-dev/latent/archive/refs/heads/main.zip"
+				}
+			]
+		}
+	]
+}

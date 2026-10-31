@@ -1,23 +1,9 @@
 {
-	"extends": "astro/tsconfigs/base",
+	"extends": "$app/tsconfig",
 	"compilerOptions": {
-		"baseUrl": "./src",
-		"paths": {
-			"#components/*": [
-				"components/*"
-			],
-			"#layouts/*": [
-				"layouts/*"
-			],
-			"#style/*": [
-				"style/*"
-			],
-			"#lib/*": [
-				"lib/*"
-			],
-			"#assets/*": [
-				"assets/*"
-			],
-		}
-	}
+		"types": ["$app/types", "bun", "geojson"],
+		"sourceMap": true,
+		"strict": false
+	},
+	"include": ["src", "scripts", "vite.config.ts"]
 }

@@ -1,7 +1,12 @@
 <script lang="ts">
+	import type { BlogFrontmatter } from "#lib/blog.ts";
 	import Fuse from "fuse.js";
 
-	export let searchList: { [key: string]: string }[];
+	interface Props {
+		searchList: { frontmatter: BlogFrontmatter; url: string }[];
+	}
+
+	let { searchList }: Props = $props();
 	const fuse = new Fuse(searchList, {
 		keys: [
 			{
@@ -19,7 +24,7 @@
 		let query = e.target.value;
 		if (query == "") {
 			// Show all if nothing was searched
-			(Array.from(document.querySelectorAll(".story")) as HTMLDivElement[]).map(x => x.style.display = "block");
+			(Array.from(document.querySelectorAll(".story")) as HTMLDivElement[]).map(x => x.style.display = "");
 			return
 		}
 
@@ -32,10 +37,10 @@
 			// Show the stories that were found
 			let target = (document.querySelector(`.story[data-slug="${story.frontmatter.slug}"]`) as HTMLDivElement);
 			if (target) {
-				target.style.display = "block";
+				target.style.display = "";
 			}
 		}
 	}
 </script>
 
-<input type="text" class="input input-bordered" on:input={search} placeholder="Search..." />
+<input type="text" class="field sm:w-72" aria-label="Search entries" oninput={search} placeholder="Search..." />

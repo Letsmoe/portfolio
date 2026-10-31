@@ -4,7 +4,7 @@
 	import { Color, hslToHex } from "./ColorGenerator";
 	import { Boid } from "./Boids/Boid";
 
-	let canvas: HTMLCanvasElement;
+	let canvas: HTMLCanvasElement = $state();
 	onMount(() => {
 		// Generate six different colors.
 		const colors = [];

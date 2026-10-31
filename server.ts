@@ -1,13 +1,10 @@
 import express from 'express';
 import https from 'https';
-import { handler as ssrHandler } from './dist/server/entry.mjs';
+import { handler as ssrHandler } from './build/handler.js';
 import * as fs from "fs"
 
 const app = express();
 
-
-const base = '/';
-app.use(base, express.static('dist/client/'));
 app.use(ssrHandler);
 
 app.listen(8080, function() {

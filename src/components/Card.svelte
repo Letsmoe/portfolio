@@ -1,10 +1,19 @@
 <script lang="ts">
 	import Button from "./Button.svelte";
-	
-	export let name: string;
-	export let slug: string;
-	export let image: string = "";
-	export let link: string = "";
+
+	interface Props {
+		name: string;
+		slug: string;
+		image?: string;
+		link?: string;
+	}
+
+	let {
+		name,
+		slug,
+		image = "",
+		link = ""
+	}: Props = $props();
 </script>
 
 <div class="flex flex-col-reverse border-2 rounded-lg p-4">

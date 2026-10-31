@@ -1,0 +1,117 @@
+# Sveltia CMS: https://github.com/sveltia/sveltia-cms
+# Every save is a commit to main, which triggers .github/workflows/main.yml to deploy.
+backend:
+  name: github
+  repo: Letsmoe/portfolio
+  branch: main
+  commit_messages:
+    create: "Add {{collection}} “{{slug}}”"
+    update: "Update {{collection}} “{{slug}}”"
+    delete: "Delete {{collection}} “{{slug}}”"
+    uploadMedia: "Upload “{{path}}”"
+    deleteMedia: "Delete “{{path}}”"
+
+site_url: https://letsmoe.com
+display_url: https://letsmoe.com
+
+media_folder: static/images/blog
+public_folder: /images/blog
+
+# Uploads are converted to WebP and scaled down in the browser before they are committed.
+media_libraries:
+  all:
+    transformations:
+      raster_image:
+        format: webp
+        quality: 80
+        width: 2000
+        height: 2000
+      svg:
+        optimize: true
+
+collections:
+  - name: blog
+    label: Blog
+    label_singular: Post
+    # The post URL comes from the folder name (src/lib/server/blog.ts), not the frontmatter slug.
+    folder: "src/routes/blog/(posts)"
+    path: "{{slug}}/+page"
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} · {{date}}"
+    sortable_fields: [date, title]
+    preview_path: "/blog/{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Slug, widget: string, required: false, hint: "Kept for old posts; the URL uses the folder name." }
+      - { name: description, label: Description, widget: text }
+      - { name: date, label: Date, widget: datetime, format: YYYY-MM-DD, date_format: YYYY-MM-DD, time_format: false }
+      - { name: image, label: Cover image, widget: image }
+      - { name: tags, label: Tags, widget: list, default: [Traveling] }
+      # Raw first: posts embed <video> HTML that the rich text editor would rewrite. The video
+      # component is registered in index.html.
+      - { name: body, label: Body, widget: markdown, modes: [raw, rich_text], editor_components: [image, code-block, video] }
+
+  - name: projects
+    label: Projects
+    files:
+      - name: projects
+        label: Projects
+        # Read by src/lib/projects.ts; the list order is the order on the site.
+        file: src/content/projects.json
+        format: json
+        fields:
+          - name: projects
+            label: Projects
+            label_singular: Project
+            widget: list
+            summary: "{{fields.name}} · {{fields.tagline}}"
+            collapsed: true
+            fields:
+              - { name: slug, label: Slug, widget: string, hint: "URL: /projects/<slug>" }
+              - { name: name, label: Name, widget: string }
+              - { name: tagline, label: Tagline, widget: string }
+              - { name: description, label: Description, widget: text }
+              - { name: icon, label: Icon, widget: image, media_folder: /static/icons, public_folder: /icons }
+              - name: cover
+                label: Cover image
+                widget: image
+                required: false
+                hint: "4:3, shown on the home page. Leave empty to show the code sample or the features instead."
+                media_folder: /static/images/projects
+                public_folder: /images/projects
+              - { name: code, label: Code sample (HTML), widget: text, required: false, hint: "Hand-highlighted HTML with span classes k, t, f, s, n, e, c; shown when there is no cover." }
+              - { name: stack, label: Stack, widget: list }
+              - { name: features, label: Features, widget: list }
+              - name: links
+                label: Links
+                widget: object
+                collapsed: auto
+                fields:
+                  - { name: github, label: GitHub URL, widget: string, required: false }
+                  - { name: website, label: Website URL, widget: string, required: false }
+              - name: repository
+                label: GitHub repository
+                widget: object
+                required: false
+                collapsed: auto
+                hint: "Its README and latest release assets show on the project page."
+                fields:
+                  - { name: slug, label: "owner/name", widget: string, required: false }
+                  - { name: branch, label: Branch, widget: string, required: false, default: main }
+              - name: downloads
+                label: Downloads
+                label_singular: Download
+                widget: list
+                required: false
+                summary: "{{fields.platform}} · {{fields.label}}"
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: platform, label: Platform, widget: select, options: [linux, macos, windows, android, docker, source, any] }
+                  - { name: href, label: URL, widget: string, hint: "https:// URL or /downloads/<file>" }
+                  - { name: version, label: Version, widget: string, required: false }
+                  - { name: size, label: Size, widget: string, required: false }
+                  - { name: sha256, label: SHA-256, widget: string, required: false }

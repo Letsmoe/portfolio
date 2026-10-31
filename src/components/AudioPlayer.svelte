@@ -1,22 +1,28 @@
 <script lang="ts">
-	export let slug: string;
 	import Wavesurfer from "wavesurfer.js";
-	import { Play, Pause } from "radix-svelte-icons"
+	import Pause from "phosphor-svelte/lib/Pause";
+	import Play from "phosphor-svelte/lib/Play";
 	import { onMount } from "svelte";
+	interface Props {
+		slug: string;
+	}
+
+	let { slug }: Props = $props();
 
 	let wavesurfer: Wavesurfer;
 
 	onMount(() => {
+		const styles = getComputedStyle(document.documentElement);
 		wavesurfer = Wavesurfer.create({
 			container: "#waveform",
-			waveColor: "violet",
-			progressColor: "purple",
+			waveColor: styles.getPropertyValue("--color-muted"),
+			progressColor: styles.getPropertyValue("--color-accent"),
 			barWidth: 3,
 			height: 60,
 			url: `/audio/${slug}.wav`
 		});
-		
-		
+
+
 
 		wavesurfer.on("ready", () => {
 			visible = true;
@@ -37,12 +43,12 @@
 		}
 	}
 
-	let visible = false;
-	let isPlaying = false;
+	let visible = $state(false);
+	let isPlaying = $state(false);
 </script>
 
-<div class="flex-row border border-gray-700 rounded-lg items-center p-2 gap-4" class:hidden={!visible} class:flex={visible}>
-	<button on:click={togglePlayback} class="btn btn-circle btn-ghost p-1">
+<div class="panel mb-8 flex-row items-center gap-4 p-2" class:hidden={!visible} class:flex={visible}>
+	<button onclick={togglePlayback} class="btn btn-accent btn-square" aria-label={isPlaying ? "Pause" : "Play"}>
 		{#if isPlaying}
 		<Pause size={24}></Pause>
 		{:else}

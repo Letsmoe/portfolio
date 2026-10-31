@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<title>Content Manager · letsmoe.com</title>
+		<!-- Absolute URL: served at /admin without a trailing slash, a relative config.yml would resolve to /config.yml. -->
+		<link href="/admin/config.yml" type="application/yaml" rel="cms-config-url" />
+	</head>
+	<body>
+		<script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+		<script>
+			// Matches the <video><source></video> markup the existing posts use, so old videos open in the component too.
+			CMS.registerEditorComponent({
+				id: "video",
+				label: "Video",
+				icon: "movie",
+				fields: [{ name: "src", label: "Video file", widget: "file" }],
+				pattern: /^<video[^>]*>\s*<source src="(?<src>[^"]+)"[^>]*>\s*<\/video>/m,
+				toBlock: ({ src = "" }) => `<video controls>\n  <source src="${src}" type="video/mp4">\n</video>`,
+				toPreview: ({ src = "" }) => `<video controls src="${src}" style="max-width: 100%"></video>`,
+			});
+		</script>
+	</body>
+</html>

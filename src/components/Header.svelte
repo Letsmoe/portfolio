@@ -1,151 +1,236 @@
 <script lang="ts">
-	import { Moon, Sun } from "radix-svelte-icons";
+	import { page } from "$app/state";
+	import { PROJECTS } from "#lib/projects.ts";
+	import ArrowRight from "phosphor-svelte/lib/ArrowRight";
+	import CaretDown from "phosphor-svelte/lib/CaretDown";
+	import List from "phosphor-svelte/lib/List";
+	import Moon from "phosphor-svelte/lib/Moon";
+	import Sun from "phosphor-svelte/lib/Sun";
+	import X from "phosphor-svelte/lib/X";
 	import { onMount } from "svelte";
 
-	let isOpen = false;
+	const links = [
+		{ href: "/journey", label: "Journey" },
+		{ href: "/blog", label: "Blog" },
+		{ href: "/gallery", label: "Gallery" },
+		{ href: "/about", label: "About" },
+	];
 
-	function toggleMenu() {
-		isOpen = !isOpen;
+	let isOpen = $state(false);
+	let projectsOpen = $state(false);
+	let theme = $state("light");
+	let closeTimer: ReturnType<typeof setTimeout> | undefined;
+
+	let scrollY = $state(0);
+	let innerHeight = $state(800);
+
+	/** On the home hero the header dissolves into plain text over the photo. */
+	let overHero = $derived(page.url.pathname === "/" && scrollY < innerHeight - 120);
+
+	function isActive(href: string, pathname: string) {
+		return href === "/" ? pathname === "/" : pathname.startsWith(href);
 	}
 
 	function toggleTheme() {
-		if (theme === "dark") {
-			theme = "light";
-			document.documentElement.dataset.theme = "bumblebee";
-			localStorage.setItem("theme", "light");
-		} else {
-			theme = "dark";
-			document.documentElement.dataset.theme = "forest";
-			localStorage.setItem("theme", "dark");
-		}
+		theme = theme === "dark" ? "light" : "dark";
+		document.documentElement.dataset.theme = theme;
+		localStorage.setItem("theme", theme);
+	}
+
+	/** Hovering from the trigger into the panel crosses a gap; a short delay keeps the menu open. */
+	function openProjects() {
+		clearTimeout(closeTimer);
+		projectsOpen = true;
+	}
+
+	function closeProjectsSoon() {
+		clearTimeout(closeTimer);
+		closeTimer = setTimeout(() => (projectsOpen = false), 150);
 	}
 
 	onMount(() => {
-		if (localStorage.getItem("theme") === "dark") {
-			document.documentElement.dataset.theme = "forest"
-			theme = "dark";
-		} else {
-			document.documentElement.dataset.theme = "bumblebee";
-			theme = "light";
-		}
-	})
+		theme = document.documentElement.dataset.theme ?? "light";
+	});
 
-	let theme = "dark";
+	$effect(() => {
+		void page.url.pathname;
+		isOpen = false;
+		projectsOpen = false;
+	});
 </script>
 
-<header class="py-5 px-20 border-b-2 h-[80px] w-screen bg-base-200 border-b-base-200 items-center flex fixed z-10 top-0">
-	<div class="flex flex-row mx-auto items-center justify-end max-w-[1200px] w-full">
-		<div class="header-links bg-base-200 {isOpen ? 'open' : 'closed'} items-center">
-			<a href="/">Me</a>
-			<a href="/about">About</a>
-			<a href="/blog">Blog</a>
-			<a href="/#projects">Projects</a>
-			<a href="/gallery">Gallery</a>
-			<button class="btn btn-ghost" on:click={toggleTheme}>
-				{#if theme == "dark"}
-				<Sun size={24}></Sun>
-				{:else}
-				<Moon size={24}></Moon>
-				{/if}
-			</button>
-		</div>
-		<div
-			class="hamburger {isOpen ? 'open' : 'closed'}"
-			on:click={toggleMenu}
-			on:keydown={toggleMenu}
+<svelte:window
+	bind:scrollY
+	bind:innerHeight
+	onkeydown={(event) => event.key === "Escape" && ((projectsOpen = false), (isOpen = false))}
+/>
+
+<header class="header" class:over-hero={overHero}>
+	<div class="bar relative flex h-14 items-center gap-1 rounded-full border px-2">
+		<a
+			href="/"
+			class="nav-link mr-auto"
+			class:active={isActive("/", page.url.pathname)}
+			aria-current={isActive("/", page.url.pathname) ? "page" : undefined}
 		>
-			<span />
-			<span />
-			<span />
-		</div>
+			Home
+		</a>
+		<nav class="hidden items-center gap-1 lg:flex">
+			<div class="contents" role="presentation" onmouseenter={openProjects} onmouseleave={closeProjectsSoon}>
+				<button
+					class="nav-link flex items-center gap-1"
+					class:active={isActive("/projects", page.url.pathname) || projectsOpen}
+					aria-expanded={projectsOpen}
+					aria-controls="projects-menu"
+					onclick={() => (projectsOpen = !projectsOpen)}
+				>
+					Projects <CaretDown size={12} weight="bold" class="transition-transform {projectsOpen ? 'rotate-180' : ''}" />
+				</button>
+			</div>
+			{#each links as link}
+				<a
+					href={link.href}
+					class="nav-link"
+					class:active={isActive(link.href, page.url.pathname)}
+					aria-current={isActive(link.href, page.url.pathname) ? "page" : undefined}
+				>
+					{link.label}
+				</a>
+			{/each}
+		</nav>
+
+		<button class="btn btn-ghost btn-square" onclick={toggleTheme} aria-label="Toggle colour theme">
+			{#if theme === "dark"}<Sun size={18} />{:else}<Moon size={18} />{/if}
+		</button>
+		<button
+			class="btn btn-square lg:hidden"
+			onclick={() => (isOpen = !isOpen)}
+			aria-expanded={isOpen}
+			aria-controls="mobile-nav"
+			aria-label={isOpen ? "Close menu" : "Open menu"}
+		>
+			{#if isOpen}<X size={18} />{:else}<List size={18} />{/if}
+		</button>
+
+		{#if projectsOpen}
+			<div
+				id="projects-menu"
+				class="megamenu absolute right-0 top-full mt-2 hidden overflow-hidden rounded-[2rem] border border-line bg-card text-ink shadow-lift lg:block"
+				role="region"
+				aria-label="Projects"
+				onmouseenter={openProjects}
+				onmouseleave={closeProjectsSoon}
+			>
+				<ul class="m-0 grid list-none gap-2 p-3" style="grid-template-columns: repeat({PROJECTS.length}, minmax(0, 1fr))">
+					{#each PROJECTS as project (project.slug)}
+						<li class="m-0">
+							<a href="/projects/{project.slug}" class="group flex h-full flex-col rounded-3xl p-3 no-underline hover:bg-sunken">
+								<span class="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-2xl bg-sunken">
+									{#if project.cover}
+										<img src={project.cover} alt="" class="m-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+									{:else}
+										<img src={project.icon} alt="" class="m-0 h-1/2 transition-transform duration-500 group-hover:scale-110" />
+									{/if}
+								</span>
+								<span class="mt-4 flex items-center gap-2.5">
+									<img src={project.icon} alt="" class="m-0 h-6 w-6 rounded-md" />
+									<span class="text-lg font-semibold tracking-tight group-hover:text-accent">{project.name}</span>
+								</span>
+								<span class="mt-1.5 text-sm leading-snug text-muted">{project.tagline}</span>
+							</a>
+						</li>
+					{/each}
+				</ul>
+				<a href="/projects" class="group flex items-center justify-end gap-2 border-t border-line px-6 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted no-underline hover:text-ink">
+					All projects <ArrowRight size={14} class="transition-transform group-hover:translate-x-1" />
+				</a>
+			</div>
+		{/if}
+
+		{#if isOpen}
+			<nav id="mobile-nav" class="panel absolute right-0 top-full mt-2 flex text-ink w-[min(22rem,calc(100vw-1.5rem))] flex-col rounded-3xl p-2 lg:hidden">
+				<p class="label m-0 px-4 pb-1 pt-3">Projects</p>
+				{#each PROJECTS as project (project.slug)}
+					<a href="/projects/{project.slug}" class="flex items-center gap-3 rounded-2xl px-4 py-2 no-underline hover:bg-sunken">
+						<img src={project.icon} alt="" class="m-0 h-7 w-7" />
+						<span class="font-medium">{project.name}</span>
+					</a>
+				{/each}
+				<a href="/projects" class="rounded-2xl px-4 py-2 text-sm text-muted no-underline hover:bg-sunken">All projects →</a>
+				<hr class="mx-4 my-2 border-line" />
+				{#each links as link}
+					<a
+						href={link.href}
+						class="rounded-2xl px-4 py-3 text-lg font-medium no-underline hover:bg-sunken"
+						class:active={isActive(link.href, page.url.pathname)}
+						aria-current={isActive(link.href, page.url.pathname) ? "page" : undefined}
+					>
+						{link.label}
+					</a>
+				{/each}
+			</nav>
+		{/if}
 	</div>
 </header>
 
-<style lang="scss">
-	.header-links {
-		display: flex;
-		flex-direction: row;
-		gap: 24px;
+<style>
+	@reference "../style/main.css";
+
+	.nav-link {
+		@apply rounded-full px-4 py-2 text-sm font-medium no-underline transition-colors hover:bg-sunken;
 	}
 
-	a {
-		@apply text-base-content text-xl font-bold transition-colors;
+	.active {
+		@apply bg-ink text-paper hover:bg-ink;
 	}
 
-	a:hover {
-		@apply underline;
+	/* Wide centred bar by default; over the home hero it shrinks to its links and sits
+	   transparent in the top right corner. `left` and `translate` together animate the move.
+	   `interpolate-size` lets browsers that support it animate to and from `fit-content`. */
+	.header {
+		position: fixed;
+		top: 0.75rem;
+		left: 50%;
+		z-index: 30;
+		translate: -50% 0;
+		interpolate-size: allow-keywords;
+		transition:
+			left 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+			translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	.hamburger {
-		position: relative;
-		width: 20px;
-		display: none;
-		cursor: pointer;
-
-		& span:nth-child(1) {
-			transform-origin: 0% 0%;
-		}
-
-		& span:nth-child(3) {
-			transform-origin: 0% 100%;
-		}
-
-		&.open span:nth-child(1) {
-			transform: rotate(45deg) translate(-2px, -1px);
-		}
-
-		&.open span:nth-child(3) {
-			transform: rotate(-45deg) translate(0, -1px);
-		}
-
-		&.open span:nth-child(2) {
-			opacity: 0;
-			transform: rotate(0deg) scale(0.2, 0.2);
-		}
-
-		& span {
-			@apply bg-base-content;
-			display: block;
-			width: 28px;
-			height: 4px;
-			margin-bottom: 5px;
-			position: relative;
-
-			border-radius: 3px;
-
-			z-index: 1;
-
-			transform-origin: 4px 0px;
-
-			transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
-				background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
-				opacity 0.55s ease;
-		}
+	.header.over-hero {
+		left: calc(100% - 0.75rem);
+		translate: -100% 0;
 	}
 
-	@media only screen and (max-width: 960px) {
-		.header-links {
-			display: none;
-			position: absolute;
-			flex-direction: column;
-			top: 80px;
-			width: 100%;
-			left: 0;
-			padding: 20px 40px;
-			border-bottom: 2px solid #eee;
+	/* The mega menu always spans the wide bar's width, also when the bar has shrunk into the hero's corner. */
+	.bar,
+	.megamenu {
+		width: min(80rem, calc(100vw - 1.5rem));
+	}
 
-			&.open {
-				display: flex;
-				z-index: 1;
-			}
-		}
+	.bar {
+		@apply border-line bg-card/80 shadow-soft backdrop-blur-xl;
+		transition:
+			width 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+			background-color 0.4s,
+			border-color 0.4s,
+			box-shadow 0.4s,
+			color 0.4s;
+	}
 
-		.hamburger {
-			display: block;
-		}
+	.over-hero .bar {
+		@apply border-transparent bg-transparent shadow-none backdrop-blur-none;
+		width: fit-content;
+		color: #fafaf8;
+	}
 
-		header {
-			padding: 20px 40px;
-		}
+	.over-hero .nav-link {
+		@apply bg-transparent underline-offset-4 hover:bg-transparent hover:underline;
+	}
+
+	.over-hero .btn-ghost {
+		@apply text-inherit hover:bg-white/15;
 	}
 </style>

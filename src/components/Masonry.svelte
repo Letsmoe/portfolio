@@ -1,11 +1,24 @@
 <script>
 	import { onMount, onDestroy, getContext, setContext, tick } from "svelte";
-	export let stretchFirst = false,
+	/**
+	 * @typedef {Object} Props
+	 * @property {boolean} [stretchFirst] - pass in data if it's dynamically updated
+	 * @property {string} [gridGap] - pass in data if it's dynamically updated
+	 * @property {string} [colWidth] - pass in data if it's dynamically updated
+	 * @property {any} [items] - pass in data if it's dynamically updated
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let {
+		stretchFirst = false,
 		gridGap = "0.5em",
 		colWidth = "minmax(Min(20em, 100%), 1fr)",
-		items = []; // pass in data if it's dynamically updated
+		items = [],
+		children
+	} = $props();
 	let grids = [],
-		masonryElement;
+		masonryElement = $state();
 
 	const refreshLayout = async () => {
 		grids.forEach(async (grid) => {
@@ -92,14 +105,13 @@
 		}
 	});
 
-	$: if (masonryElement) {
-		calcGrid([masonryElement]);
-	}
-
-	$: if (items) {
-		// update if items are changed
-		masonryElement = masonryElement; // refresh masonryElement
-	}
+	$effect(() => {
+		// Re-run the layout whenever the items change.
+		void items;
+		if (masonryElement) {
+			calcGrid([masonryElement]);
+		}
+	});
 </script>
 
 <!-- 
@@ -126,7 +138,7 @@
 	class={`__grid--masonry ${stretchFirst ? "__stretch-first" : ""}`}
 	style={`--grid-gap: ${gridGap}; --col-width: ${colWidth};`}
 >
-	<slot />
+	{@render children?.()}
 </div>
 
 <!-- 

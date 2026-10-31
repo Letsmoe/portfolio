@@ -1,0 +1,191 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Snow and rock from the Nepal hero photo, with the prayer flags as the only colour. */
+@theme {
+	--color-paper: #f2f2ef;
+	--color-card: #fafaf8;
+	--color-sunken: #e4e4df;
+	--color-ink: #1c1a1b;
+	--color-muted: #6f6863;
+	--color-rock: #5a4d46;
+	--color-accent: #c23b40;
+	--color-on-accent: #fdfcfa;
+	--color-flag-blue: #225ea7;
+	--color-flag-green: #3f7f78;
+	--color-flag-yellow: #d9971f;
+	--color-line: color-mix(in srgb, var(--color-ink) 13%, transparent);
+
+	--font-display: "Geist", system-ui, sans-serif;
+	--font-sans: "Geist", system-ui, sans-serif;
+	--font-mono: "Geist Mono", ui-monospace, monospace;
+	--font-hand: "Caveat", "Segoe Print", cursive;
+
+	--shadow-soft: 0 1px 2px rgb(28 26 27 / 0.06), 0 6px 20px -6px rgb(28 26 27 / 0.12);
+	--shadow-lift: 0 2px 4px rgb(28 26 27 / 0.08), 0 18px 40px -12px rgb(28 26 27 / 0.25);
+}
+
+@layer base {
+	:root {
+		color-scheme: light;
+	}
+
+	[data-theme="dark"] {
+		color-scheme: dark;
+		--color-paper: #141314;
+		--color-card: #1c1b1c;
+		--color-sunken: #262425;
+		--color-ink: #ecebe7;
+		--color-muted: #a39b95;
+		--color-rock: #b8aaa0;
+		--color-accent: #e25a5e;
+		--color-on-accent: #141314;
+		--color-flag-blue: #6a9fe0;
+		--color-flag-green: #7db7af;
+		--color-flag-yellow: #ebb64a;
+		/* Custom properties resolve where they are declared, so the line has to follow ink here too. */
+		--color-line: color-mix(in srgb, var(--color-ink) 13%, transparent);
+	}
+
+	/* A rock-black stretch of page in either theme; utilities like bg-paper/text-ink follow along. */
+	.band-dark {
+		--color-paper: #141314;
+		--color-card: #1c1b1c;
+		--color-sunken: #262425;
+		--color-ink: #f2f2ef;
+		--color-muted: #a39b95;
+		--color-rock: #b8aaa0;
+		--color-accent: #e25a5e;
+		--color-on-accent: #141314;
+		--color-line: color-mix(in srgb, var(--color-ink) 16%, transparent);
+		color-scheme: dark;
+	}
+
+	html {
+		@apply bg-paper font-sans text-ink antialiased;
+	}
+
+	/* Contour lines are a mask so they follow the theme's ink colour. */
+	body::before {
+		content: "";
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		background-color: var(--color-ink);
+		opacity: 0.05;
+		mask: url("/images/topo.svg") center / cover no-repeat;
+	}
+
+	/* Tailwind v4 preflight resets buttons to the default cursor. */
+	button:not(:disabled),
+	[role="button"]:not(:disabled) {
+		cursor: pointer;
+	}
+
+	::selection {
+		background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
+		border-radius: 6px;
+	}
+}
+
+@layer components {
+	.display {
+		@apply font-display font-semibold leading-[1.02] tracking-tight;
+	}
+
+	.label {
+		@apply font-mono text-[11px] uppercase tracking-[0.18em] text-rock;
+	}
+
+	.panel {
+		@apply rounded-2xl border border-line bg-card shadow-soft;
+	}
+
+	.tag {
+		@apply inline-flex items-center rounded-full bg-flag-blue/10 px-2.5 py-1 text-xs font-medium leading-none text-flag-blue;
+	}
+
+	.btn {
+		@apply inline-flex select-none items-center justify-center gap-2 rounded-full border border-line bg-card px-5 py-2.5 text-sm font-medium text-ink no-underline shadow-soft transition duration-200;
+
+		&:hover {
+			@apply -translate-y-0.5 shadow-lift;
+		}
+
+		&:active {
+			@apply translate-y-0 shadow-soft;
+		}
+	}
+
+	.btn-accent {
+		@apply border-transparent bg-accent text-on-accent;
+	}
+
+	.btn-ink {
+		@apply border-transparent bg-ink text-paper;
+	}
+
+	.btn-ghost {
+		@apply border-transparent bg-transparent shadow-none;
+
+		&:hover {
+			@apply translate-y-0 bg-sunken shadow-none;
+		}
+	}
+
+	.btn-square {
+		@apply p-2.5;
+	}
+
+	.btn-disabled {
+		@apply pointer-events-none opacity-40 shadow-none;
+	}
+
+
+	.field {
+		@apply rounded-full border border-line bg-card px-4 py-2 text-sm text-ink placeholder:text-muted;
+	}
+}
+
+/* Unlayered so it wins over the typography plugin's own `.prose` rules in the utilities layer. */
+.prose {
+	--tw-prose-body: var(--color-ink);
+	--tw-prose-headings: var(--color-ink);
+	--tw-prose-lead: var(--color-muted);
+	--tw-prose-links: var(--color-ink);
+	--tw-prose-bold: var(--color-ink);
+	--tw-prose-counters: var(--color-muted);
+	--tw-prose-bullets: var(--color-accent);
+	--tw-prose-hr: var(--color-line);
+	--tw-prose-quotes: var(--color-ink);
+	--tw-prose-quote-borders: var(--color-flag-blue);
+	--tw-prose-captions: var(--color-muted);
+	--tw-prose-code: var(--color-ink);
+	--tw-prose-pre-code: var(--color-paper);
+	--tw-prose-pre-bg: var(--color-ink);
+	--tw-prose-th-borders: var(--color-line);
+	--tw-prose-td-borders: var(--color-line);
+
+	& :where(a):not(:where([class~="not-prose"] *)) {
+		text-decoration-color: var(--color-accent);
+		text-decoration-thickness: 2px;
+		text-underline-offset: 3px;
+
+		&:hover {
+			color: var(--color-accent);
+		}
+	}
+
+	& :where(h1, h2, h3):not(:where([class~="not-prose"] *)) {
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+}
