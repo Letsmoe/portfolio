@@ -1,0 +1,40 @@
+# /etc/caddy/sites/letsmoe.com.caddy, imported by /etc/caddy/Caddyfile (`import sites/*.caddy`).
+# Caddy gets and renews the certificates itself; ports 80 and 443 must be open.
+
+letsmoe.com {
+	root * /var/www/letsmoe.com
+	encode zstd gzip
+
+	# Journey photos, videos and the GPS track are gitignored, so they are not part of the build.
+	# `make upload-journey` puts them here, where a deploy's `rsync --delete` can't remove them.
+	@journeyMedia path_regexp ^/journey/(\d+/|route\.json$)
+	handle @journeyMedia {
+		root * /var/www/letsmoe.com-journey
+		file_server
+	}
+
+	# The CMS is a static page in build/admin/.
+	redir /admin /admin/
+
+	@immutable path /_app/immutable/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	handle {
+		# Prerendered pages are written as /blog/laos.html, linked as /blog/laos.
+		try_files {path} {path}.html {path}/index.html
+		file_server {
+			precompressed br gzip
+		}
+	}
+
+	handle_errors 404 {
+		rewrite * /404.html
+		file_server {
+			precompressed br gzip
+		}
+	}
+}
+
+www.letsmoe.com, moritz-utcke.com, www.moritz-utcke.com {
+	redir https://letsmoe.com{uri} permanent
+}

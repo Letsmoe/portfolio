@@ -41,7 +41,11 @@ interface GitHubRelease {
 export function latestRelease(repository: Repository, fetch: typeof globalThis.fetch): Promise<Release | null> {
 	return cached(`release:${repository.slug}`, async () => {
 		const response = await fetch(`https://api.github.com/repos/${repository.slug}/releases/latest`, {
-			headers: { accept: "application/vnd.github+json" },
+			headers: {
+				accept: "application/vnd.github+json",
+				// CI builds share runner IPs, so the anonymous 60-an-hour limit is easy to hit there.
+				...(process.env.GITHUB_TOKEN && { authorization: `Bearer ${process.env.GITHUB_TOKEN}` }),
+			},
 			signal: AbortSignal.timeout(TIMEOUT_MS),
 		});
 		// 404 means the repository has no published release yet.

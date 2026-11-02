@@ -1,6 +1,6 @@
 import Config from "#assets/gallery/config.json";
 import { redirect } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import type { EntryGenerator, PageServerLoad } from "./$types";
 
 const IMAGES_PER_PAGE = 25;
 
@@ -17,6 +17,10 @@ const fullImages = import.meta.glob("/src/assets/gallery/**/*.jpg", {
 	query: "?enhanced&w=2400;1600&quality=85&format=webp;jpg",
 	import: "default",
 });
+
+/** The pagination only links a few pages around the current one, so list them all. */
+export const entries: EntryGenerator = () =>
+	Array.from({ length: Math.ceil(Object.keys(allImages).length / IMAGES_PER_PAGE) }, (_, index) => ({ page: String(index + 1) }));
 
 export const load: PageServerLoad = async ({ params }) => {
 	const page = parseInt(params.page);

@@ -4,8 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Project pages show the latest GitHub release as of the build, so rebuild once a day.
+  schedule:
+    - cron: "0 4 * * *"
 
-# CMS saves land as separate commits; queue deploys instead of building in parallel on the server.
+# CMS saves land as separate commits; queue deploys instead of uploading in parallel.
 concurrency:
   group: deploy
   cancel-in-progress: false
@@ -15,20 +18,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Deploy using ssh
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        password: ${{ secrets.SERVER_PASSWORD }}
-        port: 22
-        command_timeout: 30m
-        script: |
-          set -e
-          cd ~/letsmoe.com
-          git fetch origin main
-          git reset --hard origin/main
-          # Without -x, ignored files survive: static/journey/ is gitignored and only lives on the server.
-          git clean -f -d
-          PATH="/root/.bun/bin:${PATH}"
-          make prod
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun test
+
+      - run: bun run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload to the server
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT || '22' }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          # --delay-updates and --delete-delay swap the new files in at the end, so visitors never see half a deploy.
+          rsync --archive --compress --delete --delete-delay --delay-updates \
+            -e "ssh -i ~/.ssh/deploy_key -p $DEPLOY_PORT" \
+            build/ "$DEPLOY_USER@$DEPLOY_HOST:/var/www/letsmoe.com/"

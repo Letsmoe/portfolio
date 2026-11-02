@@ -1,6 +1,9 @@
 import { getStep, journey } from "#lib/server/journey.ts";
 import { error } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import type { EntryGenerator, PageServerLoad } from "./$types";
+
+/** The map links stops from JavaScript, which the prerenderer's crawler does not follow. */
+export const entries: EntryGenerator = () => journey.steps.map((step) => ({ slug: step.slug }));
 
 export const load: PageServerLoad = ({ params }) => {
 	const found = getStep(params.slug);

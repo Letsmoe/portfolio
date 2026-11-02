@@ -5,12 +5,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="robots" content="noindex" />
 		<title>Content Manager · letsmoe.com</title>
-		<!-- Absolute URL: served at /admin without a trailing slash, a relative config.yml would resolve to /config.yml. -->
+		<!-- Absolute URLs, so they don't depend on whether the page was opened as /admin or /admin/. -->
 		<link href="/admin/config.yml" type="application/yaml" rel="cms-config-url" />
 	</head>
 	<body>
 		<script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
 		<script>
+			CMS.registerPreviewStyle("/admin/preview.css");
+
 			// Matches the <video><source></video> markup the existing posts use, so old videos open in the component too.
 			CMS.registerEditorComponent({
 				id: "video",

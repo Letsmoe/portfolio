@@ -301,7 +301,7 @@
 		updateAnchor();
 
 		try {
-			const response = await fetch(`/api/steps/${slug}`, { signal: requestController.signal });
+			const response = await fetch(`/api/steps/${slug}.json`, { signal: requestController.signal });
 			if (!response.ok) throw new Error(`HTTP ${response.status}`);
 			selected = await response.json();
 		} catch (error) {

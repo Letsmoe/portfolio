@@ -133,7 +133,7 @@ export function postcards(steps: JourneyStep[]): Postcard[] {
 	return [...byCountry.values()];
 }
 
-/** Response of `/api/steps/[slug]`. */
+/** Response of `/api/steps/[slug].json`. */
 export interface StepDetail {
 	step: JourneyStep;
 	previous: string | null;

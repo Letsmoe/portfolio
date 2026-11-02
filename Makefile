@@ -1,18 +1,19 @@
-.PHONY: dev prod deploy-nginx
+.PHONY: dev build preview upload-journey
 
-prod:
-	bun install
-	bun run build
-	-pm2 delete letsmoe.com
-	NODE_ENV="production" pm2 start --name "letsmoe.com" --update-env --log ~/logs/`date '+%d-%m-%Y_%H:%M:%S'`.log --time  bun -- run ./server.ts
-	pm2 save
-	$(MAKE) deploy-nginx
+# SSH destination for upload-journey, e.g. `make upload-journey DEPLOY=deploy@letsmoe.com`.
+DEPLOY ?= deploy@letsmoe.com
 
 dev:
 	bun run dev
 
-deploy-nginx:
-	sudo cp config.nginx /etc/nginx/sites-available/letsmoe.com
-	sudo ln -sf /etc/nginx/sites-available/letsmoe.com /etc/nginx/sites-enabled/letsmoe.com
-	sudo nginx -t
-	sudo systemctl reload nginx
+build:
+	bun run build
+
+# Serves build/ the way Caddy does in production.
+preview: build
+	bun run preview
+
+# Journey photos and the GPS track are gitignored, so CI can't deploy them; run this after
+# scripts/import-polarsteps.ts. Caddy serves them from this folder (deploy/Caddyfile).
+upload-journey:
+	rsync --archive --compress --delete --info=progress2 static/journey/ $(DEPLOY):/var/www/letsmoe.com-journey/journey/
