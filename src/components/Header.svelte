@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from "$app/state";
+	import { hasHero } from "#lib/hero.ts";
 	import { PROJECTS } from "#lib/projects.ts";
 	import ArrowRight from "phosphor-svelte/lib/ArrowRight";
 	import CaretDown from "phosphor-svelte/lib/CaretDown";
@@ -24,8 +25,8 @@
 	let scrollY = $state(0);
 	let innerHeight = $state(800);
 
-	/** On the home hero the header dissolves into plain text over the photo. */
-	let overHero = $derived(page.url.pathname === "/" && scrollY < innerHeight - 120);
+	/** Over a full-screen hero the header dissolves into plain text over the photo. */
+	let overHero = $derived(hasHero(page.url.pathname) && scrollY < innerHeight - 120);
 
 	function isActive(href: string, pathname: string) {
 		return href === "/" ? pathname === "/" : pathname.startsWith(href);

@@ -3,7 +3,7 @@
 	import { onMount } from "svelte";
 
 	interface Props {
-		/** Height of the strip in CSS pixels; the string sags into it and the flags hang below. */
+		/** Maximum height of the strip in CSS pixels; the string sags into it and the flags hang below. */
 		height?: number;
 		class?: string;
 	}
@@ -29,13 +29,19 @@
 		let width = 0;
 		const pointer = { x: 0, y: 0, lastX: 0, lastY: 0, inside: false };
 
+		let stripHeight = height;
+
+		/** Narrow screens hang smaller flags, so the strip shrinks to them and keeps the room a wide screen
+		   leaves below its flags for the wind. */
 		function build() {
 			width = canvas.clientWidth;
+			cloth = createPrayerFlags(width, height);
+			stripHeight = Math.min(height, Math.ceil(Math.max(...cloth.y)) + 60);
+			canvas.style.height = `${stripHeight}px`;
 			const dpr = Math.min(window.devicePixelRatio || 1, 2);
 			canvas.width = Math.round(width * dpr);
-			canvas.height = Math.round(height * dpr);
+			canvas.height = Math.round(stripHeight * dpr);
 			context!.setTransform(dpr, 0, 0, dpr, 0, 0);
-			cloth = createPrayerFlags(width, height);
 		}
 
 		function step() {
@@ -49,7 +55,7 @@
 			const { x, y, z } = cloth;
 			const screenX = (index: number) => x[index] + z[index] * DEPTH_X;
 			const screenY = (index: number) => y[index] + z[index] * DEPTH_Y;
-			context!.clearRect(0, 0, width, height);
+			context!.clearRect(0, 0, width, stripHeight);
 
 			context!.beginPath();
 			for (const index of cloth.rope) context!.lineTo(screenX(index), screenY(index));

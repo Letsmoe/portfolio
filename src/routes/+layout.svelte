@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/state";
 	import Header from "#components/Header.svelte";
+	import { hasHero } from "#lib/hero.ts";
 	import "#style/main.css";
 	import type { LayoutData } from "./$types";
 
@@ -11,12 +12,12 @@
 
 	let { data, children }: Props = $props();
 
-	/** These pages start with a full-screen hero or map that runs under the floating header. */
-	const FULL_BLEED = ["/", "/journey"];
+	/** The journey map runs under the floating header just like the heroes do. */
+	let fullBleed = $derived(page.url.pathname === "/journey" || hasHero(page.url.pathname));
 </script>
 
 <Header />
-<main class="min-h-screen {FULL_BLEED.includes(page.url.pathname) ? '' : 'pt-[88px]'}">
+<main class="min-h-screen {fullBleed ? '' : 'pt-[88px]'}">
 	{@render children?.()}
 </main>
 

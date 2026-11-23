@@ -242,10 +242,8 @@ const steps: JourneyStep[] = sortedSteps.map((step, index) => ({
 	videos: videosByStep[index].sort((a, b) => a.src.localeCompare(b.src)),
 }));
 
-const fixes = locations
-	.filter((location) => location.time >= trip.start_date && location.time <= trip.end_date)
-	.sort((a, b) => a.time - b.time)
-	.map((location): Point => [location.lon, location.lat]);
+const tripLocations = locations.filter((location) => location.time >= trip.start_date && location.time <= trip.end_date).sort((a, b) => a.time - b.time);
+const fixes = tripLocations.map((location): Point => [location.lon, location.lat]);
 const route: Point[][] = [];
 let segment: Point[] = [];
 for (const fix of fixes) {
@@ -274,6 +272,13 @@ const fullRoute = route
 	.map((points) => points.map(([lon, lat]): Point => [Number(lon.toFixed(5)), Number(lat.toFixed(5))]))
 	.filter((points) => points.length > 1);
 writeFileSync(join(photoRoot, "route.json"), JSON.stringify(fullRoute));
+// When each fix was taken, for the route editor only: kept out of static/ so exact GPS times are not published.
+// Keyed like the editor's fixes (5 decimals); a place visited twice keeps its first time.
+const fixTimes: Record<string, number> = {};
+for (const location of tripLocations) {
+	fixTimes[`${location.lon.toFixed(5)},${location.lat.toFixed(5)}`] ??= Math.round(location.time);
+}
+writeFileSync(join(projectRoot, "scripts/route/fix-times.json"), JSON.stringify(fixTimes));
 console.log(
 	`${steps.length} steps, ${steps.reduce((sum, step) => sum + step.photos.length, 0)} photos, ${steps.reduce((sum, step) => sum + step.videos.length, 0)} videos, ${journey.route.length} route segments`,
 );

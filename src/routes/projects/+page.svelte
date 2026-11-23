@@ -1,5 +1,6 @@
 <script lang="ts">
-	import SectionHeading from "#components/SectionHeading.svelte";
+	import PageHero from "#components/PageHero.svelte";
+	import PrayerFlags from "#components/PrayerFlags.svelte";
 	import { PROJECTS } from "#lib/projects.ts";
 	import ArrowRight from "phosphor-svelte/lib/ArrowRight";
 	import DownloadSimple from "phosphor-svelte/lib/DownloadSimple";
@@ -10,13 +11,26 @@
 	<title>Projects - Moritz Utcke</title>
 </svelte:head>
 
-<div class="mx-auto max-w-screen-2xl px-6 py-16">
-	<SectionHeading index="01" title="Projects" meta="{PROJECTS.length} projects · Source code & downloads" />
-	<p class="m-0 max-w-2xl text-[clamp(1.25rem,1.8vw,1.6rem)] leading-snug tracking-tight">
-		A company, a programming language, an app for movie night and one for music. Each page links the source and every build that is ready to download.
-	</p>
+<PageHero
+	title="Things I build"
+	eyebrow="{PROJECTS.length} projects · Source code & downloads"
+	description="A company, a programming language, an app for movie night and one for music. Each page links the source and every build that is ready to download."
+>
+	{#snippet strip()}
+		{#each PROJECTS as project (project.slug)}
+			<a href="/projects/{project.slug}" class="flex items-center gap-2 no-underline hover:text-[#fafaf8]">
+				<img src={project.icon} alt="" class="m-0 h-5 w-5 rounded-md" />
+				{project.name}
+			</a>
+		{/each}
+	{/snippet}
+</PageHero>
 
-	<ol class="m-0 mt-20 list-none border-b border-line p-0">
+<div class="relative z-10 bg-paper">
+<PrayerFlags height={200} />
+
+<div class="mx-auto max-w-screen-2xl px-6 pb-24 pt-8">
+	<ol class="m-0 list-none border-b border-line p-0">
 		{#each PROJECTS as project, index (project.slug)}
 			<li class="m-0 border-t border-line">
 				<a href="/projects/{project.slug}" class="group grid grid-cols-6 gap-x-6 gap-y-6 py-12 no-underline lg:grid-cols-12">
@@ -56,4 +70,5 @@
 			</li>
 		{/each}
 	</ol>
+</div>
 </div>

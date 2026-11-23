@@ -1,4 +1,6 @@
 <script lang="ts">
+	import PageHero from "#components/PageHero.svelte";
+	import PrayerFlags from "#components/PrayerFlags.svelte";
 	import { formatBytes } from "#lib/github.ts";
 	import { isLocalDownload, type DownloadPlatform } from "#lib/projects.ts";
 	import AndroidLogo from "phosphor-svelte/lib/AndroidLogo";
@@ -45,50 +47,49 @@
 	<meta name="description" content={project.description} />
 </svelte:head>
 
-<section class="band-dark -mt-[88px] bg-paper px-6 pb-16 pt-[120px] text-ink">
-	<div class="mx-auto grid max-w-screen-2xl grid-cols-6 gap-x-6 gap-y-12 lg:grid-cols-12">
-		<div class="col-span-full flex flex-col lg:col-span-6">
-			<a href="/projects" class="group flex items-center gap-2 self-start font-mono text-[11px] uppercase tracking-[0.18em] no-underline hover:text-accent">
-				<ArrowLeft size={14} class="transition-transform group-hover:-translate-x-1" /> All projects
+{#snippet cover()}
+	<img src={project.cover} alt="" class="m-0 max-h-[55svh] w-full rounded-3xl object-contain object-bottom" />
+{/snippet}
+
+<PageHero title={project.name} description={project.tagline} eyebrow="Project {String(data.index + 1).padStart(2, '0')}" aside={project.cover ? cover : undefined}>
+	{#snippet actions()}
+		{#if android}
+			<a href={android.href} class="btn btn-accent px-6 py-3.5 text-base">
+				<AndroidLogo size={20} weight="fill" /> Download for Android
+				<span class="font-mono text-[11px] opacity-80">{release?.tag} · {formatBytes(android.size)}</span>
 			</a>
-			<div class="mt-12 flex items-center gap-4">
-				<img src={project.icon} alt="" class="m-0 h-14 w-14 rounded-2xl" />
-				<span class="label">Project {String(data.index + 1).padStart(2, "0")}</span>
-			</div>
-			<h1 class="m-0 mt-6 text-[clamp(4.5rem,12vw,11rem)] font-medium leading-[0.82] tracking-[-0.06em]">{project.name}</h1>
-			<p class="m-0 mt-8 max-w-xl text-[clamp(1.4rem,2.2vw,2rem)] leading-tight tracking-tight">{project.tagline}</p>
-
-			<div class="mt-10 flex flex-wrap items-center gap-3">
-				{#if android}
-					<a href={android.href} class="btn btn-accent px-6 py-3.5 text-base">
-						<AndroidLogo size={20} weight="fill" /> Download for Android
-						<span class="font-mono text-[11px] opacity-80">{release?.tag} · {formatBytes(android.size)}</span>
-					</a>
-				{:else if downloads.length > 0}
-					<a href="#downloads" class="btn btn-accent px-6 py-3.5 text-base"><DownloadSimple size={20} weight="bold" /> Downloads</a>
-				{/if}
-				{#if project.links.website}
-					<a href={project.links.website} target="_blank" rel="noreferrer" class="btn btn-accent px-6 py-3.5 text-base">
-						<Globe size={20} weight="bold" /> {new URL(project.links.website).host}
-					</a>
-				{/if}
-				{#if project.links.github}
-					<a href={project.links.github} target="_blank" rel="noreferrer" class="btn px-6 py-3.5 text-base">
-						<GithubLogo size={20} weight="bold" /> GitHub
-					</a>
-				{/if}
-			</div>
-			{#if project.stack.length > 0}
-				<p class="m-0 mt-10 font-mono text-[11px] uppercase tracking-[0.18em] text-rock">{project.stack.join(" / ")}</p>
-			{/if}
-		</div>
-		{#if project.cover}
-			<img src={project.cover} alt="" class="col-span-full m-0 w-full self-end rounded-3xl lg:col-span-6" />
+		{:else if downloads.length > 0}
+			<a href="#downloads" class="btn btn-accent px-6 py-3.5 text-base"><DownloadSimple size={20} weight="bold" /> Downloads</a>
 		{/if}
-	</div>
-</section>
+		{#if project.links.website}
+			<a href={project.links.website} target="_blank" rel="noreferrer" class="btn btn-accent px-6 py-3.5 text-base">
+				<Globe size={20} weight="bold" /> {new URL(project.links.website).host}
+			</a>
+		{/if}
+		{#if project.links.github}
+			<a href={project.links.github} target="_blank" rel="noreferrer" class="btn px-6 py-3.5 text-base">
+				<GithubLogo size={20} weight="bold" /> GitHub
+			</a>
+		{/if}
+	{/snippet}
+	{#snippet strip()}
+		<a href="/projects" class="group flex items-center gap-2 no-underline hover:text-[#fafaf8]">
+			<ArrowLeft size={14} class="transition-transform group-hover:-translate-x-1" /> All projects
+		</a>
+		<span class="flex items-center gap-2">
+			<img src={project.icon} alt="" class="m-0 h-5 w-5 rounded-md" />
+			{project.name}
+		</span>
+		{#if project.stack.length > 0}
+			<span class="ml-auto">{project.stack.join(" / ")}</span>
+		{/if}
+	{/snippet}
+</PageHero>
 
-<div class="mx-auto grid max-w-screen-2xl grid-cols-6 gap-x-6 gap-y-16 px-6 py-20 lg:grid-cols-12">
+<div class="relative z-10 bg-paper">
+<PrayerFlags height={200} />
+
+<div class="mx-auto grid max-w-screen-2xl grid-cols-6 gap-x-6 gap-y-16 px-6 pb-24 pt-8 lg:grid-cols-12">
 	{#if downloads.length > 0 || project.repository}
 	<aside class="col-span-full lg:sticky lg:top-[100px] lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:self-start" id="downloads">
 		<h2 class="label m-0 border-t border-ink pt-3">Downloads</h2>
@@ -145,6 +146,7 @@
 			{/if}
 		{/if}
 	</article>
+</div>
 </div>
 
 <style>

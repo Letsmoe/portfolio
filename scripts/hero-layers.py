@@ -9,6 +9,7 @@ Needs Depth Anything V2 (ONNX) and OpenCV on top of numpy and Pillow, e.g. in a 
 Writes static/images/hero/<scene>/{back,mid,front}.webp. Each scene cuts its
 depth map (0 = farthest, 1 = nearest) at two thresholds: everything nearer than
 `mid` lifts off the sky, everything nearer than `front` becomes the foreground.
+A scene without `mid` gets back.webp and front.webp only.
 The depth map's edges are soft, so GrabCut snaps each cut to the photo's real
 edge within a narrow band. Pixels hidden behind a nearer layer are filled by
 stretching the pixels above them down, so moving layers never reveal a second
@@ -33,6 +34,8 @@ DEPTH_HEIGHT = 518 * 2  # the model works in multiples of its 14 px patch size
 
 SCENES = {
     "nepal": {"source": "static/images/nepal.jpg", "mid": 0.004, "front": 0.2},
+    # Source upscaled 2x with Real-ESRGAN x2plus and edge-sharpened, so the layers hold up on 2x screens.
+    "argentina": {"source": "static/images/argentina-1-4k.jpg", "front": 0.004, "width": 4000},
 }
 
 
@@ -82,29 +85,37 @@ def fill_hidden(pixels, hidden):
 
 def build(name, scene, project_root):
     image = Image.open(os.path.join(project_root, scene["source"])).convert("RGB")
-    image = image.resize((OUTPUT_WIDTH, round(image.height * OUTPUT_WIDTH / image.width)), Image.LANCZOS)
+    width = scene.get("width", OUTPUT_WIDTH)
+    image = image.resize((width, round(image.height * width / image.width)), Image.LANCZOS)
     pixels = np.asarray(image)
     extension = round(EXTEND * image.height)
 
     depth = estimate_depth(image)
-    mid_alpha = segment(image, depth, scene["mid"])
     front_alpha = segment(image, depth, scene["front"])
+    # Scenes without a `mid` cut are split into background and foreground only.
+    mid_alpha = segment(image, depth, scene["mid"]) if "mid" in scene else np.zeros_like(front_alpha)
+    layers = ("back", "mid", "front") if "mid" in scene else ("back", "front")
 
     target = os.path.join(project_root, "static/images/hero", name)
     os.makedirs(target, exist_ok=True)
 
-    back = fill_hidden(pixels, (mid_alpha > 8) | (front_alpha > 8))
+    # Grown past the soft cut edges, so the fill repeats clean background rather than the cut-out's fringe.
+    radius = max(2, round(0.003 * image.height))
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * radius + 1, 2 * radius + 1))
+    hidden = cv2.dilate(((mid_alpha > 8) | (front_alpha > 8)).astype(np.uint8), kernel) > 0
+    back = fill_hidden(pixels, hidden)
     back = np.concatenate([np.repeat(back[:1], extension, axis=0), back])
     Image.fromarray(back).filter(ImageFilter.GaussianBlur(0.4)).save(os.path.join(target, "back.webp"), quality=72)
 
-    mid = fill_hidden(pixels, (front_alpha > 8) & (mid_alpha > 8))
-    Image.fromarray(np.dstack([mid, mid_alpha]), "RGBA").save(os.path.join(target, "mid.webp"), quality=78)
+    if "mid" in scene:
+        mid = fill_hidden(pixels, (front_alpha > 8) & (mid_alpha > 8))
+        Image.fromarray(np.dstack([mid, mid_alpha]), "RGBA").save(os.path.join(target, "mid.webp"), quality=78)
 
     front = np.dstack([pixels, front_alpha])
     front = np.concatenate([front, front[-extension:][::-1]])
     Image.fromarray(front, "RGBA").save(os.path.join(target, "front.webp"), quality=78)
 
-    sizes = {layer: os.path.getsize(os.path.join(target, f"{layer}.webp")) // 1024 for layer in ("back", "mid", "front")}
+    sizes = {layer: os.path.getsize(os.path.join(target, f"{layer}.webp")) // 1024 for layer in layers}
     print(name, sizes, "KB")
 
 

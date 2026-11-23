@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Route Editor</title>
+		<link rel="stylesheet" href="./editor.css" />
+	</head>
+	<body>
+		<div id="map"></div>
+		<aside id="panel">
+			<header>
+				<h1>Route Editor</h1>
+				<p id="status">Loading…</p>
+			</header>
+
+			<section>
+				<h2>Totals</h2>
+				<div class="metrics" id="metrics"></div>
+				<ul class="transport-totals" id="transport-totals"></ul>
+			</section>
+
+			<section>
+				<div class="section-head">
+					<h2>Review</h2>
+					<div class="pager">
+						<button id="previous-issue" title="Previous (p)">←</button>
+						<button id="next-issue" title="Next (n)">→</button>
+					</div>
+				</div>
+				<p id="issue">–</p>
+			</section>
+
+			<section id="leg" hidden>
+				<h2 id="leg-title">Selected Leg</h2>
+				<p class="when" id="leg-when" hidden><span id="leg-when-range"></span><span id="leg-when-duration"></span></p>
+				<div class="chips" id="leg-facts"></div>
+				<figure class="profile" id="profile" hidden>
+					<svg id="profile-chart" viewBox="0 0 280 72" preserveAspectRatio="none" aria-label="Elevation profile"></svg>
+					<figcaption id="profile-caption"></figcaption>
+				</figure>
+
+				<p class="field">Transport</p>
+				<div class="segmented" id="transports">
+					<button data-transport="">Auto</button>
+					<button data-transport="bike">Bicycle</button>
+					<button data-transport="foot">Foot</button>
+					<button data-transport="bus">Bus</button>
+					<button data-transport="car">Car</button>
+					<button data-transport="boat">Boat</button>
+					<button data-transport="flight">Plane</button>
+				</div>
+				<p class="field">Drawing</p>
+				<div class="segmented" id="modes">
+					<button data-mode="" title="Hops over 80 km, everything else snapped">Auto</button>
+					<button data-mode="ride" title="Snapped to roads or trails">Ride</button>
+					<button data-mode="straight" title="Drawn as recorded">Straight</button>
+					<button data-mode="hop" title="Dashed jump: flights, ferries, buses">Hop</button>
+				</div>
+				<p class="field">Routing</p>
+				<div class="segmented" id="routers">
+					<button data-router="" title="Foot legs on trails, everything else by car">Auto</button>
+					<button data-router="car" title="Main roads; what touring by bike mostly follows">Car</button>
+					<button data-router="bike" title="Quiet side roads and cycle paths">Bike</button>
+					<button data-router="foot" title="Hiking trails (BRouter)">Foot</button>
+				</div>
+
+				<div class="actions">
+					<button id="clear-via" title="Remove the via points dragged onto this leg">Clear Via Points</button>
+					<button id="join-legs" title="One leg from the first fix to the last (j)">Join Legs</button>
+					<button id="delete-legs" class="danger" title="Drop the end fixes (Delete)">Delete Leg</button>
+				</div>
+			</section>
+
+			<section>
+				<h2>Map</h2>
+				<div class="setting">
+					<span>Colour By</span>
+					<div class="segmented compact" id="colour-by">
+						<button data-colour="transport" class="active">Transport</button>
+						<button data-colour="time" title="Earliest to latest of what is on screen">Time</button>
+					</div>
+				</div>
+				<label class="setting"><span>Satellite Imagery</span><input type="checkbox" id="satellite" /></label>
+			</section>
+
+			<section>
+				<h2>Legend</h2>
+				<div class="legend">
+					<span class="line solid"></span><span>Snapped</span>
+					<span class="line dotted"></span><span>Straight</span>
+					<span class="line dashed"></span><span>Hop</span>
+					<span class="line waiting"></span><span>Waiting to Snap</span>
+					<span class="line failed"></span><span>No Road Found</span>
+					<span class="line selected"></span><span>Selected</span>
+				</div>
+				<div class="legend">
+					<span class="dot kept"></span><span>Kept Fix</span>
+					<span class="dot added"></span><span>Added (Drag)</span>
+					<span class="dot jitter"></span><span>Jitter</span>
+					<span class="dot spike"></span><span>Spike</span>
+					<span class="dot excursion"></span><span>Side Trip</span>
+					<span class="dot stay"></span><span>Stay</span>
+					<span class="dot removed"></span><span>Removed</span>
+				</div>
+			</section>
+
+			<details>
+				<summary>Controls</summary>
+				<table class="controls">
+					<tbody>
+						<tr><th>Click</th><td>Select a leg; drop or restore a fix</td></tr>
+						<tr><th>Drag</th><td>Select every leg in a box</td></tr>
+						<tr><th>Shift-Click</th><td>Select up to this leg; restore a whole side trip</td></tr>
+						<tr><th>Ctrl / Middle-Drag</th><td>Move the map</td></tr>
+						<tr><th>Drag Yellow Line</th><td>Reroute through a via point</td></tr>
+						<tr><th>Double-Click</th><td>Split a leg with a new fix (beside the line: on the trail)</td></tr>
+						<tr><th>Shift-Drag</th><td>Drop every fix in a box</td></tr>
+						<tr><th>Ctrl+Shift-Drag</th><td>Restore every fix in a box</td></tr>
+						<tr><th>Right-Click Via</th><td>Remove the via point</td></tr>
+						<tr><th>→ / ←</th><td>Grow the selection by the next / previous leg</td></tr>
+						<tr><th>Shift+→ / ←</th><td>Shrink the selection from that end</td></tr>
+						<tr><th>Delete</th><td>Drop the selected legs' end fixes</td></tr>
+						<tr><th>J</th><td>Join the selected legs</td></tr>
+						<tr><th>N / P</th><td>Next / previous leg to review</td></tr>
+						<tr><th>Esc</th><td>Deselect</td></tr>
+					</tbody>
+				</table>
+				<p class="note">Edit from zoom 7; fixes show from zoom 10.</p>
+			</details>
+		</aside>
+		<script type="module" src="./editor.ts"></script>
+	</body>
+</html>

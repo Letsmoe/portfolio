@@ -1,5 +1,7 @@
 import type { BlogEntry } from "#lib/blog.ts";
+import { stepsOnDay } from "#lib/journey.ts";
 import { getCollection } from "#lib/server/blog.ts";
+import { journey } from "#lib/server/journey.ts";
 import { error } from "@sveltejs/kit";
 import moment from "moment";
 import type { LayoutServerLoad } from "./$types";
@@ -35,7 +37,8 @@ export const load: LayoutServerLoad = async ({ url }) => {
 		frontmatter: story.frontmatter,
 		slug: story.slug,
 		readingTime: story.readingTime,
-		last: last.slug ?? null,
-		next: next.slug ?? null,
+		places: stepsOnDay(journey.steps, story.frontmatter.date.slice(0, 10)).map(({ slug, name, countryCode }) => ({ slug, name, countryCode })),
+		last: last.slug ? { slug: last.slug, title: last.frontmatter.title } : null,
+		next: next.slug ? { slug: next.slug, title: next.frontmatter.title } : null,
 	};
 };

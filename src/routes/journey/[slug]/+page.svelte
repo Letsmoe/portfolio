@@ -19,22 +19,24 @@
 	{#if step.photos[0]}<meta property="og:image" content={step.photos[0].src} />{/if}
 </svelte:head>
 
-<article class="mx-auto max-w-screen-xl px-4 py-10">
-	<a href="/journey" class="btn btn-ghost -ml-4 mb-6"><ArrowLeft size={16} /> Journey map</a>
+<article class="mx-auto max-w-screen-2xl px-6 pb-24 pt-6">
+	<a href="/journey" class="group mb-6 flex items-center gap-2 self-start font-mono text-[11px] uppercase tracking-[0.18em] no-underline hover:text-accent">
+		<ArrowLeft size={14} class="transition-transform group-hover:-translate-x-1" /> Journey map
+	</a>
 
 	<DayStory {step} day={data.day} />
 
-	<nav class="mt-16 grid gap-4 border-t border-line pt-8 sm:grid-cols-2">
+	<nav class="mt-20 grid grid-cols-1 gap-x-6 sm:grid-cols-2" aria-label="Neighbouring stops">
 		{#if data.previous}
-			<a href="/journey/{data.previous.slug}" class="panel group flex items-center gap-3 p-4 no-underline hover:shadow-lift">
-				<ArrowLeft size={18} class="shrink-0 text-muted" />
-				<span><span class="label block">Day before</span><span class="font-semibold group-hover:text-accent">{data.previous.name}</span></span>
+			<a href="/journey/{data.previous.slug}" class="group border-t border-ink py-8 no-underline">
+				<span class="label flex items-center gap-2"><ArrowLeft size={14} class="transition-transform group-hover:-translate-x-1" /> Day before</span>
+				<span class="mt-4 block text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.9] tracking-[-0.055em] transition-colors group-hover:text-accent">{data.previous.name}</span>
 			</a>
 		{:else}<span></span>{/if}
 		{#if data.next}
-			<a href="/journey/{data.next.slug}" class="panel group flex items-center justify-end gap-3 p-4 text-right no-underline hover:shadow-lift">
-				<span><span class="label block">Next stop</span><span class="font-semibold group-hover:text-accent">{data.next.name}</span></span>
-				<ArrowRight size={18} class="shrink-0 text-muted" />
+			<a href="/journey/{data.next.slug}" class="group border-t border-ink py-8 text-right no-underline">
+				<span class="label flex items-center justify-end gap-2">Next stop <ArrowRight size={14} class="transition-transform group-hover:translate-x-1" /></span>
+				<span class="mt-4 block text-[clamp(2rem,5vw,4.5rem)] font-medium leading-[0.9] tracking-[-0.055em] transition-colors group-hover:text-accent">{data.next.name}</span>
 			</a>
 		{/if}
 	</nav>

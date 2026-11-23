@@ -2,10 +2,14 @@
 	import AudioPlayer from "#components/AudioPlayer.svelte";
 	import BlogProgressBar from "#components/BlogProgressBar.svelte";
 	import Lightbox from "#components/Lightbox.svelte";
+	import PrayerFlags from "#components/PrayerFlags.svelte";
+	import PageHero from "#components/PageHero.svelte";
 	import VideoPlayer from "#components/VideoPlayer.svelte";
+	import { flagEmoji } from "#lib/journey.ts";
 	import moment from "moment";
 	import ArrowLeft from "phosphor-svelte/lib/ArrowLeft";
 	import ArrowRight from "phosphor-svelte/lib/ArrowRight";
+	import ArrowUpRight from "phosphor-svelte/lib/ArrowUpRight";
 	import { mount, unmount } from "svelte";
 	import type { Action } from "svelte/action";
 	import type { LayoutData } from "./$types";
@@ -53,59 +57,89 @@
 
 <BlogProgressBar />
 
-<div class="mx-auto w-full max-w-screen-xl px-4 py-12 sm:px-6">
-	<header>
-		<a href="/blog" class="group flex items-center gap-2 self-start font-mono text-[11px] uppercase tracking-[0.18em] no-underline hover:text-accent">
+<PageHero image={data.frontmatter.image} title={data.frontmatter.title} description={data.frontmatter.description} eyebrow={moment(data.frontmatter.date).format("DD MMM YYYY")}>
+	{#snippet strip()}
+		<a href="/blog" class="group flex items-center gap-2 no-underline hover:text-[#fafaf8]">
 			<ArrowLeft size={14} class="transition-transform group-hover:-translate-x-1" /> All stories
 		</a>
-		<p class="m-0 mt-10 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-			<span>{moment(data.frontmatter.date).format("DD MMM YYYY")}</span>
-			<span>{data.readingTime} min read</span>
-			{#each data.frontmatter.tags ?? [] as tag}<span>{tag}</span>{/each}
-		</p>
-		<h1 class="m-0 mt-6 text-[clamp(3rem,6.5vw,6.5rem)] font-medium leading-[0.9] tracking-[-0.055em]">{data.frontmatter.title}</h1>
-		{#if data.frontmatter.description}
-			<p class="m-0 mt-8 max-w-3xl text-[clamp(1.25rem,2vw,1.75rem)] leading-snug tracking-tight text-muted">{data.frontmatter.description}</p>
+		<span class="ml-auto">{data.readingTime} min read</span>
+		{#if data.places.length > 0}
+			<span>{flagEmoji(data.places[0].countryCode)} {data.places[0].name}{data.places.length > 1 ? ` → ${data.places.at(-1)?.name}` : ""}</span>
 		{/if}
-	</header>
+	{/snippet}
+</PageHero>
 
-	{#if data.frontmatter.image}
-		<img src={data.frontmatter.image} alt="" class="m-0 mt-12 aspect-[2/1] max-h-[60vh] w-full rounded-[2rem] object-cover" />
-	{/if}
+<div class="relative z-10 bg-paper">
+	<PrayerFlags height={160} />
 
-	<div class="mx-auto max-w-screen-lg rounded-[2rem] border border-line bg-card px-5 pb-12 pt-10 shadow-soft sm:px-12 {data.frontmatter.image ? 'relative -mt-16' : 'mt-12'}">
-		<div class="mx-auto max-w-2xl">
-			<AudioPlayer slug={data.slug} />
+	<div class="mx-auto grid max-w-screen-2xl grid-cols-6 gap-x-6 gap-y-12 px-6 pb-24 pt-8 lg:grid-cols-12">
+		<aside class="col-span-full lg:col-span-3">
+			<dl class="m-0 grid grid-cols-2 gap-x-6 gap-y-8 lg:sticky lg:top-28 lg:grid-cols-1">
+				<div class="border-t border-line pt-3">
+					<dt class="label">Date</dt>
+					<dd class="m-0 mt-2 text-2xl font-medium tracking-tight">{moment(data.frontmatter.date).format("D MMM YYYY")}</dd>
+				</div>
+				<div class="border-t border-line pt-3">
+					<dt class="label">Reading time</dt>
+					<dd class="m-0 mt-2 text-2xl font-medium tracking-tight">{data.readingTime} min</dd>
+				</div>
+				{#if data.places.length > 0}
+					<div class="col-span-full border-t border-line pt-3">
+						<dt class="label">On the map that day</dt>
+						<dd class="m-0 mt-3">
+							<ol class="m-0 list-none p-0">
+								{#each data.places as place (place.slug)}
+									<li class="m-0">
+										<a href="/journey/{place.slug}" class="group flex items-baseline gap-3 py-1 text-lg no-underline hover:text-accent">
+											<span aria-hidden="true">{flagEmoji(place.countryCode)}</span>
+											<span class="flex-1">{place.name}</span>
+											<ArrowUpRight size={14} class="shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
+										</a>
+									</li>
+								{/each}
+							</ol>
+						</dd>
+					</div>
+				{/if}
+			</dl>
+		</aside>
+
+		<div class="col-span-full lg:col-span-8 lg:col-start-5">
+			<div class="max-w-2xl">
+				<AudioPlayer slug={data.slug} />
+			</div>
+			<article use:customVideos use:zoomablePhotos class="post prose prose-lg max-w-none">
+				{@render children?.()}
+			</article>
+			<Lightbox count={photos.length} bind:index={openPhoto} caption={openPhoto === null ? "" : photos[openPhoto].alt}>
+				{#snippet photo(index)}
+					<img src={photos[index].src} alt={photos[index].alt} />
+				{/snippet}
+			</Lightbox>
 		</div>
-		<article use:customVideos use:zoomablePhotos class="post prose prose-lg mx-auto max-w-none">
-			{@render children?.()}
-		</article>
-		<Lightbox count={photos.length} bind:index={openPhoto} caption={openPhoto === null ? "" : photos[openPhoto].alt}>
-			{#snippet photo(index)}
-				<img src={photos[index].src} alt={photos[index].alt} />
-			{/snippet}
-		</Lightbox>
 	</div>
 
-	<nav class="mx-auto mt-10 grid max-w-screen-lg grid-cols-2 gap-4" aria-label="More stories">
+	<nav class="mx-auto grid max-w-screen-2xl grid-cols-1 gap-x-6 px-6 sm:grid-cols-2" aria-label="More stories">
 		{#if data.last}
-			<a href={`/blog/${data.last}`} class="group flex items-center gap-2 rounded-2xl border border-line bg-card p-5 font-mono text-[11px] uppercase tracking-[0.18em] no-underline shadow-soft hover:text-accent">
-				<ArrowLeft size={14} class="transition-transform group-hover:-translate-x-1" /> Previous story
+			<a href="/blog/{data.last.slug}" class="group border-t border-ink py-8 no-underline">
+				<span class="label flex items-center gap-2"><ArrowLeft size={14} class="transition-transform group-hover:-translate-x-1" /> Previous story</span>
+				<span class="mt-4 block text-[clamp(2.5rem,6vw,5.5rem)] font-medium leading-[0.9] tracking-[-0.055em] transition-colors group-hover:text-accent">{data.last.title}</span>
 			</a>
 		{:else}<span></span>{/if}
 		{#if data.next}
-			<a href={`/blog/${data.next}`} class="group flex items-center justify-end gap-2 rounded-2xl border border-line bg-card p-5 font-mono text-[11px] uppercase tracking-[0.18em] no-underline shadow-soft hover:text-accent">
-				Next story <ArrowRight size={14} class="transition-transform group-hover:translate-x-1" />
+			<a href="/blog/{data.next.slug}" class="group border-t border-ink py-8 text-right no-underline">
+				<span class="label flex items-center justify-end gap-2">Next story <ArrowRight size={14} class="transition-transform group-hover:translate-x-1" /></span>
+				<span class="mt-4 block text-[clamp(2.5rem,6vw,5.5rem)] font-medium leading-[0.9] tracking-[-0.055em] transition-colors group-hover:text-accent">{data.next.title}</span>
 			</a>
 		{/if}
 	</nav>
 
-	<aside class="mx-auto mt-4 flex max-w-screen-lg flex-col items-center gap-6 rounded-[2rem] border border-line bg-card p-6 shadow-soft sm:flex-row sm:p-8">
-		<img src="/images/kyrgizstan.webp" class="m-0 h-28 w-28 shrink-0 rounded-full object-cover" alt="Moritz" />
-		<div class="text-center sm:text-start">
+	<aside class="mx-auto grid max-w-screen-2xl grid-cols-6 gap-x-6 gap-y-8 px-6 pb-24 pt-16 lg:grid-cols-12">
+		<img src="/images/kyrgizstan.webp" class="col-span-2 m-0 aspect-square w-full rounded-3xl object-cover lg:col-span-2" alt="Moritz" />
+		<div class="col-span-full sm:col-span-4 lg:col-span-7 lg:col-start-5">
 			<p class="label m-0">Written by</p>
-			<p class="m-0 mt-1 text-2xl font-medium tracking-tight">Moritz Utcke</p>
-			<p class="m-0 mt-3 text-muted">Nach der Schule habe ich mich entschieden mit dem Fahrrad auf Weltreise zu gehen. Vier Wochen nach meinem Abi hab ich mein Zeug gepackt und mich aufs Rad geschwungen. Zwei Jahre später bin ich immer noch hier und fahre mit meinem Kompagnon Joe durch den Dschungel von Laos, die Berge Nepals oder die Kasachische Steppe.</p>
+			<p class="m-0 mt-2 text-3xl font-medium tracking-tight">Moritz Utcke</p>
+			<p class="m-0 mt-4 text-lg leading-relaxed text-muted">Nach der Schule habe ich mich entschieden mit dem Fahrrad auf Weltreise zu gehen. Vier Wochen nach meinem Abi hab ich mein Zeug gepackt und mich aufs Rad geschwungen. Zwei Jahre später bin ich immer noch hier und fahre mit meinem Kompagnon Joe durch den Dschungel von Laos, die Berge Nepals oder die Kasachische Steppe.</p>
 		</div>
 	</aside>
 </div>
@@ -113,21 +147,21 @@
 <style>
 	@reference "../../../style/main.css";
 
-	/* Text stays in a readable column; photos and videos run the full width of the card. */
+	/* Text stays in a readable measure; photos and videos run the full width of the column. */
 	.post :global(> :not(p:has(img, .video), .video, figure, div)) {
-		@apply mx-auto max-w-2xl;
+		@apply max-w-2xl;
 	}
 
 	.post :global(img) {
-		@apply mx-auto my-0 block max-h-[30rem] w-auto max-w-full cursor-zoom-in rounded-2xl;
+		@apply my-0 block max-h-[40rem] w-auto max-w-full cursor-zoom-in rounded-3xl;
 	}
 
 	.post :global(p:has(img, .video)) {
-		@apply mx-auto my-10 max-w-3xl;
+		@apply my-12;
 	}
 
 	.post :global(> div:has(> .video)) {
-		@apply mx-auto my-10 flex max-w-3xl justify-center;
+		@apply my-12 flex;
 	}
 
 	/* Photos written on consecutive lines land in one paragraph: lay them out as a row,

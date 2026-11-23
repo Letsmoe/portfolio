@@ -91,9 +91,34 @@ const PALETTES: Record<MapTheme, Palette> = {
 	},
 };
 
-/** Names of the runtime-generated fill patterns; see `addPatterns` in JourneyMap. */
+/** Names of the runtime-generated fill patterns; see `patternImage`. */
 export const WATER_PATTERN = "water-dots";
 export const WOOD_PATTERN = "wood-ticks";
+
+/** Patterns are drawn here rather than shipped as a sprite; MapLibre asks for them on demand. */
+export function patternImage(id: string, theme: MapTheme): ImageData | null {
+	const size = id === WATER_PATTERN ? 8 : 12;
+	const canvas = document.createElement("canvas");
+	canvas.width = canvas.height = size;
+	const context = canvas.getContext("2d");
+	if (!context) return null;
+	const ink = theme === "dark" ? "rgba(200, 220, 225, 0.35)" : "rgba(60, 90, 100, 0.35)";
+	if (id === WATER_PATTERN) {
+		context.fillStyle = ink;
+		context.fillRect(3, 3, 1.2, 1.2);
+	} else if (id === WOOD_PATTERN) {
+		context.strokeStyle = theme === "dark" ? "rgba(160, 200, 150, 0.35)" : "rgba(60, 90, 50, 0.4)";
+		context.lineWidth = 1;
+		context.beginPath();
+		context.moveTo(3, 8);
+		context.lineTo(5, 4);
+		context.lineTo(7, 8);
+		context.stroke();
+	} else {
+		return null;
+	}
+	return context.getImageData(0, 0, size, size);
+}
 
 const name: ExpressionSpecification = ["coalesce", ["get", "name:en"], ["get", "name:latin"], ["get", "name"]];
 const font = ["Noto Sans Regular"];

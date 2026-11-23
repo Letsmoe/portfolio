@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { flagEmoji, type JourneyStats, type RouteCountry } from "#lib/journey.ts";
+	import { flagEmoji, type RouteCountry } from "#lib/journey.ts";
 	import { onMount } from "svelte";
 
 	interface Props {
-		stats: JourneyStats;
 		/** Countries in the order they were first entered. */
 		countries: RouteCountry[];
 	}
 
-	let { stats, countries }: Props = $props();
+	let { countries }: Props = $props();
 
 	const LATITUDE = "41°46′52″S";
 	const LONGITUDE = "146°14′32″E";
@@ -56,24 +55,14 @@
 
 <svelte:window onresize={measureTitle} />
 
-<section bind:this={hero} class="hero relative h-svh min-h-[36rem] overflow-hidden bg-[#225ea7] text-[#fafaf8]" style="--p: {progress}; --title-width: {titleWidth}">
+<section bind:this={hero} class="hero relative h-svh min-h-[36rem] overflow-hidden bg-[#a3b4c7] text-[#fafaf8]" style="--p: {progress}; --title-width: {titleWidth}">
 	<div class="stack">
-		<img src="/images/hero/nepal/back.webp" alt="" class="layer back" />
-		<img src="/images/hero/nepal/mid.webp" alt="" class="layer mid" />
-		<img src="/images/hero/nepal/front.webp" alt="A loaded bike resting in the snow below a prayer flag in the Nepalese Himalaya" class="layer front" />
+		<img src="/images/hero/argentina/back.webp" alt="" class="layer back" />
+		<img src="/images/hero/argentina/front.webp" alt="Moritz riding a loaded bicycle towards the camera on an empty Patagonian road" class="layer front" />
 	</div>
 
 	<h1 class="sr-only">Moritz Utcke</h1>
 	<p class="title m-0 font-medium" aria-hidden="true"><span>{LATITUDE}</span> <span>{LONGITUDE}</span></p>
-
-	<div class="intro grid gap-x-10 gap-y-3 text-[0.85rem] leading-snug sm:grid-cols-2 sm:gap-y-4 sm:text-[clamp(0.95rem,1.15vw,1.15rem)]">
-		<p class="m-0 sm:mb-[2lh]">
-			I'm Moritz, a software engineer who took a wrong turn at a gas station in 2022. Happens to the best of us...
-		</p>
-		<p class="m-0">
-			4 years, {stats.kilometres.toLocaleString("en-US")} km and {stats.countries} countries later I'm still following Komoot. Is this still the right way? No idea. But I've got a tent, a laptop and most days even WiFi, so what could go wrong?
-		</p>
-	</div>
 
 	<a href="/journey" class="route group absolute inset-x-0 bottom-0 flex items-center gap-6 px-6 pb-5 pt-24 font-mono text-[11px] uppercase tracking-[0.2em] no-underline">
 		<span>01</span>
@@ -95,34 +84,23 @@
 		container-type: size;
 	}
 
-	/* The photo keeps its 4:3 ratio and covers the hero. Vertically it puts the ridge (45% down the photo)
-	   at 56% of the hero; horizontally it keeps the prayer flag and bike in view on narrow screens.
+	/* The photo keeps its 4:3 ratio and covers the hero. Vertically it puts the mesa (40% down the photo)
+	   at 42% of the hero; horizontally it keeps the rider (49% across) centred on narrow screens.
 	   Positioned without transforms so the layers and the title share the hero's stacking context. */
 	.stack,
-	.title,
-	.intro {
+	.title {
 		--width: max(100cqw, 133.333cqh);
 		--height: calc(var(--width) * 0.75);
-		--top: clamp(100cqh - var(--height), 56cqh - 0.45 * var(--height), 0px);
-		--left: clamp(100cqw - var(--width), 50cqw - 0.3 * var(--width), 0px);
-		/* The title sits behind the flag pole and the peaks without touching them: it starts right of the pole
-		   (26% across the photo), fills the sky from there to the right edge, and its baseline stays
-		   40% down the photo, so the highest peak just touches it. */
-		--title-start: max(1.5rem, var(--left) + 0.26 * var(--width));
-		--title-space: calc(100cqw - 1.5rem - var(--title-start));
+		--top: clamp(100cqh - var(--height), 42cqh - 0.4 * var(--height), 0px);
+		--left: clamp(100cqw - var(--width), 50cqw - 0.49 * var(--width), 0px);
+		/* The title fills the sky edge to edge; its baseline sits 38.5% down the photo, where the highest
+		   part of the mesa (on the left) just touches it. */
+		--title-space: calc(100cqw - 3rem);
 		--title-size: calc(var(--title-space) / var(--title-width));
-		--title-baseline: calc(var(--top) + 0.40 * var(--height));
-		/* Height of the title box in em: one line of capitals, or two plus the gap on narrow screens. */
-		--title-height: 0.71;
+		--title-baseline: calc(var(--top) + 0.385 * var(--height));
 	}
 
 	@media (max-width: 639px) {
-		.stack,
-		.title,
-		.intro {
-			--title-height: 1.54;
-		}
-
 		.title span {
 			display: block;
 		}
@@ -157,13 +135,6 @@
 		transform: translateY(calc(var(--p) * 10%));
 	}
 
-	.mid {
-		z-index: 2;
-		top: 0;
-		height: 100%;
-		transform: translateY(calc(var(--p) * 6%));
-	}
-
 	.front {
 		z-index: 3;
 		top: 0;
@@ -176,7 +147,7 @@
 	.title {
 		position: absolute;
 		z-index: 1;
-		left: calc(var(--title-start) + var(--title-space) / 2 - 1.5cqw);
+		left: 50%;
 		top: var(--title-baseline);
 		translate: -50% -100%;
 		font-size: var(--title-size);
@@ -185,17 +156,6 @@
 		white-space: nowrap;
 		transform: translateY(calc(var(--p) * 30cqh));
 		animation: rise 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-
-	.intro {
-		position: absolute;
-		z-index: 4;
-		/* Spans the same width as the title, so it stays clear of the flag pole too. */
-		left: calc(var(--title-start) - 1.5cqw);
-		right: calc(1.5rem + 1.5cqw);
-		bottom: calc(100cqh - var(--title-baseline) + var(--title-height) * var(--title-size) + 1.5rem);
-		align-items: end;
-		text-shadow: 0 1px 16px rgb(10 30 70 / 0.35);
 	}
 
 	.route {

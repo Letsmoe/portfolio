@@ -52,7 +52,7 @@
     <title>Moritz Utcke</title>
 </svelte:head>
 
-<Hero stats={data.stats} countries={data.countries} />
+<Hero countries={data.countries} />
 
 <div class="relative z-10 bg-paper">
     <PrayerFlags height={200} />
@@ -72,7 +72,7 @@
                 <div class="border-t border-line pt-3">
                     <dt class="label">{unit}</dt>
                     <dd
-                        class="m-0 mt-3 text-[clamp(2.75rem,6vw,5.5rem)] font-medium leading-none tracking-[-0.05em]"
+                        class="m-0 mt-3 text-[clamp(2rem,6vw,5.5rem)] font-medium leading-none tracking-[-0.05em]"
                     >
                         {value}
                     </dd>
@@ -357,7 +357,7 @@
                         <div class="border-t border-line pt-3">
                             <dt class="label">{unit}</dt>
                             <dd
-                                class="m-0 mt-3 text-5xl font-medium leading-none tracking-[-0.04em]"
+                                class="m-0 mt-3 text-4xl font-medium leading-none tracking-[-0.04em] sm:text-5xl"
                             >
                                 {value}
                             </dd>

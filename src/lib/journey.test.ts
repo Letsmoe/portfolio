@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { countryRoute, flagEmoji, postcards, formatStepDate, groupIntoChapters, summarize, weatherEmoji, type Journey, type JourneyStep } from "./journey";
+import { countryRoute, flagEmoji, postcards, formatStepDate, groupIntoChapters, stepsOnDay, summarize, weatherEmoji, type Journey, type JourneyStep } from "./journey";
 import { nearestPhotoIndex, placeDropdown, routeHops, truncateRoute } from "./map";
 
 describe("nearestPhotoIndex", () => {
@@ -44,6 +44,15 @@ describe("groupIntoChapters", () => {
 			["AT", 1],
 			["DE", 1],
 		]);
+	});
+});
+
+describe("stepsOnDay", () => {
+	test("matches the local calendar day of each step, not the UTC one", () => {
+		const late = { ...step(1, "DE", "2022-08-04T22:30:00Z"), timezone: "Europe/Berlin" };
+		const noon = step(2, "DE", "2022-08-05T12:00:00Z");
+		const nextDay = step(3, "DE", "2022-08-06T08:00:00Z");
+		expect(stepsOnDay([late, noon, nextDay], "2022-08-05").map((match) => match.id)).toEqual([1, 2]);
 	});
 });
 
@@ -133,6 +142,11 @@ describe("map", () => {
 	test("hangs dropdowns below nodes in the top half and above them in the bottom half", () => {
 		expect(placeDropdown({ x: 400, y: 100 }, 320, { width: 800, height: 600 })).toEqual({ left: 240, offset: 128, below: true, caret: 160 });
 		expect(placeDropdown({ x: 400, y: 500 }, 320, { width: 800, height: 600 })).toEqual({ left: 240, offset: 128, below: false, caret: 160 });
+	});
+
+	test("clears a pin-shaped node when opening above it", () => {
+		expect(placeDropdown({ x: 400, y: 500 }, 320, { width: 800, height: 600 }, 28, 8, 96)).toMatchObject({ offset: 196, below: false });
+		expect(placeDropdown({ x: 400, y: 100 }, 320, { width: 800, height: 600 }, 28, 8, 96)).toMatchObject({ offset: 128, below: true });
 	});
 
 	test("keeps dropdowns inside the map and points the caret at the node", () => {

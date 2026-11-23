@@ -5,7 +5,7 @@
 	import DayStory from "#components/DayStory.svelte";
 	import { flagEmoji, formatStepDate, weatherEmoji, type StepDetail } from "#lib/journey.ts";
 	import { nearestPhotoIndex, placeDropdown, routeHops, truncateRoute, type MapData } from "#lib/map.ts";
-	import { createMapStyle, WATER_PATTERN, WOOD_PATTERN, type MapTheme } from "#lib/mapStyle.ts";
+	import { createMapStyle, patternImage, type MapTheme } from "#lib/mapStyle.ts";
 	import type { GeoJSONSource, Map as MapLibreMap, Marker } from "maplibre-gl";
 	import ArrowLeft from "phosphor-svelte/lib/ArrowLeft";
 	import ArrowRight from "phosphor-svelte/lib/ArrowRight";
@@ -41,6 +41,10 @@
 	const DROPDOWN_WIDTH = 320;
 	/** Sorts after every real index, so a cluster only falls back to it when none of its stops has a photo. */
 	const NO_PHOTO = 1_000_000;
+	/** Same hand-placed tilts as the home page's postcards; picked by stop index so a node keeps its tilt. */
+	const NODE_TILTS = [-2.5, 1.5, -1, 2.5, -1.8, 0.8];
+	/** Height of a node above its stop (card plus stem), scaled up when active; a dropdown above has to clear it. */
+	const NODE_CLEARANCE = 96;
 
 	type Opened = { lngLat: [number, number]; slug: string };
 
@@ -93,36 +97,13 @@
 		return featureCollection([{ type: "MultiLineString", coordinates }]);
 	}
 
+	/** The road-snapped track when it has been generated, the raw GPS fixes otherwise. */
 	async function loadFullRoute() {
-		const response = await fetch("/journey/route.json");
+		let response = await fetch("/journey/route-snapped.json");
+		if (!response.ok) response = await fetch("/journey/route.json");
 		if (!response.ok) return;
 		fullRoute = await response.json();
 		(map?.getSource("route") as GeoJSONSource | undefined)?.setData(routeGeoJSON(1));
-	}
-
-	/** Patterns are drawn here rather than shipped as a sprite; MapLibre asks for them on demand. */
-	function patternImage(id: string, theme: MapTheme): ImageData | null {
-		const size = id === WATER_PATTERN ? 8 : 12;
-		const canvas = document.createElement("canvas");
-		canvas.width = canvas.height = size;
-		const context = canvas.getContext("2d");
-		if (!context) return null;
-		const ink = theme === "dark" ? "rgba(200, 220, 225, 0.35)" : "rgba(60, 90, 100, 0.35)";
-		if (id === WATER_PATTERN) {
-			context.fillStyle = ink;
-			context.fillRect(3, 3, 1.2, 1.2);
-		} else if (id === WOOD_PATTERN) {
-			context.strokeStyle = theme === "dark" ? "rgba(160, 200, 150, 0.35)" : "rgba(60, 90, 50, 0.4)";
-			context.lineWidth = 1;
-			context.beginPath();
-			context.moveTo(3, 8);
-			context.lineTo(5, 4);
-			context.lineTo(7, 8);
-			context.stroke();
-		} else {
-			return null;
-		}
-		return context.getImageData(0, 0, size, size);
 	}
 
 	function addJourneyLayers(map: MapLibreMap) {
@@ -169,32 +150,20 @@
 			layout: { "line-cap": "round", "line-join": "round" },
 			paint: { "line-color": accent, "line-width": ["interpolate", ["linear"], ["zoom"], 2, 2, 10, 4] },
 		});
+		// The photo nodes stand on these like pins, so both are just the pin's tip; the node carries the count.
 		map.addLayer({
 			id: "clusters",
 			type: "circle",
 			source: "stops",
 			filter: ["has", "point_count"],
-			paint: {
-				"circle-color": paper,
-				"circle-stroke-color": ink,
-				"circle-stroke-width": 1,
-				"circle-radius": ["step", ["get", "point_count"], 11, 10, 14, 40, 18],
-			},
-		});
-		map.addLayer({
-			id: "cluster-count",
-			type: "symbol",
-			source: "stops",
-			filter: ["has", "point_count"],
-			layout: { "text-field": ["get", "point_count_abbreviated"], "text-font": ["Noto Sans Bold"], "text-size": 11 },
-			paint: { "text-color": ink },
+			paint: { "circle-color": ink, "circle-radius": 5, "circle-stroke-color": paper, "circle-stroke-width": 2 },
 		});
 		map.addLayer({
 			id: "stop-dots",
 			type: "circle",
 			source: "stops",
 			filter: ["!", ["has", "point_count"]],
-			paint: { "circle-color": accent, "circle-radius": 5, "circle-stroke-color": paper, "circle-stroke-width": 2 },
+			paint: { "circle-color": accent, "circle-radius": 4.5, "circle-stroke-color": paper, "circle-stroke-width": 2 },
 		});
 	}
 
@@ -241,18 +210,25 @@
 			const micro = data.stops[node.index]?.micro;
 			const element = document.createElement("button");
 			element.className = ["journey-node", node.clusterId === undefined ? "" : "cluster", micro ? "" : "no-photo"].join(" ");
-			element.title = node.clusterId === undefined ? (stop?.name ?? "") : `${node.count} stops`;
+			element.style.setProperty("--tilt", `${NODE_TILTS[node.index % NODE_TILTS.length] ?? 0}deg`);
 			element.setAttribute("aria-label", node.clusterId === undefined ? `Open ${stop?.name}` : `Zoom into ${node.count} stops`);
-			const face = micro ? `<img src="${micro}" alt="" loading="lazy" decoding="async" width="44" height="44">` : "";
-			element.innerHTML = `<span class="journey-node-face">${face}</span>${
+			const face = micro ? `<img src="${micro}" alt="" loading="lazy" decoding="async" width="40" height="40">` : "";
+			// Clusters are a little stack of postcards: two blank cards peek out behind the front one.
+			element.innerHTML = `${node.clusterId === undefined ? "" : '<span class="journey-node-back"></span><span class="journey-node-back"></span>'}<span class="journey-node-face">${face}</span><span class="journey-node-stem"></span>${
 				node.clusterId === undefined ? "" : `<span class="journey-node-count">${node.count}</span>`
 			}`;
+			// Stop names come from Polarsteps, so they go in as text rather than markup.
+			const label = document.createElement("span");
+			label.className = "journey-node-label";
+			label.textContent = node.clusterId === undefined ? (stop?.name ?? "") : `${node.count} stops`;
+			element.append(label);
 			element.addEventListener("click", (event) => {
 				event.stopPropagation();
 				if (node.clusterId === undefined) stop && openDay(stop.slug);
 				else zoomIntoCluster(node.clusterId, node.lngLat);
 			});
-			nodes.set(key, new Marker({ element, opacityWhenCovered: "0" }).setLngLat(node.lngLat).addTo(map));
+			// The stem's tip stands on the stop, like a pin.
+			nodes.set(key, new Marker({ element, anchor: "bottom", opacityWhenCovered: "0" }).setLngLat(node.lngLat).addTo(map));
 		}
 
 		for (const [key, marker] of nodes) {
@@ -429,7 +405,9 @@
 		};
 	});
 	let photo = $derived(selected?.step.photos[activePhoto]);
-	let placement = $derived(anchor ? placeDropdown(anchor, Math.min(DROPDOWN_WIDTH, mapWidth - 16), { width: mapWidth, height: mapHeight }) : null);
+	let placement = $derived(
+		anchor ? placeDropdown(anchor, Math.min(DROPDOWN_WIDTH, mapWidth - 16), { width: mapWidth, height: mapHeight }, 28, 8, NODE_CLEARANCE) : null,
+	);
 	let selectedSlug = $derived(opened?.slug ?? null);
 	/** The side sheet lives in history state, so the back button closes it and the URL is shareable. */
 	let sheetSlug = $derived(page.state.daySheet ?? null);
@@ -547,31 +525,26 @@
 			transition:fly={{ x: 640, duration: 350, opacity: 1 }}
 			aria-label="Day details"
 		>
-			<div class="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur">
-				<div class="flex gap-1">
-					<button class="btn btn-square" disabled={!selected?.previous} onclick={() => selected?.previous && openDay(selected.previous)} aria-label="Previous day">
-						<ArrowLeft size={14} />
-					</button>
-					<button class="btn btn-square" disabled={!selected?.next} onclick={() => selected?.next && openDay(selected.next)} aria-label="Next day">
-						<ArrowRight size={14} />
-					</button>
-				</div>
-				<div class="flex gap-1">
-					<a href="/journey/{sheetSlug}" class="btn btn-ghost" data-sveltekit-reload>Open as page <ArrowSquareOut size={14} /></a>
-					<button class="btn btn-square" onclick={closeSheet} aria-label="Close"><X size={14} /></button>
-				</div>
+			<div class="sticky top-0 z-10 flex items-center gap-1 border-b border-line bg-paper/90 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.18em] backdrop-blur">
+				<button class="sheet-control group" disabled={!selected?.previous} onclick={() => selected?.previous && openDay(selected.previous)}>
+					<ArrowLeft size={14} class="transition-transform group-hover:-translate-x-1" /> Previous
+				</button>
+				<button class="sheet-control group" disabled={!selected?.next} onclick={() => selected?.next && openDay(selected.next)}>
+					Next <ArrowRight size={14} class="transition-transform group-hover:translate-x-1" />
+				</button>
+				<a href="/journey/{sheetSlug}" class="sheet-control ml-auto" data-sveltekit-reload>Open as page <ArrowSquareOut size={14} /></a>
+				<button class="btn btn-square ml-1" onclick={closeSheet} aria-label="Close"><X size={14} /></button>
 			</div>
-			<div class="px-5 py-8 sm:px-8">
-				{#if selected && selected.step.slug === sheetSlug}
-					<DayStory step={selected.step} day={dayNumber(selected.step.time)} compact />
-				{:else}
-					<div class="space-y-4">
-						<div class="h-3 w-16 animate-pulse rounded bg-sunken"></div>
-						<div class="h-12 w-3/4 animate-pulse rounded bg-sunken"></div>
-						<div class="h-64 w-full animate-pulse rounded-2xl bg-sunken"></div>
-					</div>
-				{/if}
-			</div>
+			{#if selected && selected.step.slug === sheetSlug}
+				<DayStory step={selected.step} day={dayNumber(selected.step.time)} compact />
+			{:else}
+				<div class="h-[min(28rem,60svh)] animate-pulse bg-sunken"></div>
+				<div class="space-y-4 px-5 py-8 sm:px-8">
+					<div class="h-3 w-24 animate-pulse rounded bg-sunken"></div>
+					<div class="h-6 w-3/4 animate-pulse rounded bg-sunken"></div>
+					<div class="h-24 w-full animate-pulse rounded-3xl bg-sunken"></div>
+				</div>
+			{/if}
 		</aside>
 	{/if}
 </div>
@@ -614,9 +587,10 @@
 		opacity: 0.06;
 	}
 
-	/* MapLibre positions markers with `transform`, so only the inner face scales. */
+	/* Each node is a small postcard on a pin, like the home page's postcards. MapLibre positions
+	   markers with `transform`, so only the parts inside the button rotate and scale. */
 	.journey-map :global(.journey-node) {
-		@apply block cursor-pointer border-0 bg-transparent p-0;
+		@apply flex cursor-pointer flex-col items-center border-0 bg-transparent p-0;
 	}
 
 	/* Nodes on the far side of the globe: MapLibre fades them to `opacityWhenCovered` and tags them. */
@@ -629,32 +603,87 @@
 		@apply z-10;
 	}
 
+	.journey-map :global(.journey-node-face),
+	.journey-map :global(.journey-node-back) {
+		@apply block h-14 w-12 bg-card px-1 pb-3 pt-1 shadow-soft;
+		rotate: var(--tilt);
+		transform-origin: 50% 100%;
+	}
+
 	.journey-map :global(.journey-node-face) {
-		@apply block h-10 w-10 overflow-hidden rounded-full border-2 border-card bg-sunken shadow-soft transition-transform;
+		@apply relative;
+		transition:
+			rotate 0.3s ease,
+			scale 0.3s ease,
+			box-shadow 0.3s ease;
 	}
 
-	.journey-map :global(.journey-node.cluster .journey-node-face) {
-		@apply h-11 w-11 rounded-2xl;
+	/* The cards peeking out behind a cluster's front card. */
+	.journey-map :global(.journey-node-back) {
+		@apply absolute left-1/2 top-0 -ml-6 border border-line;
 	}
 
-	.journey-map :global(.journey-node-count) {
-		@apply absolute -right-2 -top-2 min-w-5 rounded-full bg-ink px-1.5 py-0.5 text-center font-mono text-[10px] leading-none text-paper shadow-soft;
+	.journey-map :global(.journey-node-back:first-child) {
+		rotate: calc(var(--tilt) + 8deg);
+		translate: 3px -2px;
 	}
 
-	.journey-map :global(.journey-node:hover .journey-node-face) {
-		@apply scale-125;
+	.journey-map :global(.journey-node-back:nth-child(2)) {
+		rotate: calc(var(--tilt) - 6deg);
+		translate: -3px -1px;
 	}
 
-	.journey-map :global(.journey-node.active .journey-node-face) {
-		@apply scale-150 border-accent;
-	}
-
-	.journey-map :global(.journey-node.no-photo .journey-node-face) {
-		@apply bg-sunken;
+	.journey-map :global(.journey-node-stem) {
+		@apply block h-3 w-0.5 bg-ink/60;
 	}
 
 	.journey-map :global(.journey-node img) {
-		@apply m-0 h-full w-full object-cover;
+		@apply m-0 block h-full w-full object-cover;
+	}
+
+	/* Without a photo nearby, the card shows the prayer flags' five colours instead. */
+	.journey-map :global(.journey-node.no-photo .journey-node-face::before) {
+		content: "";
+		position: absolute;
+		inset: 0.25rem 0.25rem 0.75rem;
+		background: linear-gradient(
+			to bottom,
+			var(--color-flag-blue) 0 20%,
+			var(--color-sunken) 20% 40%,
+			var(--color-accent) 40% 60%,
+			var(--color-flag-green) 60% 80%,
+			var(--color-flag-yellow) 80%
+		);
+		opacity: 0.85;
+	}
+
+	.journey-map :global(.journey-node-count) {
+		@apply absolute -right-2.5 -top-2 min-w-5 rounded-full bg-ink px-1.5 py-1 text-center font-mono text-[10px] leading-none text-paper shadow-soft;
+	}
+
+	.journey-map :global(.journey-node-label) {
+		@apply pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-full bg-card px-2.5 py-1 font-hand text-xl leading-none text-ink opacity-0 shadow-soft transition-opacity;
+	}
+
+	.journey-map :global(.journey-node:hover .journey-node-face),
+	.journey-map :global(.journey-node:focus-visible .journey-node-face) {
+		rotate: 0deg;
+		scale: 1.12;
+		box-shadow: var(--shadow-lift);
+	}
+
+	.journey-map :global(.journey-node.active .journey-node-face) {
+		rotate: 0deg;
+		scale: 1.25;
+		box-shadow:
+			0 0 0 2px var(--color-accent),
+			var(--shadow-lift);
+	}
+
+	/* The open node's name is already in its dropdown, which would cover a label above it. */
+	.journey-map :global(.journey-node:not(.active):hover .journey-node-label),
+	.journey-map :global(.journey-node:not(.active):focus-visible .journey-node-label) {
+		@apply opacity-100;
 	}
 
 	.dropdown .caret {
@@ -673,6 +702,10 @@
 		top: -7px;
 		bottom: auto;
 		rotate: 225deg;
+	}
+
+	.sheet-control {
+		@apply flex items-center gap-2 rounded-full px-3 py-2 no-underline transition-colors hover:text-accent disabled:pointer-events-none disabled:opacity-35;
 	}
 
 	:global(body:has(.day-sheet)) {

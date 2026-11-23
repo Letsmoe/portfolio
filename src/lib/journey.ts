@@ -158,6 +158,11 @@ export function weatherEmoji(condition: string): string {
 	return WEATHER_EMOJI[condition] ?? "🌡️";
 }
 
+/** Steps taken on a calendar day (`2022-08-05`), judged by the clock where each step was taken. */
+export function stepsOnDay(steps: JourneyStep[], day: string): JourneyStep[] {
+	return steps.filter((step) => new Date(step.time).toLocaleDateString("en-CA", { timeZone: step.timezone }) === day);
+}
+
 export function formatStepDate(step: Pick<JourneyStep, "time" | "timezone">): string {
 	return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: step.timezone }).format(
 		new Date(step.time),

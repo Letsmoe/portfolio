@@ -101,6 +101,7 @@ export interface DropdownPlacement {
 /**
  * Hangs a dropdown off a node at `anchor` (map pixels). It opens downwards in the
  * top half of the map and upwards in the bottom half, and never leaves the map sideways.
+ * Nodes stand on their anchor like a pin, so opening upwards needs `gapAbove` to clear the node itself.
  */
 export function placeDropdown(
 	anchor: { x: number; y: number },
@@ -108,13 +109,14 @@ export function placeDropdown(
 	map: { width: number; height: number },
 	gap = 28,
 	margin = 8,
+	gapAbove = gap,
 ): DropdownPlacement {
 	const below = anchor.y < map.height * 0.55;
 	const maxLeft = Math.max(margin, map.width - dropdownWidth - margin);
 	const left = Math.min(Math.max(anchor.x - dropdownWidth / 2, margin), maxLeft);
 	return {
 		left,
-		offset: below ? anchor.y + gap : map.height - anchor.y + gap,
+		offset: below ? anchor.y + gap : map.height - anchor.y + gapAbove,
 		below,
 		caret: Math.min(Math.max(anchor.x - left, 16), dropdownWidth - 16),
 	};
